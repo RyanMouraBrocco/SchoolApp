@@ -6,11 +6,12 @@ using SchoolApp.IdentityProvider.Application.Domain.Authentication;
 using SchoolApp.IdentityProvider.Application.Domain.Users;
 using SchoolApp.IdentityProvider.Application.Helpers;
 using SchoolApp.IdentityProvider.Application.Interfaces.Repositories;
+using SchoolApp.IdentityProvider.Application.Interfaces.Services;
 using SchoolApp.IdentityProvider.Application.Settings;
 
 namespace SchoolApp.IdentityProvider.Application.Services;
 
-public class AuthenticationService
+public class AuthenticationService : IAuthenticationService
 {
     private AuthenticationSettings AuthenticationSettings { get; set; }
     private readonly IUserRepository _userRepository;
