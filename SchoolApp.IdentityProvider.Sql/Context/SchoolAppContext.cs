@@ -5,7 +5,9 @@ namespace SchoolApp.IdentityProvider.Sql.Context;
 
 public class SchoolAppContext : DbContext
 {
-    public DbSet<UserDto> User { get; set; }
+    public DbSet<TeacherDto> Teacher { get; set; }
+    public DbSet<OwnerDto> Owner { get; set; }
+    public DbSet<ManagerDto> Manager { get; set; }
 
     public SchoolAppContext()
     {

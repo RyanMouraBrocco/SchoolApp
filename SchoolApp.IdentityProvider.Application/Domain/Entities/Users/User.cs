@@ -10,5 +10,5 @@ public class User
     public string DocumentId { get; set; }
     public int CreatorId { get; set; }
     public User Creator { get; set; }
-    public DateTime CreateDate { get; set; }
+    public DateTime CreationDate { get; set; }
 }

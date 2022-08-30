@@ -1,10 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using SchoolApp.IdentityProvider.Sql.Interfaces;
 
 namespace SchoolApp.IdentityProvider.Sql.Dtos.Users;
 
-[Table("User")]
-public class UserDto
+public class UserDto : IIdentityEntity
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -12,8 +12,9 @@ public class UserDto
     public string Name { get; set; }
     public string Email { get; set; }
     public string Password { get; set; }
-    public string ImageUrl { get; set; }
     public string DocumentId { get; set; }
     public int CreatorId { get; set; }
-    public DateTime CreateDate { get; set; }
+    public DateTime CreationDate { get; set; }
+    public int? UpdaterId { get; set; }
+    public DateTime? UpdateDate { get; set; }
 }
