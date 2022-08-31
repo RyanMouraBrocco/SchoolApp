@@ -9,7 +9,7 @@ public class SchoolAppContext : DbContext
     public DbSet<OwnerDto> Owner { get; set; }
     public DbSet<ManagerDto> Manager { get; set; }
 
-    public SchoolAppContext()
+    public SchoolAppContext(DbContextOptions<SchoolAppContext> options) : base(options)
     {
 
     }

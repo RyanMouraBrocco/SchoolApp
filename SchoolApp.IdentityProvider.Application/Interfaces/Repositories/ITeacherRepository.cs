@@ -2,7 +2,6 @@ using SchoolApp.IdentityProvider.Application.Domain.Users;
 
 namespace SchoolApp.IdentityProvider.Application.Interfaces.Repositories;
 
-public interface IUserRepository<TUser> where TUser : User
+public interface ITeacherRepository : IUserRepository<Teacher>
 {
-    TUser GetOneByEmail(string email);
 }

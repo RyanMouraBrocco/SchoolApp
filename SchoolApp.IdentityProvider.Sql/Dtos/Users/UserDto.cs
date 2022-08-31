@@ -9,6 +9,7 @@ public class UserDto : IIdentityEntity
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
+    public int AccountId { get; set; }
     public string Name { get; set; }
     public string Email { get; set; }
     public string Password { get; set; }
@@ -17,4 +18,5 @@ public class UserDto : IIdentityEntity
     public DateTime CreationDate { get; set; }
     public int? UpdaterId { get; set; }
     public DateTime? UpdateDate { get; set; }
+    public bool Deleted { get; set; }
 }

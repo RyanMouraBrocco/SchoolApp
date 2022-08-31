@@ -1,3 +1,5 @@
+using SchoolApp.IdentityProvider.Application.Domain.Functions;
+
 namespace SchoolApp.IdentityProvider.Application.Domain.Users;
 
 public class Manager : User

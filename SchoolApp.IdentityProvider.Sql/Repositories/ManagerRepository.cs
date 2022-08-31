@@ -8,14 +8,14 @@ using SchoolApp.IdentityProvider.Sql.Repositories.Base;
 
 namespace SchoolApp.IdentityProvider.Sql.Repositories;
 
-public class UserRepository : BaseIdentityRepository<UserDto, User>, IUserRepository
+public class ManagerRepository : BaseIdentityRepository<ManagerDto, Manager>, IManagerRepository
 {
-    public UserRepository(SchoolAppContext context) : base(context, UserMapper.MapToDomain, UserMapper.MapToDto)
+    public ManagerRepository(SchoolAppContext context) : base(context, ManagerMapper.MapToDomain, ManagerMapper.MapToDto)
     {
     }
 
-    public User GetOneByEmail(string email)
+    public Manager GetOneByEmail(string email)
     {
-        return MapToDomain(_dbSet.AsNoTracking().FirstOrDefault(x => x.Email.Equals(email)));
+        return MapToDomain(_dbSet.AsNoTracking().FirstOrDefault(x => x.Email.Equals(email) && !x.Deleted));
     }
 }

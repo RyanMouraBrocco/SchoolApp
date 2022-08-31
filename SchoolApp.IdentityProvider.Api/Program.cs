@@ -3,6 +3,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using SchoolApp.IdentityProvider.Sql.Context;
+using SchoolApp.IdentityProvider.Application.Interfaces.Repositories;
+using SchoolApp.IdentityProvider.Sql.Repositories;
+using SchoolApp.IdentityProvider.Application.Interfaces.Services;
+using SchoolApp.IdentityProvider.Application.Services;
+using SchoolApp.IdentityProvider.Application.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +19,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<SchoolAppContext>(options => options.UseSqlServer("name=ConnectionStrings:IdentityProvider"));
+builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
+builder.Services.AddScoped<IManagerRepository, ManagerRepository>();
+builder.Services.AddScoped<IOwnerRepository, OwnerRepository>();
+
+
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.Configure<AuthenticationSettings>(builder.Configuration.GetSection(nameof(AuthenticationSettings)));
+
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
