@@ -4,7 +4,7 @@ using SchoolApp.IdentityProvider.Sql.Interfaces;
 
 namespace SchoolApp.IdentityProvider.Sql.Dtos.Users;
 
-public class UserDto : IIdentityEntity
+public class UserDto : IIdentityEntity, ISoftDeleteEntity, IAccountEntity
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

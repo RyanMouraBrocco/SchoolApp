@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using SchoolApp.IdentityProvider.Application.Domain.Enums;
 
 namespace SchoolApp.IdentityProvider.Application.Validations;
 
@@ -16,5 +17,11 @@ public static class UserValidation
         return upperCaseRegex.IsMatch(password) &&
                lowerCaseRegex.IsMatch(password) &&
                numberRegex.IsMatch(password);
+    }
+
+    public static void CheckOnlyManagerUser(UserTypeEnum userType)
+    {
+        if (userType != UserTypeEnum.Manager)
+            throw new UnauthorizedAccessException("This resource is just to manager users");
     }
 }

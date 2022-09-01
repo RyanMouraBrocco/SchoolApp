@@ -1,13 +1,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SchoolApp.IdentityProvider.Api.Controllers.Base;
 using SchoolApp.IdentityProvider.Api.Models;
 using SchoolApp.IdentityProvider.Application.Interfaces.Services;
 
 namespace SchoolApp.IdentityProvider.Api.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
-public class AuthenticationController : Controller
+public class AuthenticationController : BaseController
 {
     private readonly IAuthenticationService _authenticationService;
 

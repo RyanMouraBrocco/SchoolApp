@@ -66,7 +66,7 @@ public class AuthenticationService : IAuthenticationService
                 new Claim("Id", user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.Name, user.Name),
-                new Claim("Type", userType.ToString()),
+                new Claim("Type", ((int)userType).ToString()),
                 new Claim("AccountId", user.AccountId.ToString())
             };
         var token = new JwtSecurityToken(AuthenticationSettings.Issuer, AuthenticationSettings.Issuer, claims, expires: DateTime.Now.AddMinutes(AuthenticationSettings.ExpirationTimeInMinutes), signingCredentials: credentials);

@@ -25,6 +25,7 @@ builder.Services.AddScoped<IOwnerRepository, OwnerRepository>();
 
 
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<IOwnerService, OwnerService>();
 builder.Services.Configure<AuthenticationSettings>(builder.Configuration.GetSection(nameof(AuthenticationSettings)));
 
 
