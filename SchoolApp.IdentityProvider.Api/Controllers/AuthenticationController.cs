@@ -15,21 +15,21 @@ public class AuthenticationController : BaseController
         _authenticationService = authenticationService;
     }
 
-    [Route("TeacherLogin")]
+    [HttpPost("TeacherLogin")]
     [AllowAnonymous]
     public IActionResult TeacherLogin([FromBody] AuthenticationLoginModel loginModel)
     {
         return Ok(_authenticationService.Login(loginModel.Login, loginModel.Password, Application.Domain.Enums.UserTypeEnum.Teacher));
     }
 
-    [Route("ManagerLogin")]
+    [HttpPost("ManagerLogin")]
     [AllowAnonymous]
     public IActionResult ManagerLogin([FromBody] AuthenticationLoginModel loginModel)
     {
         return Ok(_authenticationService.Login(loginModel.Login, loginModel.Password, Application.Domain.Enums.UserTypeEnum.Manager));
     }
 
-    [Route("OwnerLogin")]
+    [HttpPost("OwnerLogin")]
     [AllowAnonymous]
     public IActionResult OwnerLogin([FromBody] AuthenticationLoginModel loginModel)
     {

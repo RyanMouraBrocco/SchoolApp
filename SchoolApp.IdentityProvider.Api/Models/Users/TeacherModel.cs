@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SchoolApp.IdentityProvider.Api.Models.Users;
 
-public class OwnerModel
+public class TeacherModel
 {
     [Required]
     public string Name { get; set; }
@@ -14,5 +14,9 @@ public class OwnerModel
     [Required]
     public string DocumentId { get; set; }
     [Required]
-    public bool IsMainOwner { get; set; }
+    public string AcademicFormation { get; set; }
+    [Required]
+    public decimal Salary { get; set; }
+    [Required]
+    public DateTime HiringDate { get; set; }
 }
