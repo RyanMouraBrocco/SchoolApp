@@ -1,6 +1,7 @@
 using SchoolApp.IdentityProvider.Application.Domain.Authentication;
 using SchoolApp.IdentityProvider.Application.Domain.Enums;
 using SchoolApp.IdentityProvider.Application.Domain.Users;
+using SchoolApp.IdentityProvider.Application.Helpers;
 using SchoolApp.IdentityProvider.Application.Interfaces.Repositories;
 using SchoolApp.IdentityProvider.Application.Interfaces.Services;
 using SchoolApp.IdentityProvider.Application.Validations;
@@ -30,11 +31,13 @@ public class TeacherService : ITeacherService
     public async Task<Teacher> CreateAsync(AuthenticatedUserObject requesterUser, Teacher newTeacher)
     {
         UserValidation.CheckOnlyManagerUser(requesterUser.Type);
+        UserValidation.IsSecurityPassword(newTeacher.Password);
 
         var duplicatedEmail = _teacherRepository.GetOneByEmail(newTeacher.Email);
         if (duplicatedEmail != null)
             throw new UnauthorizedAccessException("This email has already used");
 
+        newTeacher.Password = Utils.HashText(newTeacher.Password);
         newTeacher.AccountId = requesterUser.AccountId;
         newTeacher.CreationDate = DateTime.Now;
         newTeacher.CreatorId = requesterUser.UserId;

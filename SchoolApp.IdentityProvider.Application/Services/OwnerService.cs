@@ -2,6 +2,7 @@ using SchoolApp.IdentityProvider.Application.Domain.Authentication;
 using SchoolApp.IdentityProvider.Application.Domain.Entities.Users;
 using SchoolApp.IdentityProvider.Application.Domain.Enums;
 using SchoolApp.IdentityProvider.Application.Domain.Users;
+using SchoolApp.IdentityProvider.Application.Helpers;
 using SchoolApp.IdentityProvider.Application.Interfaces.Repositories;
 using SchoolApp.IdentityProvider.Application.Interfaces.Services;
 using SchoolApp.IdentityProvider.Application.Validations;
@@ -30,11 +31,13 @@ public class OwnerService : IOwnerService
     public async Task<Owner> CreateAsync(AuthenticatedUserObject requesterUser, Owner newOwner)
     {
         UserValidation.CheckOnlyManagerUser(requesterUser.Type);
+        UserValidation.IsSecurityPassword(newOwner.Password);
 
         var duplicatedEmail = _ownerRepository.GetOneByEmail(newOwner.Email);
         if (duplicatedEmail != null)
             throw new UnauthorizedAccessException("This email has already used");
 
+        newOwner.Password = Utils.HashText(newOwner.Password);
         newOwner.AccountId = requesterUser.AccountId;
         newOwner.CreationDate = DateTime.Now;
         newOwner.CreatorId = requesterUser.UserId;
