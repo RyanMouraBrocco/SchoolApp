@@ -26,14 +26,14 @@ public class TeachersController : BaseController
 
     [HttpPost]
     [Authorize()]
-    public async Task<IActionResult> PostAsync([FromBody] TeacherModel payload)
+    public async Task<IActionResult> PostAsync([FromBody] TeacherCreateModel payload)
     {
         return Ok(await _teacherService.CreateAsync(GetAuthenticatedUser(), payload.MapToTeacher()));
     }
 
     [HttpPut("{id}")]
     [Authorize()]
-    public async Task<IActionResult> PutAsync([FromBody] TeacherModel payload, [FromRoute] int id)
+    public async Task<IActionResult> PutAsync([FromBody] TeacherUpdateModel payload, [FromRoute] int id)
     {
         return Ok(await _teacherService.UpdateAsync(GetAuthenticatedUser(), id, payload.MapToTeacher()));
     }

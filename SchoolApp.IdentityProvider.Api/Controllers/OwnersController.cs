@@ -25,14 +25,14 @@ public class OwnersController : BaseController
 
     [HttpPost]
     [Authorize()]
-    public async Task<IActionResult> PostAsync([FromBody] OwnerModel payload)
+    public async Task<IActionResult> PostAsync([FromBody] OwnerCreateModel payload)
     {
         return Ok(await _ownerService.CreateAsync(GetAuthenticatedUser(), payload.MapToOwner()));
     }
 
     [HttpPut("{id}")]
     [Authorize()]
-    public async Task<IActionResult> PutAsync([FromBody] OwnerModel payload, [FromRoute] int id)
+    public async Task<IActionResult> PutAsync([FromBody] OwnerUpdateModel payload, [FromRoute] int id)
     {
         return Ok(await _ownerService.UpdateAsync(GetAuthenticatedUser(), id, payload.MapToOwner()));
     }

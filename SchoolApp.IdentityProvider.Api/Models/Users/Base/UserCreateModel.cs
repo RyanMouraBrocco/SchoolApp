@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace SchoolApp.IdentityProvider.Api.Models.Users;
+namespace SchoolApp.IdentityProvider.Api.Models.Users.Base;
 
-public class TeacherModel
+public class UserCreateModel
 {
     [Required]
     public string Name { get; set; }
@@ -13,10 +13,4 @@ public class TeacherModel
     public string ImageUrl { get; set; }
     [Required]
     public string DocumentId { get; set; }
-    [Required]
-    public string AcademicFormation { get; set; }
-    [Required]
-    public decimal Salary { get; set; }
-    [Required]
-    public DateTime HiringDate { get; set; }
 }

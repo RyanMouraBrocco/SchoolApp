@@ -1,10 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.8" />
@@ -13,10 +11,8 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.22.0" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\SchoolApp.IdentityProvider.Sql\SchoolApp.IdentityProvider.Sql.csproj" />
     <ProjectReference Include="..\SchoolApp.IdentityProvider.Application\SchoolApp.IdentityProvider.Application.csproj" />
   </ItemGroup>
-
 </Project>

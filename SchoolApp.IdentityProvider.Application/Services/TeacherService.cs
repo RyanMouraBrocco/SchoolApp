@@ -60,6 +60,7 @@ public class TeacherService : ITeacherService
             throw new UnauthorizedAccessException("This email has already used");
 
         updatedTeacher.Id = teacherId;
+        updatedTeacher.Password = teacherCheck.Password;
         updatedTeacher.AccountId = requesterUser.AccountId;
         updatedTeacher.CreationDate = teacherCheck.CreationDate;
         updatedTeacher.CreatorId = teacherCheck.CreatorId;

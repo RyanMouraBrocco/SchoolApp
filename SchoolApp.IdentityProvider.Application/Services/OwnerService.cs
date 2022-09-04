@@ -60,6 +60,7 @@ public class OwnerService : IOwnerService
             throw new UnauthorizedAccessException("This email has already used");
 
         updatedOwner.Id = ownerId;
+        updatedOwner.Password = ownerCheck.Password;
         updatedOwner.AccountId = requesterUser.AccountId;
         updatedOwner.CreationDate = ownerCheck.CreationDate;
         updatedOwner.CreatorId = ownerCheck.CreatorId;
