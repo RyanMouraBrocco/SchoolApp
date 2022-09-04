@@ -32,6 +32,7 @@ public class TeacherService : ITeacherService
     {
         UserValidation.CheckOnlyManagerUser(requesterUser.Type);
         UserValidation.IsSecurityPassword(newTeacher.Password);
+        GenericValidation.IsNotNegativeValue(nameof(newTeacher.Salary), newTeacher.Salary);
 
         var duplicatedEmail = _teacherRepository.GetOneByEmail(newTeacher.Email);
         if (duplicatedEmail != null)
@@ -50,6 +51,7 @@ public class TeacherService : ITeacherService
     public async Task<Teacher> UpdateAsync(AuthenticatedUserObject requesterUser, int teacherId, Teacher updatedTeacher)
     {
         UserValidation.CheckOnlyManagerUser(requesterUser.Type);
+        GenericValidation.IsNotNegativeValue(nameof(updatedTeacher.Salary), updatedTeacher.Salary);
 
         var teacherCheck = _teacherRepository.GetOneById(teacherId);
         if (teacherCheck == null || teacherCheck.AccountId != requesterUser.AccountId)
