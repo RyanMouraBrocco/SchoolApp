@@ -1,4 +1,4 @@
-using SchoolApp.IdentityProvider.Application.Domain.Users;
+using SchoolApp.IdentityProvider.Application.Domain.Entities.Users;
 
 namespace SchoolApp.IdentityProvider.Application.Interfaces.Repositories;
 

@@ -1,4 +1,4 @@
-using SchoolApp.IdentityProvider.Application.Domain.Users;
+using SchoolApp.IdentityProvider.Application.Domain.Entities.Users;
 using SchoolApp.IdentityProvider.Sql.Dtos.Users;
 
 namespace SchoolApp.IdentityProvider.Sql.Mappers;
@@ -24,7 +24,8 @@ public static class TeacherMapper
             Password = dto.Password,
             AcademicFormation = dto.AcademicFormation,
             HiringDate = dto.HiringDate,
-            Salary = dto.Salary
+            Salary = dto.Salary,
+            Formations = dto.Formations.Select(x => TeacherFormationMapper.MapToDomain(x)).ToList()
         };
     }
 

@@ -13,4 +13,5 @@ public class TeacherCreateModel : UserCreateModel
     public decimal? Salary { get; set; }
     [Required]
     public DateTime HiringDate { get; set; }
+    public IList<TeacherFormationModel> Formations { get; set; }
 }

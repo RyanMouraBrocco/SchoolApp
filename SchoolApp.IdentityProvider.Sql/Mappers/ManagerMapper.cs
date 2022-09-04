@@ -1,4 +1,4 @@
-using SchoolApp.IdentityProvider.Application.Domain.Users;
+using SchoolApp.IdentityProvider.Application.Domain.Entities.Users;
 using SchoolApp.IdentityProvider.Sql.Dtos.Users;
 
 namespace SchoolApp.IdentityProvider.Sql.Mappers;

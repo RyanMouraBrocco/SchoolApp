@@ -1,7 +1,6 @@
 using SchoolApp.IdentityProvider.Application.Domain.Authentication;
 using SchoolApp.IdentityProvider.Application.Domain.Entities.Users;
 using SchoolApp.IdentityProvider.Application.Domain.Enums;
-using SchoolApp.IdentityProvider.Application.Domain.Users;
 using SchoolApp.IdentityProvider.Application.Helpers;
 using SchoolApp.IdentityProvider.Application.Interfaces.Repositories;
 using SchoolApp.IdentityProvider.Application.Interfaces.Services;

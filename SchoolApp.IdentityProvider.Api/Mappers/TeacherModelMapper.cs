@@ -1,5 +1,6 @@
 using SchoolApp.IdentityProvider.Api.Models.Users;
-using SchoolApp.IdentityProvider.Application.Domain.Users;
+using SchoolApp.IdentityProvider.Application.Domain.Entities.Formation;
+using SchoolApp.IdentityProvider.Application.Domain.Entities.Users;
 
 namespace SchoolApp.IdentityProvider.Api.Mappers;
 
@@ -16,7 +17,8 @@ public static class TeacherModelMapper
             HiringDate = model.HiringDate,
             Salary = (decimal)model.Salary,
             Password = model.Password,
-            ImageUrl = model.ImageUrl
+            ImageUrl = model.ImageUrl,
+            Formations = model.Formations?.Select(x => x.MapToTeacherFormation()).ToList() ?? new List<TeacherFormation>()
         };
     }
 
@@ -30,7 +32,18 @@ public static class TeacherModelMapper
             AcademicFormation = model.AcademicFormation,
             HiringDate = model.HiringDate,
             Salary = (decimal)model.Salary,
-            ImageUrl = model.ImageUrl
+            ImageUrl = model.ImageUrl,
+            Formations = model.Formations?.Select(x => x.MapToTeacherFormation()).ToList() ?? new List<TeacherFormation>()
+        };
+    }
+
+    private static TeacherFormation MapToTeacherFormation(this TeacherFormationModel model)
+    {
+        return new TeacherFormation()
+        {
+            AcademicFormation = model.AcademicFormation,
+            UniversityDegree = model.UniversityDegree,
+            UniversityDegreeDate = model.UniversityDegreeDate
         };
     }
 }

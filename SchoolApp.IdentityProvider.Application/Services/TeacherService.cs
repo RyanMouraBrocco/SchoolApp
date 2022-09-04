@@ -1,20 +1,24 @@
 using SchoolApp.IdentityProvider.Application.Domain.Authentication;
 using SchoolApp.IdentityProvider.Application.Domain.Enums;
-using SchoolApp.IdentityProvider.Application.Domain.Users;
+using SchoolApp.IdentityProvider.Application.Domain.Entities.Users;
 using SchoolApp.IdentityProvider.Application.Helpers;
 using SchoolApp.IdentityProvider.Application.Interfaces.Repositories;
 using SchoolApp.IdentityProvider.Application.Interfaces.Services;
 using SchoolApp.IdentityProvider.Application.Validations;
+using SchoolApp.IdentityProvider.Application.Domain.Entities.Formation;
 
 namespace SchoolApp.IdentityProvider.Application.Services;
 
 public class TeacherService : ITeacherService
 {
     private readonly ITeacherRepository _teacherRepository;
+    private readonly ITeacherFormationRepository _teacherFormationRepository;
 
-    public TeacherService(ITeacherRepository teacherRepository)
+    public TeacherService(ITeacherRepository teacherRepository,
+                          ITeacherFormationRepository teacherFormationRepository)
     {
         _teacherRepository = teacherRepository;
+        _teacherFormationRepository = teacherFormationRepository;
     }
 
     public IList<Teacher> GetAll(AuthenticatedUserObject requesterUser, int top, int skip)
@@ -33,6 +37,7 @@ public class TeacherService : ITeacherService
         UserValidation.CheckOnlyManagerUser(requesterUser.Type);
         UserValidation.IsSecurityPassword(newTeacher.Password);
         GenericValidation.IsNotNegativeValue(nameof(newTeacher.Salary), newTeacher.Salary);
+        GenericValidation.ListHaveAtLeastOneItem(nameof(newTeacher.Formations), newTeacher.Formations);
 
         var duplicatedEmail = _teacherRepository.GetOneByEmail(newTeacher.Email);
         if (duplicatedEmail != null)
@@ -45,13 +50,17 @@ public class TeacherService : ITeacherService
         newTeacher.UpdaterId = null;
         newTeacher.UpdateDate = null;
 
-        return await _teacherRepository.InsertAsync(newTeacher);
+        var insertedTeacher = await _teacherRepository.InsertAsync(newTeacher);
+        insertedTeacher.Formations = await UpdateFormationsAsync(insertedTeacher.Id, newTeacher.Formations);
+
+        return insertedTeacher;
     }
 
     public async Task<Teacher> UpdateAsync(AuthenticatedUserObject requesterUser, int teacherId, Teacher updatedTeacher)
     {
         UserValidation.CheckOnlyManagerUser(requesterUser.Type);
         GenericValidation.IsNotNegativeValue(nameof(updatedTeacher.Salary), updatedTeacher.Salary);
+        GenericValidation.ListHaveAtLeastOneItem(nameof(updatedTeacher.Formations), updatedTeacher.Formations);
 
         var teacherCheck = _teacherRepository.GetOneById(teacherId);
         if (teacherCheck == null || teacherCheck.AccountId != requesterUser.AccountId)
@@ -69,7 +78,23 @@ public class TeacherService : ITeacherService
         updatedTeacher.UpdaterId = requesterUser.UserId;
         updatedTeacher.UpdateDate = DateTime.Now;
 
-        return await _teacherRepository.UpdateAsync(updatedTeacher);
+        var resultTeacher = await _teacherRepository.UpdateAsync(updatedTeacher);
+        resultTeacher.Formations = await UpdateFormationsAsync(teacherId, updatedTeacher.Formations);
+        return resultTeacher;
+    }
+
+    private async Task<IList<TeacherFormation>> UpdateFormationsAsync(int teacherId, IList<TeacherFormation> formations)
+    {
+        var resultItems = new List<TeacherFormation>();
+        await _teacherFormationRepository.DeleteAllByTeacherIdAsync(teacherId);
+        foreach (var formation in formations)
+        {
+            formation.TeacherId = teacherId;
+            var insertedFormation = await _teacherFormationRepository.InsertAsync(formation);
+            resultItems.Add(insertedFormation);
+        }
+
+        return resultItems;
     }
 
     public async Task DeleteAsync(AuthenticatedUserObject requesterUser, int teacherId)

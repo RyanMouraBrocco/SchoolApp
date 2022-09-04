@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using SchoolApp.IdentityProvider.Sql.Dtos.Functions;
 
 namespace SchoolApp.IdentityProvider.Sql.Dtos.Users;
 

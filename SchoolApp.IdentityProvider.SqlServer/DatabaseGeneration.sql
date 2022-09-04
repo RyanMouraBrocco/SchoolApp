@@ -70,8 +70,26 @@ CREATE TABLE [Function]
 	UpdaterId INT NULL,
 	UpdateDate DATETIME NULL
 );
+CREATE TABLE [Teacher_Formation]
+(
+	Id INT IDENTITY NOT NULL PRIMARY KEY,
+	TeacherId INT NOT NULL,
+	AcademicFormation NVARCHAR(200) NOT NULL,
+	UniversityDegree NVARCHAR(300) NOT NULL,
+	UnivertityDegreeDate DATETIME NULL
+);
 -- SET FOREIGN KEYS RELATIONS
+--   ACCOUNTID
+ALTER TABLE Owner ADD CONSTRAINT [FK_Owner_AccountId] FOREIGN KEY (AccountId) REFERENCES [Account](Id);
+ALTER TABLE Teacher ADD CONSTRAINT [FK_Teacher_AccountId] FOREIGN KEY (AccountId) REFERENCES [Account](Id);
+ALTER TABLE Manager ADD CONSTRAINT [FK_Manager_AccountId] FOREIGN KEY (AccountId) REFERENCES [Account](Id);
+ALTER TABLE [Function] ADD CONSTRAINT [FK_Function_AccountId] FOREIGN KEY (AccountId) REFERENCES [Account](Id);
+
+-- Geral relations
 ALTER TABLE Manager ADD CONSTRAINT [FK_Manager_FunctionId] FOREIGN KEY (FunctionId) REFERENCES [Function](Id);
+ALTER TABLE Teacher_Formation ADD CONSTRAINT [FK_Teacher_Formation_TeacherId] FOREIGN KEY (TeacherId) REFERENCES [Teacher](Id);
+
+
 -- SET INDEXES TO PERFORMANCE
 CREATE NONCLUSTERED INDEX IX_Teacher_Email ON [Teacher](Email);
 CREATE NONCLUSTERED INDEX IX_Manager_Email ON [Manager](Email);

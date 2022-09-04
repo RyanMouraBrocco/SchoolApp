@@ -1,4 +1,4 @@
-namespace SchoolApp.IdentityProvider.Application.Domain.Users;
+namespace SchoolApp.IdentityProvider.Application.Domain.Entities.Users;
 
 public class User
 {

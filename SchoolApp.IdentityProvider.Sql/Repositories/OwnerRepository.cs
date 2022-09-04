@@ -8,7 +8,7 @@ using SchoolApp.IdentityProvider.Sql.Repositories.Base;
 
 namespace SchoolApp.IdentityProvider.Sql.Repositories;
 
-public class OwnerRepository : BaseIdentityRepository<OwnerDto, Owner>, IOwnerRepository
+public class OwnerRepository : BaseMainEntityRepository<OwnerDto, Owner>, IOwnerRepository
 {
     public OwnerRepository(SchoolAppContext context) : base(context, OwnerMapper.MapToDomain, OwnerMapper.MapToDto)
     {

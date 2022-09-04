@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SchoolApp.IdentityProvider.Sql.Dtos.Users;
+namespace SchoolApp.IdentityProvider.Sql.Dtos.Functions;
 
 [Table("Function")]
 public class FunctionDto

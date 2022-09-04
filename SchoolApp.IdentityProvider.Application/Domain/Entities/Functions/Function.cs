@@ -1,4 +1,4 @@
-namespace SchoolApp.IdentityProvider.Application.Domain.Functions;
+namespace SchoolApp.IdentityProvider.Application.Domain.Entities.Functions;
 
 public class Function
 {

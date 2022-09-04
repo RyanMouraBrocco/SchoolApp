@@ -1,6 +1,6 @@
-using SchoolApp.IdentityProvider.Application.Domain.Functions;
+using SchoolApp.IdentityProvider.Application.Domain.Entities.Functions;
 
-namespace SchoolApp.IdentityProvider.Application.Domain.Users;
+namespace SchoolApp.IdentityProvider.Application.Domain.Entities.Users;
 
 public class Manager : User
 {
