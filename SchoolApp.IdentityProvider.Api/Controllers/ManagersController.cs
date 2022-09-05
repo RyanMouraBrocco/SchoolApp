@@ -4,6 +4,7 @@ using SchoolApp.IdentityProvider.Api.Controllers.Base;
 using SchoolApp.IdentityProvider.Api.Models;
 using SchoolApp.IdentityProvider.Api.Models.Users;
 using SchoolApp.IdentityProvider.Application.Interfaces.Services;
+using SchoolApp.IdentityProvider.Api.Mappers;
 
 namespace SchoolApp.IdentityProvider.Api.Controllers;
 

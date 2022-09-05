@@ -5,7 +5,7 @@ namespace SchoolApp.IdentityProvider.Api.Mappers;
 
 public static class ManagerModleMapper
 {
-    public static Manager MapToTeacher(this ManagerCreateModel model)
+    public static Manager MapToManager(this ManagerCreateModel model)
     {
         return new Manager()
         {
@@ -20,7 +20,7 @@ public static class ManagerModleMapper
         };
     }
 
-    public static Manager MapToTeacher(this ManagerUpdateModel model)
+    public static Manager MapToManager(this ManagerUpdateModel model)
     {
         return new Manager()
         {

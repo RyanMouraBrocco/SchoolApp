@@ -44,6 +44,7 @@ builder.Services.AddScoped<IFunctionRepository, FunctionRepository>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IOwnerService, OwnerService>();
 builder.Services.AddScoped<ITeacherService, TeacherService>();
+builder.Services.AddScoped<ITeacherFormationRepository, TeacherFormationRepository>();
 builder.Services.AddScoped<IManagerService, ManagerService>();
 builder.Services.AddScoped<IFunctionService, FunctionService>();
 builder.Services.Configure<AuthenticationSettings>(builder.Configuration.GetSection(nameof(AuthenticationSettings)));
