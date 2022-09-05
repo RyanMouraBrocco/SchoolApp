@@ -8,4 +8,6 @@ public class Function
     public string Description { get; set; }
     public int CreatorId { get; set; }
     public DateTime CreationDate { get; set; }
+    public int? UpdaterId { get; set; }
+    public DateTime? UpdateDate { get; set; }
 }
