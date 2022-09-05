@@ -1,6 +1,6 @@
 namespace SchoolApp.IdentityProvider.Application.Interfaces.Repositories;
 
-public interface ICrudRepository<TEntity>
+public interface ICrudRepository<TEntity> where TEntity : class
 {
     Task<TEntity> InsertAsync(TEntity item);
     Task<TEntity> UpdateAsync(TEntity item);

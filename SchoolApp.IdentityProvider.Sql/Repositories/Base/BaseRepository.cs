@@ -3,15 +3,14 @@ using SchoolApp.IdentityProvider.Sql.Context;
 
 namespace SchoolApp.IdentityProvider.Sql.Repositories.Base;
 
-public abstract class BaseEntityRepository<TDto, TDomain> where TDto : class
-                                                          where TDomain : class
+public abstract class BaseRepository<TDto, TDomain> where TDto : class where TDomain : class
 {
     protected Func<TDto, TDomain> MapToDomain { get; set; }
     protected Func<TDomain, TDto> MapToDto { get; set; }
 
     protected readonly SchoolAppContext _context;
     protected readonly DbSet<TDto> _dbSet;
-    public BaseEntityRepository(SchoolAppContext context,
+    public BaseRepository(SchoolAppContext context,
                                 Func<TDto, TDomain> mapToDomain,
                                 Func<TDomain, TDto> mapToDto)
     {

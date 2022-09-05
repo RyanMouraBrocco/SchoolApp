@@ -8,7 +8,7 @@ using SchoolApp.IdentityProvider.Sql.Repositories.Base;
 
 namespace SchoolApp.IdentityProvider.Sql.Repositories;
 
-public class TeacherFormationRepository : BaseSimpleEntityRepository<TeacherFormationDto, TeacherFormation>, ITeacherFormationRepository
+public class TeacherFormationRepository : BaseCrudRepository<TeacherFormationDto, TeacherFormation>, ITeacherFormationRepository
 {
     public TeacherFormationRepository(SchoolAppContext context) : base(context, TeacherFormationMapper.MapToDomain, TeacherFormationMapper.MapToDto)
     {
