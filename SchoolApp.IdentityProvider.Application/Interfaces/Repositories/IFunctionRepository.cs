@@ -2,7 +2,7 @@ using SchoolApp.IdentityProvider.Application.Domain.Entities.Functions;
 
 namespace SchoolApp.IdentityProvider.Application.Interfaces.Repositories;
 
-public interface IFunctionRepository
+public interface IFunctionRepository : ICrudRepository<Function>
 {
-    Function GetOneById(int id);
+    IList<Function> GetAll(int accountId, int top, int skip);
 }
