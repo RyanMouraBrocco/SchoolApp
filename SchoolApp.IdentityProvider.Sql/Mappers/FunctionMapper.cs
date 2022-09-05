@@ -7,6 +7,9 @@ public static class FunctionMapper
 {
     public static Function MapToDomain(FunctionDto dto)
     {
+        if (dto == null)
+            return null;
+
         return new Function()
         {
             Id = dto.Id,
@@ -22,6 +25,9 @@ public static class FunctionMapper
 
     public static FunctionDto MapToDto(Function domain)
     {
+        if (domain == null)
+            return null;
+
         return new FunctionDto()
         {
             Id = domain.Id,

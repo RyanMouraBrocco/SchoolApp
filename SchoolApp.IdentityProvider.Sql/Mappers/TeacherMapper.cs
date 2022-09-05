@@ -1,3 +1,4 @@
+using SchoolApp.IdentityProvider.Application.Domain.Entities.Formation;
 using SchoolApp.IdentityProvider.Application.Domain.Entities.Users;
 using SchoolApp.IdentityProvider.Sql.Dtos.Users;
 
@@ -25,7 +26,7 @@ public static class TeacherMapper
             AcademicFormation = dto.AcademicFormation,
             HiringDate = dto.HiringDate,
             Salary = dto.Salary,
-            Formations = dto.Formations.Select(x => TeacherFormationMapper.MapToDomain(x)).ToList()
+            Formations = dto.Formations?.Select(x => TeacherFormationMapper.MapToDomain(x)).ToList() ?? new List<TeacherFormation>()
         };
     }
 

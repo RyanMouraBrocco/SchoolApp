@@ -68,7 +68,8 @@ CREATE TABLE [Function]
 	CreatorId INT NOT NULL,
 	CreationDate DATETIME NOT NULL,
 	UpdaterId INT NULL,
-	UpdateDate DATETIME NULL
+	UpdateDate DATETIME NULL,
+	Deleted BIT NULL
 );
 CREATE TABLE [Teacher_Formation]
 (
@@ -76,7 +77,7 @@ CREATE TABLE [Teacher_Formation]
 	TeacherId INT NOT NULL,
 	AcademicFormation NVARCHAR(200) NOT NULL,
 	UniversityDegree NVARCHAR(300) NOT NULL,
-	UnivertityDegreeDate DATETIME NULL
+	UniversityDegreeDate DATETIME 
 );
 -- SET FOREIGN KEYS RELATIONS
 --   ACCOUNTID
@@ -95,5 +96,7 @@ CREATE NONCLUSTERED INDEX IX_Teacher_Email ON [Teacher](Email);
 CREATE NONCLUSTERED INDEX IX_Manager_Email ON [Manager](Email);
 
 
+
+SELECT * FROM Manager m 
 
 
