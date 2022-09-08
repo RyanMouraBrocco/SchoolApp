@@ -1,4 +1,4 @@
-namespace SchoolApp.IdentityProvider.Application.Domain.Enums;
+namespace SchoolApp.Shared.Utils.Enums;
 
 public enum UserTypeEnum
 {
@@ -6,3 +6,4 @@ public enum UserTypeEnum
     Teacher,
     Manager
 }
+

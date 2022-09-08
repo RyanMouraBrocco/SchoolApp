@@ -1,5 +1,5 @@
 using SchoolApp.IdentityProvider.Application.Domain.Authentication;
-using SchoolApp.IdentityProvider.Application.Domain.Enums;
+using SchoolApp.Shared.Utils.Enums;
 
 namespace SchoolApp.IdentityProvider.Application.Interfaces.Services;
 

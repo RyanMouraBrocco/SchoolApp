@@ -1,11 +1,12 @@
 using SchoolApp.IdentityProvider.Application.Domain.Authentication;
-using SchoolApp.IdentityProvider.Application.Domain.Enums;
 using SchoolApp.IdentityProvider.Application.Domain.Entities.Users;
 using SchoolApp.IdentityProvider.Application.Helpers;
 using SchoolApp.IdentityProvider.Application.Interfaces.Repositories;
 using SchoolApp.IdentityProvider.Application.Interfaces.Services;
 using SchoolApp.IdentityProvider.Application.Validations;
 using SchoolApp.IdentityProvider.Application.Domain.Entities.Formation;
+using SchoolApp.Shared.Authentication;
+using SchoolApp.Shared.Utils.Enums;
 
 namespace SchoolApp.IdentityProvider.Application.Services;
 

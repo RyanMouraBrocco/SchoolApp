@@ -3,6 +3,7 @@ using SchoolApp.IdentityProvider.Application.Domain.Entities.Functions;
 using SchoolApp.IdentityProvider.Application.Interfaces.Repositories;
 using SchoolApp.IdentityProvider.Application.Interfaces.Services;
 using SchoolApp.IdentityProvider.Application.Validations;
+using SchoolApp.Shared.Authentication;
 
 namespace SchoolApp.IdentityProvider.Application.Services;
 

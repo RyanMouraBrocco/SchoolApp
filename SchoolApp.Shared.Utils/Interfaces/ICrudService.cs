@@ -1,6 +1,6 @@
-using SchoolApp.IdentityProvider.Application.Domain.Authentication;
+using SchoolApp.Shared.Authentication;
 
-namespace SchoolApp.IdentityProvider.Application.Interfaces.Services;
+namespace SchoolApp.Shared.Utils.Interfaces;
 
 public interface ICrudService<TEntity> where TEntity : class
 {

@@ -9,5 +9,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SchoolApp.IdentityProvider.Application\SchoolApp.IdentityProvider.Application.csproj" />
+    <ProjectReference Include="..\SchoolApp.Shared.Utils.Sql\SchoolApp.Shared.Utils.Sql.csproj" />
   </ItemGroup>
 </Project>

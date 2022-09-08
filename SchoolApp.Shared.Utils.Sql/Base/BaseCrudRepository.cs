@@ -1,15 +1,14 @@
-using System.Security.Principal;
 using Microsoft.EntityFrameworkCore;
-using SchoolApp.IdentityProvider.Application.Interfaces.Repositories;
-using SchoolApp.IdentityProvider.Sql.Context;
-using SchoolApp.IdentityProvider.Sql.Interfaces;
+using SchoolApp.Shared.Utils.Interfaces;
+using SchoolApp.Shared.Utils.Sql.Interfaces;
 
-namespace SchoolApp.IdentityProvider.Sql.Repositories.Base;
+namespace SchoolApp.Shared.Utils.Sql.Base;
 
-public abstract class BaseCrudRepository<TDto, TDomain> : BaseRepository<TDto, TDomain>, ICrudRepository<TDomain> where TDto : class, IIdentityEntity
-                                                                                                                  where TDomain : class
+public class BaseCrudRepository<TDto, TDomain, TContext> : BaseRepository<TDto, TDomain, TContext>, ICrudRepository<TDomain> where TDto : class, IIdentityEntity
+                                                                                                                             where TDomain : class
+                                                                                                                             where TContext : DbContext
 {
-    protected BaseCrudRepository(SchoolAppContext context,
+    protected BaseCrudRepository(TContext context,
                                  Func<TDto, TDomain> mapToDomain,
                                  Func<TDomain, TDto> mapToDto) : base(context, mapToDomain, mapToDto)
     {

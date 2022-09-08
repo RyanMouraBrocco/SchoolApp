@@ -1,4 +1,4 @@
-namespace SchoolApp.IdentityProvider.Sql.Interfaces;
+namespace SchoolApp.Shared.Utils.Sql.Interfaces;
 
 public interface ISoftDeleteEntity
 {

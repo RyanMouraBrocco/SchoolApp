@@ -4,11 +4,11 @@ using SchoolApp.IdentityProvider.Application.Interfaces.Repositories;
 using SchoolApp.IdentityProvider.Sql.Context;
 using SchoolApp.IdentityProvider.Sql.Dtos.Functions;
 using SchoolApp.IdentityProvider.Sql.Mappers;
-using SchoolApp.IdentityProvider.Sql.Repositories.Base;
+using SchoolApp.Shared.Utils.Sql.Base;
 
 namespace SchoolApp.IdentityProvider.Sql.Repositories;
 
-public class FunctionRepository : BaseCrudRepository<FunctionDto, Function>, IFunctionRepository
+public class FunctionRepository : BaseCrudRepository<FunctionDto, Function, SchoolAppContext>, IFunctionRepository
 {
     public FunctionRepository(SchoolAppContext context) : base(context, FunctionMapper.MapToDomain, FunctionMapper.MapToDto)
     {

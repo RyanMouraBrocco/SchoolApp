@@ -1,14 +1,13 @@
-using System.Security.Principal;
 using Microsoft.EntityFrameworkCore;
-using SchoolApp.IdentityProvider.Sql.Context;
-using SchoolApp.IdentityProvider.Sql.Interfaces;
+using SchoolApp.Shared.Utils.Sql.Interfaces;
 
-namespace SchoolApp.IdentityProvider.Sql.Repositories.Base;
+namespace SchoolApp.Shared.Utils.Sql.Base;
 
-public class BaseMainEntityRepository<TDto, TDomain> : BaseCrudRepository<TDto, TDomain> where TDto : class, IIdentityEntity, IAccountEntity, ISoftDeleteEntity
-                                                                                         where TDomain : class
+public class BaseMainEntityRepository<TDto, TDomain, TContext> : BaseCrudRepository<TDto, TDomain, TContext> where TDto : class, IIdentityEntity, IAccountEntity, ISoftDeleteEntity
+                                                                                                             where TDomain : class
+                                                                                                             where TContext : DbContext
 {
-    public BaseMainEntityRepository(SchoolAppContext context,
+    public BaseMainEntityRepository(TContext context,
                                     Func<TDto, TDomain> mapToDomain,
                                     Func<TDomain, TDto> mapToDto) : base(context, mapToDomain, mapToDto)
     {

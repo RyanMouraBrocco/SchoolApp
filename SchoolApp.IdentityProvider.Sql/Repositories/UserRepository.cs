@@ -3,12 +3,12 @@ using SchoolApp.IdentityProvider.Application.Domain.Entities.Users;
 using SchoolApp.IdentityProvider.Application.Interfaces.Repositories;
 using SchoolApp.IdentityProvider.Sql.Context;
 using SchoolApp.IdentityProvider.Sql.Dtos.Users;
-using SchoolApp.IdentityProvider.Sql.Repositories.Base;
+using SchoolApp.Shared.Utils.Sql.Base;
 
 namespace SchoolApp.IdentityProvider.Sql.Repositories;
 
-public abstract class UserRepository<TDto, TDomain> : BaseMainEntityRepository<TDto, TDomain>, IUserRepository<TDomain> where TDto : UserDto
-                                                                                                                        where TDomain : User
+public abstract class UserRepository<TDto, TDomain> : BaseMainEntityRepository<TDto, TDomain, SchoolAppContext>, IUserRepository<TDomain> where TDto : UserDto
+                                                                                                                                          where TDomain : User
 {
     public UserRepository(SchoolAppContext context,
                           Func<TDto, TDomain> mapToDomain,

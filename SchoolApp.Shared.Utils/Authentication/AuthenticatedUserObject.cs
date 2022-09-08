@@ -1,7 +1,6 @@
-using SchoolApp.IdentityProvider.Application.Domain.Enums;
-using SchoolApp.IdentityProvider.Application.Domain.Entities.Users;
+using SchoolApp.Shared.Utils.Enums;
 
-namespace SchoolApp.IdentityProvider.Application.Domain.Authentication;
+namespace SchoolApp.Shared.Authentication;
 
 public class AuthenticatedUserObject
 {

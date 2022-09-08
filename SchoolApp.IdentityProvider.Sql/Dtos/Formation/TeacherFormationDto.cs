@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using SchoolApp.IdentityProvider.Sql.Dtos.Users;
-using SchoolApp.IdentityProvider.Sql.Interfaces;
+using SchoolApp.Shared.Utils.Sql.Interfaces;
 
 namespace SchoolApp.IdentityProvider.Sql.Dtos.Formation;
 

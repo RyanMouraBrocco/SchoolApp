@@ -14,5 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SchoolApp.IdentityProvider.Sql\SchoolApp.IdentityProvider.Sql.csproj" />
     <ProjectReference Include="..\SchoolApp.IdentityProvider.Application\SchoolApp.IdentityProvider.Application.csproj" />
+    <ProjectReference Include="..\SchoolApp.Shared.Utils\SchoolApp.Shared.Utils.csproj" />
+    <ProjectReference Include="..\SchoolApp.Shared.Utils.Sql\SchoolApp.Shared.Utils.Sql.csproj" />
   </ItemGroup>
 </Project>

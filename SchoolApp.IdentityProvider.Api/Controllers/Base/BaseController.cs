@@ -1,7 +1,8 @@
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Mvc;
 using SchoolApp.IdentityProvider.Application.Domain.Authentication;
-using SchoolApp.IdentityProvider.Application.Domain.Enums;
+using SchoolApp.Shared.Authentication;
+using SchoolApp.Shared.Utils.Enums;
 
 namespace SchoolApp.IdentityProvider.Api.Controllers.Base;
 

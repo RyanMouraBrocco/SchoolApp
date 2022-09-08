@@ -1,4 +1,4 @@
-namespace SchoolApp.IdentityProvider.Application.Interfaces.Repositories;
+namespace SchoolApp.Shared.Utils.Interfaces;
 
 public interface ICrudRepository<TEntity> where TEntity : class
 {

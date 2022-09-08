@@ -4,11 +4,11 @@ using SchoolApp.IdentityProvider.Application.Interfaces.Repositories;
 using SchoolApp.IdentityProvider.Sql.Context;
 using SchoolApp.IdentityProvider.Sql.Dtos.Formation;
 using SchoolApp.IdentityProvider.Sql.Mappers;
-using SchoolApp.IdentityProvider.Sql.Repositories.Base;
+using SchoolApp.Shared.Utils.Sql.Base;
 
 namespace SchoolApp.IdentityProvider.Sql.Repositories;
 
-public class TeacherFormationRepository : BaseCrudRepository<TeacherFormationDto, TeacherFormation>, ITeacherFormationRepository
+public class TeacherFormationRepository : BaseCrudRepository<TeacherFormationDto, TeacherFormation, SchoolAppContext>, ITeacherFormationRepository
 {
     public TeacherFormationRepository(SchoolAppContext context) : base(context, TeacherFormationMapper.MapToDomain, TeacherFormationMapper.MapToDto)
     {
