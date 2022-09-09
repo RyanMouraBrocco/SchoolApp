@@ -1,26 +1,60 @@
 using System.Reflection.PortableExecutable;
 using SchoolApp.Classroom.Application.Domain.Entities.Students;
+using SchoolApp.Classroom.Application.Domain.Enums;
+using SchoolApp.Classroom.Application.Interfaces.Repositories;
 using SchoolApp.Classroom.Application.Interfaces.Services;
 using SchoolApp.Shared.Authentication;
 using SchoolApp.Shared.Utils.Enums;
+using SchoolApp.Shared.Utils.Validations;
 
 namespace SchoolApp.Classroom.Application.Services;
 
 public class StudentService : IStudentService
 {
-    public StudentService()
+    private readonly IStudentRepository _studentRepository;
+    public StudentService(IStudentRepository studentRepository)
     {
-
+        _studentRepository = studentRepository;
     }
 
-    public Task<Student> CreateAsync(AuthenticatedUserObject requesterUser, Student newEntity)
+    private void CheckStudentFields(Student student)
     {
-        throw new NotImplementedException();
+        if (!Enum.IsDefined(typeof(SexTypeEnum), student.Sex))
+            throw new FormatException("This sex is not valid");
+
+        if (string.IsNullOrEmpty(student.Name))
+            throw new FormatException("Name can't be null or empty");
     }
 
-    public Task DeleteAsync(AuthenticatedUserObject requesterUser, int itemId)
+    public async Task<Student> CreateAsync(AuthenticatedUserObject requesterUser, Student newStudent)
     {
-        throw new NotImplementedException();
+        GenericValidation.CheckOnlyManagerUser(requesterUser.Type);
+        CheckStudentFields(newStudent);
+
+        newStudent.AccountId = requesterUser.AccountId;
+        newStudent.CreationDate = DateTime.Now;
+        newStudent.CreatorId = requesterUser.UserId;
+        newStudent.UpdateDate = null;
+        newStudent.UpdaterId = null;
+
+        var insertedEntity = await _studentRepository.InsertAsync(newStudent);
+
+        return insertedEntity;
+    }
+
+    public async Task DeleteAsync(AuthenticatedUserObject requesterUser, int itemId)
+    {
+        GenericValidation.CheckOnlyManagerUser(requesterUser.Type);
+
+        var studentCheck = _studentRepository.GetOneById(itemId);
+        if (studentCheck == null || studentCheck.AccountId != requesterUser.AccountId)
+            throw new UnauthorizedAccessException("Student not found");
+
+        studentCheck.UpdateDate = DateTime.Now;
+        studentCheck.UpdaterId = requesterUser.UserId;
+
+        await _studentRepository.UpdateAsync(studentCheck);
+        await _studentRepository.DeleteAsync(itemId);
     }
 
     public IList<Student> GetAll(AuthenticatedUserObject requesterUser, int top, int skip)
@@ -28,13 +62,27 @@ public class StudentService : IStudentService
         return requesterUser.Type switch
         {
             UserTypeEnum.Owner => new List<Student>(),
-            
             _ => new List<Student>()
         };
     }
 
-    public Task<Student> UpdateAsync(AuthenticatedUserObject requesterUser, int itemId, Student updatedEntity)
+    public async Task<Student> UpdateAsync(AuthenticatedUserObject requesterUser, int itemId, Student updatedStudent)
     {
-        throw new NotImplementedException();
+        GenericValidation.CheckOnlyManagerUser(requesterUser.Type);
+
+        var studentCheck = _studentRepository.GetOneById(itemId);
+        if (studentCheck == null || studentCheck.AccountId != requesterUser.AccountId)
+            throw new UnauthorizedAccessException("Student not found");
+
+        CheckStudentFields(updatedStudent);
+
+        updatedStudent.Id = itemId;
+        updatedStudent.AccountId = studentCheck.AccountId;
+        updatedStudent.CreationDate = studentCheck.CreationDate;
+        updatedStudent.CreatorId = studentCheck.CreatorId;
+        updatedStudent.UpdateDate = DateTime.Now;
+        updatedStudent.UpdaterId = requesterUser.UserId;
+
+        return await _studentRepository.UpdateAsync(updatedStudent);
     }
 }

@@ -34,7 +34,7 @@ builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<SchoolAppContext>(options => options.UseSqlServer("name=ConnectionStrings:IdentityProvider"));
+builder.Services.AddDbContext<SchoolAppIdentityProviderContext>(options => options.UseSqlServer("name=ConnectionStrings:IdentityProvider"));
 builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 builder.Services.AddScoped<IManagerRepository, ManagerRepository>();
 builder.Services.AddScoped<IOwnerRepository, OwnerRepository>();

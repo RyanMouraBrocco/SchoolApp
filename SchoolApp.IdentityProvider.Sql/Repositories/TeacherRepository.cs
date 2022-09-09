@@ -9,7 +9,7 @@ namespace SchoolApp.IdentityProvider.Sql.Repositories;
 
 public class TeacherRepository : UserRepository<TeacherDto, Teacher>, ITeacherRepository
 {
-    public TeacherRepository(SchoolAppContext context) : base(context, TeacherMapper.MapToDomain, TeacherMapper.MapToDto)
+    public TeacherRepository(SchoolAppIdentityProviderContext context) : base(context, TeacherMapper.MapToDomain, TeacherMapper.MapToDto)
     {
     }
 

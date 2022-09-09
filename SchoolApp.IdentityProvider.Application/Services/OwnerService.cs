@@ -6,6 +6,7 @@ using SchoolApp.IdentityProvider.Application.Interfaces.Services;
 using SchoolApp.IdentityProvider.Application.Validations;
 using SchoolApp.Shared.Authentication;
 using SchoolApp.Shared.Utils.Enums;
+using SchoolApp.Shared.Utils.Validations;
 
 namespace SchoolApp.IdentityProvider.Application.Services;
 
@@ -30,7 +31,7 @@ public class OwnerService : IOwnerService
 
     public async Task<Owner> CreateAsync(AuthenticatedUserObject requesterUser, Owner newOwner)
     {
-        UserValidation.CheckOnlyManagerUser(requesterUser.Type);
+        GenericValidation.CheckOnlyManagerUser(requesterUser.Type);
         UserValidation.IsSecurityPassword(newOwner.Password);
 
         var duplicatedEmail = _ownerRepository.GetOneByEmail(newOwner.Email);
@@ -49,7 +50,7 @@ public class OwnerService : IOwnerService
 
     public async Task<Owner> UpdateAsync(AuthenticatedUserObject requesterUser, int ownerId, Owner updatedOwner)
     {
-        UserValidation.CheckOnlyManagerUser(requesterUser.Type);
+        GenericValidation.CheckOnlyManagerUser(requesterUser.Type);
 
         var ownerCheck = _ownerRepository.GetOneById(ownerId);
         if (ownerCheck == null || ownerCheck.AccountId != requesterUser.AccountId)
@@ -72,7 +73,7 @@ public class OwnerService : IOwnerService
 
     public async Task DeleteAsync(AuthenticatedUserObject requesterUser, int ownerId)
     {
-        UserValidation.CheckOnlyManagerUser(requesterUser.Type);
+        GenericValidation.CheckOnlyManagerUser(requesterUser.Type);
 
         var ownerCheck = _ownerRepository.GetOneById(ownerId);
         if (ownerCheck == null || ownerCheck.AccountId != requesterUser.AccountId)

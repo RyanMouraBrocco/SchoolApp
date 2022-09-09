@@ -7,10 +7,10 @@ using SchoolApp.Shared.Utils.Sql.Base;
 
 namespace SchoolApp.IdentityProvider.Sql.Repositories;
 
-public abstract class UserRepository<TDto, TDomain> : BaseMainEntityRepository<TDto, TDomain, SchoolAppContext>, IUserRepository<TDomain> where TDto : UserDto
+public abstract class UserRepository<TDto, TDomain> : BaseMainEntityRepository<TDto, TDomain, SchoolAppIdentityProviderContext>, IUserRepository<TDomain> where TDto : UserDto
                                                                                                                                           where TDomain : User
 {
-    public UserRepository(SchoolAppContext context,
+    public UserRepository(SchoolAppIdentityProviderContext context,
                           Func<TDto, TDomain> mapToDomain,
                           Func<TDomain, TDto> mapToDto) : base(context, mapToDomain, mapToDto)
     {

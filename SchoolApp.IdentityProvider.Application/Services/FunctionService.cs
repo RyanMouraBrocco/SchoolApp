@@ -4,6 +4,7 @@ using SchoolApp.IdentityProvider.Application.Interfaces.Repositories;
 using SchoolApp.IdentityProvider.Application.Interfaces.Services;
 using SchoolApp.IdentityProvider.Application.Validations;
 using SchoolApp.Shared.Authentication;
+using SchoolApp.Shared.Utils.Validations;
 
 namespace SchoolApp.IdentityProvider.Application.Services;
 
@@ -22,7 +23,7 @@ public class FunctionService : IFunctionService
 
     public async Task<Function> CreateAsync(AuthenticatedUserObject requesterUser, Function newFunction)
     {
-        UserValidation.CheckOnlyManagerUser(requesterUser.Type);
+        GenericValidation.CheckOnlyManagerUser(requesterUser.Type);
 
         newFunction.AccountId = requesterUser.AccountId;
         newFunction.CreationDate = DateTime.Now;
@@ -35,7 +36,7 @@ public class FunctionService : IFunctionService
 
     public async Task<Function> UpdateAsync(AuthenticatedUserObject requesterUser, int functionId, Function updatedFunction)
     {
-        UserValidation.CheckOnlyManagerUser(requesterUser.Type);
+        GenericValidation.CheckOnlyManagerUser(requesterUser.Type);
 
         var functionCheck = _functionRepository.GetOneById(functionId);
         if (functionCheck == null || functionCheck.AccountId != requesterUser.AccountId)
@@ -53,7 +54,7 @@ public class FunctionService : IFunctionService
 
     public async Task DeleteAsync(AuthenticatedUserObject requesterUser, int functionId)
     {
-        UserValidation.CheckOnlyManagerUser(requesterUser.Type);
+        GenericValidation.CheckOnlyManagerUser(requesterUser.Type);
 
         var functionCheck = _functionRepository.GetOneById(functionId);
         if (functionCheck == null || functionCheck.AccountId != requesterUser.AccountId)

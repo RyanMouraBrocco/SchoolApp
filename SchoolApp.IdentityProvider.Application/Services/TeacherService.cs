@@ -7,6 +7,7 @@ using SchoolApp.IdentityProvider.Application.Validations;
 using SchoolApp.IdentityProvider.Application.Domain.Entities.Formation;
 using SchoolApp.Shared.Authentication;
 using SchoolApp.Shared.Utils.Enums;
+using SchoolApp.Shared.Utils.Validations;
 
 namespace SchoolApp.IdentityProvider.Application.Services;
 
@@ -35,7 +36,7 @@ public class TeacherService : ITeacherService
 
     public async Task<Teacher> CreateAsync(AuthenticatedUserObject requesterUser, Teacher newTeacher)
     {
-        UserValidation.CheckOnlyManagerUser(requesterUser.Type);
+        GenericValidation.CheckOnlyManagerUser(requesterUser.Type);
         UserValidation.IsSecurityPassword(newTeacher.Password);
         GenericValidation.IsNotNegativeValue(nameof(newTeacher.Salary), newTeacher.Salary);
         GenericValidation.ListHaveAtLeastOneItem(nameof(newTeacher.Formations), newTeacher.Formations);
@@ -59,7 +60,7 @@ public class TeacherService : ITeacherService
 
     public async Task<Teacher> UpdateAsync(AuthenticatedUserObject requesterUser, int teacherId, Teacher updatedTeacher)
     {
-        UserValidation.CheckOnlyManagerUser(requesterUser.Type);
+        GenericValidation.CheckOnlyManagerUser(requesterUser.Type);
         GenericValidation.IsNotNegativeValue(nameof(updatedTeacher.Salary), updatedTeacher.Salary);
         GenericValidation.ListHaveAtLeastOneItem(nameof(updatedTeacher.Formations), updatedTeacher.Formations);
 
@@ -100,7 +101,7 @@ public class TeacherService : ITeacherService
 
     public async Task DeleteAsync(AuthenticatedUserObject requesterUser, int teacherId)
     {
-        UserValidation.CheckOnlyManagerUser(requesterUser.Type);
+        GenericValidation.CheckOnlyManagerUser(requesterUser.Type);
 
         var ownerCheck = _teacherRepository.GetOneById(teacherId);
         if (ownerCheck == null || ownerCheck.AccountId != requesterUser.AccountId)

@@ -9,7 +9,7 @@ namespace SchoolApp.IdentityProvider.Sql.Repositories;
 
 public class OwnerRepository : UserRepository<OwnerDto, Owner>, IOwnerRepository
 {
-    public OwnerRepository(SchoolAppContext context) : base(context, OwnerMapper.MapToDomain, OwnerMapper.MapToDto)
+    public OwnerRepository(SchoolAppIdentityProviderContext context) : base(context, OwnerMapper.MapToDomain, OwnerMapper.MapToDto)
     {
     }
 }

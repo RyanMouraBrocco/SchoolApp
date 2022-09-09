@@ -8,6 +8,7 @@ using SchoolApp.IdentityProvider.Application.Validations;
 using SchoolApp.IdentityProvider.Application.Helpers;
 using SchoolApp.Shared.Authentication;
 using SchoolApp.Shared.Utils.Enums;
+using SchoolApp.Shared.Utils.Validations;
 
 namespace SchoolApp.IdentityProvider.Application.Services;
 
@@ -34,7 +35,7 @@ public class ManagerService : IManagerService
 
     public async Task<Manager> CreateAsync(AuthenticatedUserObject requesterUser, Manager newManager)
     {
-        UserValidation.CheckOnlyManagerUser(requesterUser.Type);
+        GenericValidation.CheckOnlyManagerUser(requesterUser.Type);
         UserValidation.IsSecurityPassword(newManager.Password);
 
         var duplicatedEmail = _managerRepository.GetOneByEmail(newManager.Email);
@@ -57,7 +58,7 @@ public class ManagerService : IManagerService
 
     public async Task<Manager> UpdateAsync(AuthenticatedUserObject requesterUser, int ownerId, Manager updatedManager)
     {
-        UserValidation.CheckOnlyManagerUser(requesterUser.Type);
+        GenericValidation.CheckOnlyManagerUser(requesterUser.Type);
 
         var managerCheck = _managerRepository.GetOneById(ownerId);
         if (managerCheck == null || managerCheck.AccountId != requesterUser.AccountId)
@@ -84,7 +85,7 @@ public class ManagerService : IManagerService
 
     public async Task DeleteAsync(AuthenticatedUserObject requesterUser, int managerId)
     {
-        UserValidation.CheckOnlyManagerUser(requesterUser.Type);
+        GenericValidation.CheckOnlyManagerUser(requesterUser.Type);
 
         var managerCheck = _managerRepository.GetOneById(managerId);
         if (managerCheck == null || managerCheck.AccountId != requesterUser.AccountId)

@@ -8,9 +8,9 @@ using SchoolApp.Shared.Utils.Sql.Base;
 
 namespace SchoolApp.IdentityProvider.Sql.Repositories;
 
-public class FunctionRepository : BaseCrudRepository<FunctionDto, Function, SchoolAppContext>, IFunctionRepository
+public class FunctionRepository : BaseCrudRepository<FunctionDto, Function, SchoolAppIdentityProviderContext>, IFunctionRepository
 {
-    public FunctionRepository(SchoolAppContext context) : base(context, FunctionMapper.MapToDomain, FunctionMapper.MapToDto)
+    public FunctionRepository(SchoolAppIdentityProviderContext context) : base(context, FunctionMapper.MapToDomain, FunctionMapper.MapToDto)
     {
     }
 

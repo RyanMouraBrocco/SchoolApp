@@ -1,6 +1,6 @@
 namespace SchoolApp.Classroom.Application.Domain.Enums;
 
-public enum SexType
+public enum SexTypeEnum
 {
     Male,
     Female,

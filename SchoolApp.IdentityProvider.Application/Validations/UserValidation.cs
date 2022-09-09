@@ -18,10 +18,4 @@ public static class UserValidation
                lowerCaseRegex.IsMatch(password) &&
                numberRegex.IsMatch(password);
     }
-
-    public static void CheckOnlyManagerUser(UserTypeEnum userType)
-    {
-        if (userType != UserTypeEnum.Manager)
-            throw new UnauthorizedAccessException("This resource is just to manager users");
-    }
 }

@@ -9,7 +9,7 @@ public class Student
     public string Name { get; set; }
     public DateTime BirthDate { get; set; }
     public string DocumentId { get; set; }
-    public SexType Sex { get; set; }
+    public SexTypeEnum Sex { get; set; }
     public string ImageUrl { get; set; }
     public int CreatorId { get; set; }
     public DateTime CreationDate { get; set; }
