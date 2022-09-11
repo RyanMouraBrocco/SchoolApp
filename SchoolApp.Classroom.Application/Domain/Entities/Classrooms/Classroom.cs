@@ -12,6 +12,7 @@ public class Classroom
     public Subject Subject { get; set; }
     public int CreatorId { get; set; }
     public DateTime CreationDate { get; set; }
-    public int UpdaterId { get; set; }
-    public DateTime UpdateDate { get; set; }
+    public int? UpdaterId { get; set; }
+    public DateTime? UpdateDate { get; set; }
+    public IList<ClassroomStudent> Students { get; set; }
 }
