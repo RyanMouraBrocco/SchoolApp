@@ -41,6 +41,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{57C732
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolApp.Shared.Utils.Sql", "SchoolApp.Shared.Utils.Sql\SchoolApp.Shared.Utils.Sql.csproj", "{07878A73-446E-46B8-BBD8-E9D0FD23E9C1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolApp.Shared.Utils.HttpApi", "SchoolApp.Shared.Utils.HttpApi\SchoolApp.Shared.Utils.HttpApi.csproj", "{3BF5ECF3-0B50-42B8-856F-08BAB0F227AF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +52,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{3BF5ECF3-0B50-42B8-856F-08BAB0F227AF} = {57C73204-92A3-493D-A012-D3E8F9526107}
 		{07878A73-446E-46B8-BBD8-E9D0FD23E9C1} = {57C73204-92A3-493D-A012-D3E8F9526107}
 		{983477C6-6367-4F7A-88B5-28EDEFA14896} = {57C73204-92A3-493D-A012-D3E8F9526107}
 		{796376DD-61AE-4A7D-A2F9-BD627623285A} = {957F6514-5A3E-4336-8252-8ACDAA45B32C}
@@ -100,5 +103,9 @@ Global
 		{07878A73-446E-46B8-BBD8-E9D0FD23E9C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07878A73-446E-46B8-BBD8-E9D0FD23E9C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{07878A73-446E-46B8-BBD8-E9D0FD23E9C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BF5ECF3-0B50-42B8-856F-08BAB0F227AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BF5ECF3-0B50-42B8-856F-08BAB0F227AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BF5ECF3-0B50-42B8-856F-08BAB0F227AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BF5ECF3-0B50-42B8-856F-08BAB0F227AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

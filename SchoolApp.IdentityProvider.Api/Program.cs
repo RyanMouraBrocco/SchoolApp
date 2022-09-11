@@ -8,27 +8,14 @@ using SchoolApp.IdentityProvider.Sql.Repositories;
 using SchoolApp.IdentityProvider.Application.Interfaces.Services;
 using SchoolApp.IdentityProvider.Application.Services;
 using SchoolApp.IdentityProvider.Application.Settings;
-using SchoolApp.IdentityProvider.Api.Middlewares;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.AspNetCore.Mvc;
-using static System.Net.Mime.MediaTypeNames;
+using SchoolApp.Shared.Utils.HttpApi.Middlewares;
+using SchoolApp.Shared.Utils.HttpApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
-{
-    options.InvalidModelStateResponseFactory = context =>
-        new BadRequestObjectResult(context.ModelState)
-        {
-            ContentTypes =
-            {
-                Application.Json
-            },
-            Value = new { errorMessage = context.ModelState.Values.SelectMany(x => x.Errors.Select(x => x.ErrorMessage)) }
-        };
-});
+builder.Services.AddControllers().HandleDataAnnotationExceptions();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

@@ -1,7 +1,8 @@
 using System.Net;
 using System.Text.Json;
+using Microsoft.AspNetCore.Http;
 
-namespace SchoolApp.IdentityProvider.Api.Middlewares;
+namespace SchoolApp.Shared.Utils.HttpApi.Middlewares;
 
 public class ExceptionHandlerMiddleware
 {

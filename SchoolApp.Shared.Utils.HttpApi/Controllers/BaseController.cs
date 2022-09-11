@@ -1,10 +1,9 @@
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Mvc;
-using SchoolApp.IdentityProvider.Application.Domain.Authentication;
 using SchoolApp.Shared.Authentication;
 using SchoolApp.Shared.Utils.Enums;
 
-namespace SchoolApp.IdentityProvider.Api.Controllers.Base;
+namespace SchoolApp.Shared.Utils.HttpApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -28,3 +27,4 @@ public class BaseController : Controller
         };
     }
 }
+

@@ -1,8 +1,7 @@
-using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace SchoolApp.IdentityProvider.Api.Models;
+namespace SchoolApp.Shared.Utils.HttpApi.Models;
 
 public class PagingModel
 {

@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SchoolApp.IdentityProvider.Api.Controllers.Base;
 using SchoolApp.IdentityProvider.Api.Models;
 using SchoolApp.IdentityProvider.Application.Interfaces.Services;
 using SchoolApp.Shared.Utils.Enums;
+using SchoolApp.Shared.Utils.HttpApi.Controllers;
 
 namespace SchoolApp.IdentityProvider.Api.Controllers;
 
