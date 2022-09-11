@@ -94,7 +94,7 @@ public class ClassroomService : IClassroomService
 
     private async Task UpdateStudentsArrayAsync(int accountId, int classroomId, IList<ClassroomStudent> students)
     {
-        _classroomStudentRepository.DeleteAllByClassroomId(classroomId);
+        await _classroomStudentRepository.DeleteAllByClassroomIdAsync(classroomId);
 
         foreach (var student in students)
         {

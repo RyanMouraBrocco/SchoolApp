@@ -7,9 +7,9 @@ using SchoolApp.Shared.Utils.Sql.Base;
 
 namespace SchoolApp.Classroom.Sql.Repositories;
 
-public class StudentRepository : BaseMainEntityRepository<StudentDto, Student, SchoolAppClassroomContext>, IStudentRepository
+public class OwnerStudentRepository : BaseCrudRepository<OwnerStudentDto, OwnerStudent, SchoolAppClassroomContext>, IOwnerStudentRepository
 {
-    public StudentRepository(SchoolAppClassroomContext context) : base(context, StudentMapper.MapToDomain, StudentMapper.MapToDto)
+    public OwnerStudentRepository(SchoolAppClassroomContext context) : base(context, OwnerStudentMapper.MapToDomain, OwnerStudentMapper.MapToDto)
     {
     }
 }

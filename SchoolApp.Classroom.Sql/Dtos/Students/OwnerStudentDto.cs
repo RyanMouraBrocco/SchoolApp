@@ -1,10 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using SchoolApp.Shared.Utils.Sql.Interfaces;
 
 namespace SchoolApp.Classroom.Sql.Dtos.Students;
 
 [Table("Owner_Student")]
-public class OwnerStudentDto
+public class OwnerStudentDto : IIdentityEntity
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

@@ -16,7 +16,7 @@ public static class OwnerStudentMapper
         };
     }
 
-    public static OwnerStudentDto MapToDomain(OwnerStudent domain)
+    public static OwnerStudentDto MapToDto(OwnerStudent domain)
     {
         return new OwnerStudentDto()
         {

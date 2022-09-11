@@ -5,4 +5,5 @@ namespace SchoolApp.Classroom.Application.Interfaces.Repositories;
 
 public interface IClassroomStudentRepository : ICrudRepository<ClassroomStudent>
 {
+    Task DeleteAllByClassroomIdAsync(int classroomId);
 }

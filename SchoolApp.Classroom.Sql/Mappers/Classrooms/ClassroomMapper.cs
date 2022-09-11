@@ -21,19 +21,19 @@ public static class ClassroomMapper
         };
     }
 
-    public static Application.Domain.Entities.Classrooms.Classroom MapToDto(ClassroomDto dto)
+    public static ClassroomDto MapToDto(Application.Domain.Entities.Classrooms.Classroom domain)
     {
-        return new Application.Domain.Entities.Classrooms.Classroom()
+        return new ClassroomDto()
         {
-            Id = dto.Id,
-            AccountId = dto.AccountId,
-            CreationDate = dto.CreationDate,
-            CreatorId = dto.CreatorId,
-            RoomNumber = dto.RoomNumber,
-            SubjectId = dto.SubjectId,
-            TeacherId = dto.TeacherId,
-            UpdaterId = dto.UpdaterId,
-            UpdateDate = dto.UpdateDate
+            Id = domain.Id,
+            AccountId = domain.AccountId,
+            CreationDate = domain.CreationDate,
+            CreatorId = domain.CreatorId,
+            RoomNumber = domain.RoomNumber,
+            SubjectId = domain.SubjectId,
+            TeacherId = domain.TeacherId,
+            UpdaterId = domain.UpdaterId,
+            UpdateDate = domain.UpdateDate
         };
     }
 }
