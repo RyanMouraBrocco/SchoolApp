@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using SchoolApp.Shared.Utils.Sql.Interfaces;
 
-namespace SchoolApp.Classroom.Sql.Dtos.GradeDtos;
+namespace SchoolApp.Classroom.Sql.Dtos.Grades;
 
 public class GradeDto : IIdentityEntity, IAccountEntity, ISoftDeleteEntity
 {
