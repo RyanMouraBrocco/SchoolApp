@@ -41,6 +41,8 @@ public class ClassroomService : IClassroomService
 
         var insertedClassroom = await _classroomRepository.InsertAsync(newClassroom);
 
+        await UpdateStudentsArrayAsync(requesterUser.AccountId, insertedClassroom.Id, newClassroom.Students);
+
         return insertedClassroom;
     }
 
@@ -63,7 +65,9 @@ public class ClassroomService : IClassroomService
     {
         return requesterUser.Type switch
         {
-            UserTypeEnum.Manager => new List<Domain.Entities.Classrooms.Classroom>(),
+            UserTypeEnum.Manager => _classroomRepository.GetAll(requesterUser.AccountId, top, skip),
+            UserTypeEnum.Owner => _classroomRepository.GetAllByOwnerId(requesterUser.UserId, top, skip),
+            UserTypeEnum.Teacher => _classroomRepository.GetAllByTeacherId(requesterUser.UserId, top, skip),
             _ => throw new NotImplementedException("Invalid user type")
         };
     }
@@ -89,7 +93,11 @@ public class ClassroomService : IClassroomService
         updatedClassroom.UpdateDate = DateTime.Now;
         updatedClassroom.UpdaterId = requesterUser.UserId;
 
-        return await _classroomRepository.UpdateAsync(updatedClassroom);
+        var resultClassroom = await _classroomRepository.UpdateAsync(updatedClassroom);
+
+        await UpdateStudentsArrayAsync(requesterUser.AccountId, updatedClassroom.Id, updatedClassroom.Students);
+
+        return resultClassroom;
     }
 
     private async Task UpdateStudentsArrayAsync(int accountId, int classroomId, IList<ClassroomStudent> students)

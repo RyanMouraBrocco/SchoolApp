@@ -20,4 +20,5 @@ public class ClassroomDto : IIdentityEntity, IAccountEntity, ISoftDeleteEntity
     public int? UpdaterId { get; set; }
     public DateTime? UpdateDate { get; set; }
     public bool Deleted { get; set; }
+    public IList<ClassroomStudentDto> Students { get; set; }
 }

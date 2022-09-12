@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using SchoolApp.Classroom.Sql.Dtos.Classrooms;
 using SchoolApp.Shared.Utils.Sql.Interfaces;
 
 namespace SchoolApp.Classroom.Sql.Dtos.Students;
@@ -21,4 +22,6 @@ public class StudentDto : IIdentityEntity, IAccountEntity, ISoftDeleteEntity
     public int? UpdaterId { get; set; }
     public DateTime? UpdateDate { get; set; }
     public bool Deleted { get; set; }
+    public IList<OwnerStudentDto> Owners { get; set; }
+    public IList<ClassroomStudentDto> Classrooms { get; set; }
 }

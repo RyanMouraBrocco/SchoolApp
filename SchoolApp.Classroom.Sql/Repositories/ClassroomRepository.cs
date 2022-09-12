@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using SchoolApp.Classroom.Application.Interfaces.Repositories;
 using SchoolApp.Classroom.Sql.Context;
 using SchoolApp.Classroom.Sql.Dtos.Classrooms;
@@ -10,5 +11,25 @@ public class ClassroomRepository : BaseMainEntityRepository<ClassroomDto, Applic
 {
     public ClassroomRepository(SchoolAppClassroomContext context) : base(context, ClassroomMapper.MapToDomain, ClassroomMapper.MapToDto)
     {
+    }
+
+    public IList<Application.Domain.Entities.Classrooms.Classroom> GetAllByOwnerId(int ownerId, int top, int skip)
+    {
+        return _dbSet.AsNoTracking()
+                     .Where(x => x.Students.Any(x => x.Student.Owners.Any(x => x.OwnerId == ownerId)) && !x.Deleted)
+                     .Skip(skip)
+                     .Take(top)
+                     .Select(x => MapToDomain(x))
+                     .ToList();
+    }
+
+    public IList<Application.Domain.Entities.Classrooms.Classroom> GetAllByTeacherId(int teacherId, int top, int skip)
+    {
+        return _dbSet.AsNoTracking()
+                     .Where(x => x.TeacherId == teacherId && !x.Deleted)
+                     .Skip(skip)
+                     .Take(top)
+                     .Select(x => MapToDomain(x))
+                     .ToList();
     }
 }

@@ -12,5 +12,7 @@ public class OwnerStudentDto : IIdentityEntity
     public int Id { get; set; }
     public int OwnerId { get; set; }
     public int StudentId { get; set; }
+    [ForeignKey("StudentId")]
+    public StudentDto Student { get; set; }
     public int OwnerTypeId { get; set; }
 }

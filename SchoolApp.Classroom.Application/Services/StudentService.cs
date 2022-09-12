@@ -61,8 +61,10 @@ public class StudentService : IStudentService
     {
         return requesterUser.Type switch
         {
-            UserTypeEnum.Owner => new List<Student>(),
-            _ => new List<Student>()
+            UserTypeEnum.Owner => _studentRepository.GetAllByOwnerId(requesterUser.UserId, top, skip),
+            UserTypeEnum.Teacher => _studentRepository.GetAllByTeacherId(requesterUser.UserId, top, skip),
+            UserTypeEnum.Manager => _studentRepository.GetAll(requesterUser.AccountId, top, skip),
+            _ => throw new NotImplementedException("Invalid user type")
         };
     }
 
