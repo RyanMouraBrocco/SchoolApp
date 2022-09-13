@@ -2,7 +2,7 @@ version: "3.3"
 services:
   identity-provider-sql-server:
     image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: identity-provider-sql-server_container
+    container_name: classroom-sql-server_container
     environment:
       - SA_PASSWORD=1SenhaForte@
       - ACCEPT_EULA=Y
