@@ -7,6 +7,9 @@ public static class OwnerTypeMapper
 {
     public static OwnerType MapToDomain(OwnerTypeDto dto)
     {
+        if (dto == null)
+            return null;
+
         return new OwnerType()
         {
             Id = dto.Id,
@@ -21,6 +24,9 @@ public static class OwnerTypeMapper
 
     public static OwnerTypeDto MapToDto(OwnerType domain)
     {
+        if (domain == null)
+            return null;
+
         return new OwnerTypeDto()
         {
             Id = domain.Id,

@@ -14,7 +14,7 @@ public static class ClassroomModelMapper
             RoomNumber = model.RoomNumber,
             TeacherId = model.TeacherId,
             SubjectId = model.SubjectId,
-            Students = model.Students?.Select(x => new ClassroomStudent() { ClassroomId = x.ClassroomId }).ToList() ?? new List<ClassroomStudent>()
+            Students = model.Students?.Select(x => new ClassroomStudent() { StudentId = x.StudentId }).ToList() ?? new List<ClassroomStudent>()
         };
     }
 
@@ -25,7 +25,7 @@ public static class ClassroomModelMapper
             RoomNumber = model.RoomNumber,
             TeacherId = model.TeacherId,
             SubjectId = model.SubjectId,
-            Students = model.Students?.Select(x => new ClassroomStudent() { ClassroomId = x.ClassroomId }).ToList() ?? new List<ClassroomStudent>()
+            Students = model.Students?.Select(x => new ClassroomStudent() { StudentId = x.StudentId }).ToList() ?? new List<ClassroomStudent>()
         };
     }
 

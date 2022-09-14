@@ -9,11 +9,11 @@ using SchoolApp.Shared.Utils.HttpApi.Models;
 
 namespace SchoolApp.Classroom.Api.Controllers;
 
-public class SubjectController : BaseController
+public class SubjectsController : BaseController
 {
     private readonly ISubjectService _subjectService;
 
-    public SubjectController(ISubjectService studentService)
+    public SubjectsController(ISubjectService studentService)
     {
         _subjectService = studentService;
     }

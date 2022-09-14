@@ -16,7 +16,6 @@ public class StudentDto : IIdentityEntity, IAccountEntity, ISoftDeleteEntity
     public DateTime BirthDate { get; set; }
     public string DocumentId { get; set; }
     public int Sex { get; set; }
-    public string ImageUrl { get; set; }
     public int CreatorId { get; set; }
     public DateTime CreationDate { get; set; }
     public int? UpdaterId { get; set; }

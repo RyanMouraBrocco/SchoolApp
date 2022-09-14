@@ -8,6 +8,9 @@ public static class SubjectMapper
 {
     public static Subject MapToDomain(SubjectDto dto)
     {
+        if (dto == null)
+            return null;
+
         return new Subject()
         {
             Id = dto.Id,
@@ -22,6 +25,9 @@ public static class SubjectMapper
 
     public static SubjectDto MapToDto(Subject domain)
     {
+        if (domain == null)
+            return null;
+
         return new SubjectDto()
         {
             Id = domain.Id,

@@ -7,6 +7,9 @@ public static class ClassroomMapper
 {
     public static Application.Domain.Entities.Classrooms.Classroom MapToDomain(ClassroomDto dto)
     {
+        if (dto == null)
+            return null;
+
         return new Application.Domain.Entities.Classrooms.Classroom()
         {
             Id = dto.Id,
@@ -17,12 +20,16 @@ public static class ClassroomMapper
             SubjectId = dto.SubjectId,
             TeacherId = dto.TeacherId,
             UpdaterId = dto.UpdaterId,
-            UpdateDate = dto.UpdateDate
+            UpdateDate = dto.UpdateDate,
+            Students = dto.Students?.Select(x => ClassroomStudentMapper.MapToDomain(x)).ToList()
         };
     }
 
     public static ClassroomDto MapToDto(Application.Domain.Entities.Classrooms.Classroom domain)
     {
+        if (domain == null)
+            return null;
+
         return new ClassroomDto()
         {
             Id = domain.Id,

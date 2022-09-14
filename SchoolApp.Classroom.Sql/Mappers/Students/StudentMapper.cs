@@ -9,6 +9,9 @@ public static class StudentMapper
 {
     public static Student MapToDomain(StudentDto dto)
     {
+        if (dto == null)
+            return null;
+
         return new Student()
         {
             Id = dto.Id,
@@ -26,6 +29,9 @@ public static class StudentMapper
 
     public static StudentDto MapToDto(Student domain)
     {
+        if (domain == null)
+            return null;
+
         return new StudentDto()
         {
             Id = domain.Id,

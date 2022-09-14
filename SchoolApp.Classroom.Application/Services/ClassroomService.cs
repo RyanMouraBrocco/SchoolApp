@@ -16,11 +16,13 @@ public class ClassroomService : IClassroomService
 
     public ClassroomService(IClassroomRepository classroomRepository,
                             IClassroomStudentRepository classroomStudentRepository,
-                            ISubjectRepository subjectRepository)
+                            ISubjectRepository subjectRepository,
+                            IStudentRepository studentRepository)
     {
         _classroomRepository = classroomRepository;
         _classroomStudentRepository = classroomStudentRepository;
         _subjectRepository = subjectRepository;
+        _studentRepository = studentRepository;
     }
 
     public async Task<Domain.Entities.Classrooms.Classroom> CreateAsync(AuthenticatedUserObject requesterUser, Domain.Entities.Classrooms.Classroom newClassroom)
@@ -107,7 +109,7 @@ public class ClassroomService : IClassroomService
         foreach (var student in students)
         {
             var studentCheck = _studentRepository.GetOneById(student.StudentId);
-            if (studentCheck != null && studentCheck.AccountId != accountId)
+            if (studentCheck != null && studentCheck.AccountId == accountId)
             {
                 student.ClassroomId = classroomId;
                 await _classroomStudentRepository.InsertAsync(student);

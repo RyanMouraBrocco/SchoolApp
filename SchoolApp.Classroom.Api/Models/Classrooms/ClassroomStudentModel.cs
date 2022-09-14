@@ -5,5 +5,5 @@ namespace SchoolApp.Classroom.Api.Models.Classrooms;
 public class ClassroomStudentModel
 {
     [Required]
-    public int ClassroomId { get; set; }
+    public int StudentId { get; set; }
 }

@@ -7,6 +7,9 @@ public static class ActivityAnswerGradeMapper
 {
     public static ActivityAnswerGrade MapToDomain(ActivityAnswerGradeDto dto)
     {
+        if (dto == null)
+            return null;
+
         return new ActivityAnswerGrade()
         {
             Id = dto.Id,
@@ -22,6 +25,9 @@ public static class ActivityAnswerGradeMapper
 
     public static ActivityAnswerGradeDto MapToDto(ActivityAnswerGrade domain)
     {
+        if (domain == null)
+            return null;
+
         return new ActivityAnswerGradeDto()
         {
             Id = domain.Id,
