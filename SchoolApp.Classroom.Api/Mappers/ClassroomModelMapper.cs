@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using SchoolApp.Classroom.Api.Models.Classrooms;
 using SchoolApp.Classroom.Application.Domain.Entities.Classrooms;
@@ -13,7 +14,7 @@ public static class ClassroomModelMapper
             RoomNumber = model.RoomNumber,
             TeacherId = model.TeacherId,
             SubjectId = model.SubjectId,
-            Students = model.Students.Select(x => new ClassroomStudent() { ClassroomId = x.ClassroomId }).ToList()
+            Students = model.Students?.Select(x => new ClassroomStudent() { ClassroomId = x.ClassroomId }).ToList() ?? new List<ClassroomStudent>()
         };
     }
 
@@ -24,7 +25,7 @@ public static class ClassroomModelMapper
             RoomNumber = model.RoomNumber,
             TeacherId = model.TeacherId,
             SubjectId = model.SubjectId,
-            Students = model.Students.Select(x => new ClassroomStudent() { ClassroomId = x.ClassroomId }).ToList()
+            Students = model.Students?.Select(x => new ClassroomStudent() { ClassroomId = x.ClassroomId }).ToList() ?? new List<ClassroomStudent>()
         };
     }
 

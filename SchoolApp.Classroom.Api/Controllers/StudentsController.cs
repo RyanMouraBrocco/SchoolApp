@@ -47,5 +47,4 @@ public class StudentsController : BaseController
         await _studentServie.DeleteAsync(GetAuthenticatedUser(), id);
         return Ok();
     }
-
 }
