@@ -1,5 +1,5 @@
-CREATE DATABASE IdentityProvider;
-USE IdentityProvider;
+CREATE DATABASE SchoolApp_IdentityProvider;
+USE SchoolApp_IdentityProvider;
 CREATE TABLE [Account]
 (
 	Id INT IDENTITY NOT NULL PRIMARY KEY,

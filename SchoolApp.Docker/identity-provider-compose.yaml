@@ -8,9 +8,9 @@ services:
       - ACCEPT_EULA=Y
       - MSSQL_PID=Developer
     ports:
-      - "1433:1433"
+      - "5000:1433"
     expose:
-      - "1433"
+      - "5000"
     networks:
       - schoolapp-network
 networks:

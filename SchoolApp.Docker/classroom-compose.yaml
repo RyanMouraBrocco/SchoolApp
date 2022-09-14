@@ -1,6 +1,6 @@
 version: "3.3"
 services:
-  identity-provider-sql-server:
+  calssroom-sql-server:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: classroom-sql-server_container
     environment:
@@ -8,9 +8,9 @@ services:
       - ACCEPT_EULA=Y
       - MSSQL_PID=Developer
     ports:
-      - "1433:1433"
+      - "5001:1433"
     expose:
-      - "1433"
+      - "5001"
     networks:
       - schoolapp-network
 networks:
