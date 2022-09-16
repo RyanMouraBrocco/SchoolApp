@@ -4,9 +4,9 @@ using SchoolApp.Shared.Utils.Sql.Interfaces;
 
 namespace SchoolApp.Shared.Utils.Sql.Base;
 
-public class BaseCrudRepository<TDto, TDomain, TContext> : BaseRepository<TDto, TDomain, TContext>, ICrudRepository<TDomain> where TDto : class, IIdentityEntity
-                                                                                                                             where TDomain : class
-                                                                                                                             where TContext : DbContext
+public class BaseCrudRepository<TDto, TDomain, TContext> : BaseRepository<TDto, TDomain, TContext>, ICrudRepository<TDomain, int> where TDto : class, IIdentityEntity
+                                                                                                                                  where TDomain : class
+                                                                                                                                  where TContext : DbContext
 {
     protected BaseCrudRepository(TContext context,
                                  Func<TDto, TDomain> mapToDomain,

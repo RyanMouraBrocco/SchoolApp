@@ -3,7 +3,7 @@ using SchoolApp.Shared.Utils.Interfaces;
 
 namespace SchoolApp.IdentityProvider.Application.Interfaces.Repositories;
 
-public interface IFunctionRepository : ICrudRepository<Function>
+public interface IFunctionRepository : ICrudRepository<Function, int>
 {
     IList<Function> GetAll(int accountId, int top, int skip);
 }

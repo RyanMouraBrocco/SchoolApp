@@ -3,7 +3,7 @@ using SchoolApp.Shared.Utils.Interfaces;
 
 namespace SchoolApp.Classroom.Application.Interfaces.Repositories;
 
-public interface IStudentRepository : ICrudRepository<Student>
+public interface IStudentRepository : ICrudRepository<Student, int>
 {
     IList<Student> GetAll(int accountId, int top, int skip);
     IList<Student> GetAllByOwnerId(int ownerId, int top, int skip);

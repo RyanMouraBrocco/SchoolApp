@@ -3,6 +3,6 @@ using SchoolApp.Shared.Utils.Interfaces;
 
 namespace SchoolApp.Classroom.Application.Interfaces.Repositories;
 
-public interface IOwnerStudentRepository : ICrudRepository<OwnerStudent>
+public interface IOwnerStudentRepository : ICrudRepository<OwnerStudent, int>
 {
 }
