@@ -3,6 +3,6 @@ using SchoolApp.Shared.Utils.Interfaces;
 
 namespace SchoolApp.IdentityProvider.Application.Interfaces.Services;
 
-public interface IFunctionService : ICrudService<Function>
+public interface IFunctionService : ICrudService<Function, int>
 {
 }

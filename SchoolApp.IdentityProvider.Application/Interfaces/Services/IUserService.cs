@@ -4,6 +4,6 @@ using SchoolApp.Shared.Utils.Interfaces;
 
 namespace SchoolApp.IdentityProvider.Application.Interfaces.Services;
 
-public interface IUserService<TUser> : ICrudService<TUser> where TUser : User
+public interface IUserService<TUser> : ICrudService<TUser, int> where TUser : User
 {
 }

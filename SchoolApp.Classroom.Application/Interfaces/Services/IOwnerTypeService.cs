@@ -3,6 +3,6 @@ using SchoolApp.Shared.Utils.Interfaces;
 
 namespace SchoolApp.Classroom.Application.Interfaces.Services;
 
-public interface IOwnerTypeService : ICrudService<OwnerType>
+public interface IOwnerTypeService : ICrudService<OwnerType, int>
 {
 }

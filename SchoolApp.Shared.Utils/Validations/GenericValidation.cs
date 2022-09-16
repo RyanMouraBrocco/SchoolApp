@@ -27,4 +27,10 @@ public static class GenericValidation
         if (userType != UserTypeEnum.Manager)
             throw new UnauthorizedAccessException("This resource is just to manager users");
     }
+
+    public static void CheckOnlyTeacherAndManagerUser(UserTypeEnum userType)
+    {
+        if (userType != UserTypeEnum.Teacher && userType != UserTypeEnum.Manager)
+            throw new UnauthorizedAccessException("This resource is just to manager or teacher users");
+    }
 }
