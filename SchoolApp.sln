@@ -55,7 +55,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{AA9F9ECC-F9CD-4FF3-BCB3-1F116EB038DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolApp.Activity,Api", "SchoolApp.Activity,Api\SchoolApp.Activity,Api.csproj", "{0224248F-2367-4DE1-B158-F1DB8D7E1B81}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolApp.Activity.Api", "SchoolApp.Activity.Api\SchoolApp.Activity.Api.csproj", "{0224248F-2367-4DE1-B158-F1DB8D7E1B81}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolApp.Activity.Application", "SchoolApp.Activity.Application\SchoolApp.Activity.Application.csproj", "{4F175DB9-7BC4-4BF3-90AF-5F2619C488A2}"
 EndProject
