@@ -10,6 +10,10 @@ using SchoolApp.IdentityProvider.Application.Services;
 using SchoolApp.IdentityProvider.Application.Settings;
 using SchoolApp.Shared.Utils.HttpApi.Middlewares;
 using SchoolApp.Shared.Utils.HttpApi.Extensions;
+using SchoolApp.IdentityProvider.Ioc.Repositories;
+using SchoolApp.IdentityProvider.Ioc.Database;
+using SchoolApp.IdentityProvider.Ioc.Services;
+using SchoolApp.IdentityProvider.Ioc.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,20 +25,10 @@ builder.Services.AddControllers().HandleDataAnnotationExceptions();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<SchoolAppIdentityProviderContext>(options => options.UseSqlServer("name=ConnectionStrings:IdentityProvider"));
-builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
-builder.Services.AddScoped<IManagerRepository, ManagerRepository>();
-builder.Services.AddScoped<IOwnerRepository, OwnerRepository>();
-builder.Services.AddScoped<IFunctionRepository, FunctionRepository>();
-
-
-builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
-builder.Services.AddScoped<IOwnerService, OwnerService>();
-builder.Services.AddScoped<ITeacherService, TeacherService>();
-builder.Services.AddScoped<ITeacherFormationRepository, TeacherFormationRepository>();
-builder.Services.AddScoped<IManagerService, ManagerService>();
-builder.Services.AddScoped<IFunctionService, FunctionService>();
-builder.Services.Configure<AuthenticationSettings>(builder.Configuration.GetSection(nameof(AuthenticationSettings)));
+builder.Services.AddIdentityProviderDatabase();
+builder.Services.AddIdentityProviderRepositories();
+builder.Services.AddIdentityProviderServices();
+builder.Services.AddIdentityProviderSettings(builder.Configuration);
 
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

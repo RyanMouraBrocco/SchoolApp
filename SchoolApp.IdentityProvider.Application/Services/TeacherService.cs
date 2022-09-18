@@ -114,4 +114,9 @@ public class TeacherService : ITeacherService
         await _teacherRepository.UpdateAsync(ownerCheck);
         await _teacherRepository.DeleteAsync(teacherId);
     }
+
+    public Teacher GetOneById(int id)
+    {
+        return _teacherRepository.GetOneById(id);
+    }
 }
