@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using SchoolApp.Classroom.Application.Interfaces.Repositories;
 using SchoolApp.Classroom.Application.Interfaces.Services;
 using SchoolApp.Classroom.Application.Services;
+using SchoolApp.Classroom.Http.Repositories;
 using SchoolApp.Classroom.Sql.Context;
 using SchoolApp.Classroom.Sql.Repositories;
 using SchoolApp.Shared.Utils.HttpApi.Extensions;
@@ -29,7 +30,7 @@ builder.Services.AddScoped<IOwnerStudentRepository, OwnerStudentRepository>();
 builder.Services.AddScoped<IOwnerTypeRepository, OwnerTypeRepository>();
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
-
+builder.Services.AddHttpClient<ITeacherRepository, TeacherRepository>();
 
 builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<IClassroomService, ClassroomService>();

@@ -69,6 +69,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IoC", "IoC", "{7B302083-26E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolApp.IdentityProvider.Ioc", "SchoolApp.IdentityProvider.Ioc\SchoolApp.IdentityProvider.Ioc.csproj", "{C3494504-9690-4279-B760-AFBCE9302D6F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolApp.Classroom.Http", "SchoolApp.Classroom.Http\SchoolApp.Classroom.Http.csproj", "{822E5E20-CD62-47C6-B7E8-B73DC9F188E8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -78,6 +80,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{822E5E20-CD62-47C6-B7E8-B73DC9F188E8} = {957F6514-5A3E-4336-8252-8ACDAA45B32C}
 		{C3494504-9690-4279-B760-AFBCE9302D6F} = {7B302083-26EB-4A6C-985D-9CF0AEBCF87F}
 		{7B302083-26EB-4A6C-985D-9CF0AEBCF87F} = {6021DA20-20C9-11ED-8914-BF10E6C0C194}
 		{048EA5EF-2737-4993-896C-A06ABF371651} = {69DE6010-20C9-11ED-8914-BF10E6C0C194}
@@ -169,5 +172,9 @@ Global
 		{C3494504-9690-4279-B760-AFBCE9302D6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3494504-9690-4279-B760-AFBCE9302D6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3494504-9690-4279-B760-AFBCE9302D6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{822E5E20-CD62-47C6-B7E8-B73DC9F188E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{822E5E20-CD62-47C6-B7E8-B73DC9F188E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{822E5E20-CD62-47C6-B7E8-B73DC9F188E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{822E5E20-CD62-47C6-B7E8-B73DC9F188E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

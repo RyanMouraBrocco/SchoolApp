@@ -11,5 +11,6 @@
     <ProjectReference Include="..\SchoolApp.Shared.Utils.HttpApi\SchoolApp.Shared.Utils.HttpApi.csproj" />
     <ProjectReference Include="..\SchoolApp.Classroom.Application\SchoolApp.Classroom.Application.csproj" />
     <ProjectReference Include="..\SchoolApp.Classroom.Sql\SchoolApp.Classroom.Sql.csproj" />
+    <ProjectReference Include="..\SchoolApp.Classroom.Http\SchoolApp.Classroom.Http.csproj" />
   </ItemGroup>
 </Project>

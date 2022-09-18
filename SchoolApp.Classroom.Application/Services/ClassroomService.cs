@@ -13,27 +13,32 @@ public class ClassroomService : IClassroomService
     private readonly IClassroomStudentRepository _classroomStudentRepository;
     private readonly ISubjectRepository _subjectRepository;
     private readonly IStudentRepository _studentRepository;
+    private readonly ITeacherRepository _teacherRepository;
 
     public ClassroomService(IClassroomRepository classroomRepository,
                             IClassroomStudentRepository classroomStudentRepository,
                             ISubjectRepository subjectRepository,
-                            IStudentRepository studentRepository)
+                            IStudentRepository studentRepository,
+                            ITeacherRepository teacherRepository)
     {
         _classroomRepository = classroomRepository;
         _classroomStudentRepository = classroomStudentRepository;
         _subjectRepository = subjectRepository;
         _studentRepository = studentRepository;
+        _teacherRepository = teacherRepository;
     }
 
     public async Task<Domain.Entities.Classrooms.Classroom> CreateAsync(AuthenticatedUserObject requesterUser, Domain.Entities.Classrooms.Classroom newClassroom)
     {
         GenericValidation.CheckOnlyManagerUser(requesterUser.Type);
 
-        // TODO: Validade teacher id with service api
-
         var subjectCheck = _subjectRepository.GetOneById(newClassroom.SubjectId);
         if (subjectCheck == null || subjectCheck.AccountId != requesterUser.AccountId)
             throw new UnauthorizedAccessException("Subject not found");
+
+        var teacherCheck = await _teacherRepository.GetOneByIdAsync(newClassroom.TeacherId);
+        if (teacherCheck == null || teacherCheck.AccountId != requesterUser.AccountId)
+            throw new UnauthorizedAccessException("Teacher not found");
 
         newClassroom.AccountId = requesterUser.AccountId;
         newClassroom.CreationDate = DateTime.Now;
@@ -78,8 +83,6 @@ public class ClassroomService : IClassroomService
     {
         GenericValidation.CheckOnlyManagerUser(requesterUser.Type);
 
-        // TODO: Validade teacher id with service api
-
         var classroomCheck = _classroomRepository.GetOneById(itemId);
         if (classroomCheck == null || classroomCheck.AccountId != requesterUser.AccountId)
             throw new UnauthorizedAccessException("Classroom not found");
@@ -87,6 +90,10 @@ public class ClassroomService : IClassroomService
         var subjectCheck = _subjectRepository.GetOneById(updatedClassroom.SubjectId);
         if (subjectCheck == null || subjectCheck.AccountId != requesterUser.AccountId)
             throw new UnauthorizedAccessException("Subject not found");
+
+        var teacherCheck = await _teacherRepository.GetOneByIdAsync(updatedClassroom.TeacherId);
+        if (teacherCheck == null || teacherCheck.AccountId != requesterUser.AccountId)
+            throw new UnauthorizedAccessException("Teacher not found");
 
         updatedClassroom.Id = itemId;
         updatedClassroom.AccountId = classroomCheck.AccountId;
