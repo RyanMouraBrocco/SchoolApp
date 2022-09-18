@@ -8,36 +8,18 @@ using SchoolApp.Shared.Utils.MongoDb.Settings;
 
 namespace SchoolApp.Shared.Utils.MongoDb.Base;
 
-public class BaseCrudRepository<TDto, TDomain> : ICrudRepository<TDomain, string> where TDomain : class where TDto : class, IIdentityEntity
+public class BaseCrudRepository<TDto, TDomain> : BaseRepository<TDto, TDomain>, ICrudRepository<TDomain, string> where TDomain : class where TDto : class, IIdentityEntity
 {
-    private readonly IMongoCollection<TDto> _collection;
-
-    protected Func<TDto, TDomain> MapToDomain { get; set; }
-    protected Func<TDomain, TDto> MapToDto { get; set; }
-
-    public BaseCrudRepository(MongoDbSettings options, Func<TDto, TDomain> mapToDomain, Func<TDomain, TDto> mapToDto)
+    public BaseCrudRepository(MongoDbSettings options, Func<TDto, TDomain> mapToDomain, Func<TDomain, TDto> mapToDto) : base(options, mapToDomain, mapToDto)
     {
-        var mongoClient = new MongoClient(options.ConnectionString);
-        var database = mongoClient.GetDatabase(options.DatabaseName);
-        _collection = database.GetCollection<TDto>(GetCollectionName(typeof(TDto)));
-        MapToDomain = mapToDomain;
-        MapToDto = mapToDto;
     }
 
-    private string GetCollectionName(Type documentType)
-    {
-        return ((CollectionNameAttribute)documentType.GetCustomAttributes(
-                typeof(CollectionNameAttribute),
-                true)
-            .FirstOrDefault())?.Name;
-    }
-
-    public TDomain GetOneById(string id)
+    public virtual TDomain GetOneById(string id)
     {
         return MapToDomain(_collection.Find(x => x.Id == new ObjectId(id)).FirstOrDefault());
     }
 
-    public async Task<TDomain> InsertAsync(TDomain item)
+    public virtual async Task<TDomain> InsertAsync(TDomain item)
     {
         var dto = MapToDto(item);
         dto.Id = ObjectId.GenerateNewId();
@@ -45,14 +27,14 @@ public class BaseCrudRepository<TDto, TDomain> : ICrudRepository<TDomain, string
         return MapToDomain(dto);
     }
 
-    public async Task<TDomain> UpdateAsync(TDomain item)
+    public virtual async Task<TDomain> UpdateAsync(TDomain item)
     {
         var dto = MapToDto(item);
         await _collection.ReplaceOneAsync(x => x.Id == dto.Id, dto);
         return item;
     }
 
-    public async Task DeleteAsync(string id)
+    public virtual async Task DeleteAsync(string id)
     {
         await _collection.DeleteOneAsync(x => x.Id == new ObjectId(id));
     }

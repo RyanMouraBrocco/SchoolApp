@@ -1,0 +1,18 @@
+version: "3.3"
+services:
+  activity-mongodb:
+    image: mongo
+    restart: always
+    container_name: activity-mongodb_container
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=1SenhaForte@
+    ports:
+      - "5002:27017"
+    expose:
+      - "5002"
+    networks:
+      - schoolapp-network
+networks:
+  schoolapp-network:
+    driver: bridge

@@ -6,7 +6,7 @@ using SchoolApp.Shared.Utils.MongoDb.Settings;
 
 namespace SchoolApp.Activity.NoSql.Repositories;
 
-public class ActivityRepository : BaseCrudRepository<ActivityDto, Application.Domain.Entities.Activities.Activity>, IActivityRepository
+public class ActivityRepository : BaseMainEntityRepository<ActivityDto, Application.Domain.Entities.Activities.Activity>, IActivityRepository
 {
     public ActivityRepository(MongoDbSettings options) : base(options, ActivityMapper.MapToDomain, ActivityMapper.MapToDto)
     {

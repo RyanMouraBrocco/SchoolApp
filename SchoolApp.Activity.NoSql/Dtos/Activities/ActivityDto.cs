@@ -6,7 +6,7 @@ using SchoolApp.Shared.Utils.MongoDb.Interfaces;
 namespace SchoolApp.Activity.NoSql.Dtos.Activities;
 
 [CollectionName("Activity")]
-public class ActivityDto : IIdentityEntity
+public class ActivityDto : IIdentityEntity, IAccountEntity, ISoftDeleteEntity
 {
     [BsonId]
     public ObjectId Id { get; set; }

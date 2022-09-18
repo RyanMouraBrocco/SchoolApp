@@ -61,6 +61,17 @@ public class ActivityService : IActivityService
         };
     }
 
+    public Domain.Entities.Activities.Activity GetOneById(AuthenticatedUserObject requesterUser, string id)
+    {
+        return requesterUser.Type switch
+        {
+            UserTypeEnum.Manager => new Domain.Entities.Activities.Activity(),
+            UserTypeEnum.Owner => new Domain.Entities.Activities.Activity(),
+            UserTypeEnum.Teacher => new Domain.Entities.Activities.Activity(),
+            _ => throw new NotImplementedException()
+        };
+    }
+
     public async Task<Domain.Entities.Activities.Activity> UpdateAsync(AuthenticatedUserObject requesterUser, string activityId, Domain.Entities.Activities.Activity updatedAcitvity)
     {
         GenericValidation.CheckOnlyTeacherAndManagerUser(requesterUser.Type);
