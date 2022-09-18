@@ -1,18 +1,15 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using SchoolApp.Classroom.Application.Interfaces.Repositories;
-using SchoolApp.Classroom.Application.Interfaces.Services;
-using SchoolApp.Classroom.Application.Services;
-using SchoolApp.Classroom.Http.Repositories;
-using SchoolApp.Classroom.Sql.Context;
-using SchoolApp.Classroom.Sql.Repositories;
+using SchoolApp.Classroom.Ioc.Database;
+using SchoolApp.Classroom.Ioc.Repositories;
 using SchoolApp.Shared.Utils.HttpApi.Extensions;
 using SchoolApp.Shared.Utils.HttpApi.Middlewares;
+using SchoolApp.Classroom.Ioc.Services;
+using SchoolApp.Classroom.Ioc.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,18 +20,10 @@ builder.Services.AddControllers().HandleDataAnnotationExceptions();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<SchoolAppClassroomContext>(options => options.UseSqlServer("name=ConnectionStrings:Classroom"));
-builder.Services.AddScoped<IClassroomRepository, ClassroomRepository>();
-builder.Services.AddScoped<IClassroomStudentRepository, ClassroomStudentRepository>();
-builder.Services.AddScoped<IOwnerStudentRepository, OwnerStudentRepository>();
-builder.Services.AddScoped<IOwnerTypeRepository, OwnerTypeRepository>();
-builder.Services.AddScoped<IStudentRepository, StudentRepository>();
-builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
-builder.Services.AddHttpClient<ITeacherRepository, TeacherRepository>();
-
-builder.Services.AddScoped<IStudentService, StudentService>();
-builder.Services.AddScoped<IClassroomService, ClassroomService>();
-builder.Services.AddScoped<ISubjectService, SubjectService>();
+builder.Services.AddClassroomDatabase();
+builder.Services.AddClassroomRepositories();
+builder.Services.AddClassroomServices();
+builder.Services.AddClassroomSettings(builder.Configuration);
 
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
