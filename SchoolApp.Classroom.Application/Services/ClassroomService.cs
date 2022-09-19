@@ -79,6 +79,11 @@ public class ClassroomService : IClassroomService
         };
     }
 
+    public Domain.Entities.Classrooms.Classroom GetOneById(int id)
+    {
+        return _classroomRepository.GetOneById(id);
+    }
+
     public async Task<Domain.Entities.Classrooms.Classroom> UpdateAsync(AuthenticatedUserObject requesterUser, int itemId, Domain.Entities.Classrooms.Classroom updatedClassroom)
     {
         GenericValidation.CheckOnlyManagerUser(requesterUser.Type);
