@@ -2,6 +2,7 @@ using SchoolApp.Activity.Application.Domain.Entities.Answers;
 using SchoolApp.Activity.Application.Interfaces.Repositories;
 using SchoolApp.Activity.Application.Interfaces.Services;
 using SchoolApp.Shared.Authentication;
+using SchoolApp.Shared.Utils.Enums;
 using SchoolApp.Shared.Utils.Validations;
 
 namespace SchoolApp.Activity.Application.Services;
@@ -28,7 +29,7 @@ public class ActivityAnswerService : IActivityAnswerService
         if (newActivityAnswer.LastReview == null || string.IsNullOrEmpty(newActivityAnswer.LastReview.Text?.Trim()))
             throw new FormatException("LastReview text can't not be null or empty");
 
-        var activityCheck = _activityService.GetOneById(requesterUser, newActivityAnswer.ActivityId);
+        var activityCheck = await _activityService.GetOneByIdAsync(requesterUser, newActivityAnswer.ActivityId);
         if (activityCheck == null)
             throw new UnauthorizedAccessException("Acitivity not found");
 
@@ -66,8 +67,20 @@ public class ActivityAnswerService : IActivityAnswerService
         return _activityAnswerRepository.GetOneById(activityAnswerId);
     }
 
-    public IList<ActivityAnswer> GetAllByActivityId(AuthenticatedUserObject requesterUser, string activityId, int top, int skip)
+    public async Task<IList<ActivityAnswer>> GetAllByActivityIdAsync(AuthenticatedUserObject requesterUser, string activityId, int top, int skip)
     {
-        throw new NotImplementedException();
+        var activityCheck = await _activityService.GetOneByIdAsync(requesterUser, activityId);
+        if (activityCheck == null)
+            return new List<ActivityAnswer>();
+
+        if (requesterUser.Type == UserTypeEnum.Manager || requesterUser.Type == UserTypeEnum.Teacher)
+            return _activityAnswerRepository.GetAllByActitvityId(activityId, top, skip);
+        else if (requesterUser.Type == UserTypeEnum.Owner)
+        {
+            // need to search all students of owner first
+            return new List<ActivityAnswer>();
+        }
+        else
+            throw new NotImplementedException("User not valid");
     }
 }

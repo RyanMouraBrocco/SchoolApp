@@ -2,6 +2,7 @@ using SchoolApp.Activity.Application.Interfaces.Repositories;
 using SchoolApp.Activity.Application.Interfaces.Services;
 using SchoolApp.Shared.Authentication;
 using SchoolApp.Shared.Utils.Enums;
+using SchoolApp.Shared.Utils.Interfaces;
 using SchoolApp.Shared.Utils.Validations;
 
 namespace SchoolApp.Activity.Application.Services;
@@ -56,22 +57,52 @@ public class ActivityService : IActivityService
 
     public IList<Domain.Entities.Activities.Activity> GetAll(AuthenticatedUserObject requesterUser, int top, int skip)
     {
-        return requesterUser.Type switch
+        if (requesterUser.Type == UserTypeEnum.Manager)
         {
-            UserTypeEnum.Manager => new List<Domain.Entities.Activities.Activity>(),
-            _ => throw new NotImplementedException()
-        };
+            return _activityRepository.GetAll(requesterUser.AccountId, top, skip);
+        }
+        else if (requesterUser.Type == UserTypeEnum.Owner)
+        {
+            var classrooms = _classroomRepository.GetAllByOwnerIdAsync(requesterUser.UserId).Result;
+            return _activityRepository.GetAllByClassroomsIds(classrooms.Select(x => x.Id));
+        }
+        else if (requesterUser.Type == UserTypeEnum.Teacher)
+        {
+            var classrooms = _classroomRepository.GetAllByTeacherIdAsync(requesterUser.UserId).Result;
+            return _activityRepository.GetAllByClassroomsIds(classrooms.Select(x => x.Id));
+        }
+        else
+            throw new NotImplementedException("User type not valid");
     }
 
-    public Domain.Entities.Activities.Activity GetOneById(AuthenticatedUserObject requesterUser, string id)
+    public async Task<Domain.Entities.Activities.Activity> GetOneByIdAsync(AuthenticatedUserObject requesterUser, string id)
     {
-        return requesterUser.Type switch
+        var activity = _activityRepository.GetOneById(id);
+        if (activity == null || activity.AccountId != requesterUser.AccountId)
+            return null;
+
+        if (requesterUser.Type == UserTypeEnum.Manager)
         {
-            UserTypeEnum.Manager => new Domain.Entities.Activities.Activity(),
-            UserTypeEnum.Owner => new Domain.Entities.Activities.Activity(),
-            UserTypeEnum.Teacher => new Domain.Entities.Activities.Activity(),
-            _ => throw new NotImplementedException()
-        };
+            return activity;
+        }
+        else if (requesterUser.Type == UserTypeEnum.Owner)
+        {
+            var classrooms = await _classroomRepository.GetAllByOwnerIdAsync(requesterUser.UserId);
+            if (!classrooms.Select(x => x.Id).Contains(activity.ClassroomId))
+                return null;
+
+            return activity;
+        }
+        else if (requesterUser.Type == UserTypeEnum.Teacher)
+        {
+            var classroom = await _classroomRepository.GetOneByIdAsync(activity.ClassroomId);
+            if (classroom.TeacherId != requesterUser.UserId)
+                return null;
+
+            return activity;
+        }
+        else
+            throw new NotImplementedException("User type not valid");
     }
 
     public async Task<Domain.Entities.Activities.Activity> UpdateAsync(AuthenticatedUserObject requesterUser, string activityId, Domain.Entities.Activities.Activity updatedAcitvity)

@@ -5,5 +5,5 @@ namespace SchoolApp.Activity.Application.Interfaces.Services;
 
 public interface IActivityService : ICrudService<Domain.Entities.Activities.Activity, string>
 {
-    Domain.Entities.Activities.Activity GetOneById(AuthenticatedUserObject requesterUser, string id);
+    Task<Domain.Entities.Activities.Activity> GetOneByIdAsync(AuthenticatedUserObject requesterUser, string id);
 }

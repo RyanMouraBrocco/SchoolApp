@@ -14,6 +14,11 @@ public class ActivityAnswerRepository : BaseMainEntityRepository<ActivityAnswerD
     {
     }
 
+    public IList<ActivityAnswer> GetAllByActitvityId(string activityId, int top, int skip)
+    {
+        return _collection.Find(x => x.ActivityId == new MongoDB.Bson.ObjectId(activityId)).Skip(skip).Limit(top).ToList().Select(x => MapToDomain(x)).ToList();
+    }
+
     public async Task SetLastReview(string id, ActivityAnswerVersion version)
     {
         var updateQuery = Builders<ActivityAnswerDto>.Update.Set(x => x.LastReview, ActivityAnswerVersionMapper.MapToDto(version));

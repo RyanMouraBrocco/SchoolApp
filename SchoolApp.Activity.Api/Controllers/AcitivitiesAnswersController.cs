@@ -19,9 +19,9 @@ public class AcitivitiesAnswersController : BaseController
 
     [HttpGet("GetAllByActivityId/{activityId}")]
     [Authorize()]
-    public IActionResult GetAllByActivityId(string activityId, [FromQuery] PagingModel paging)
+    public async Task<IActionResult> GetAllByActivityIdAsync(string activityId, [FromQuery] PagingModel paging)
     {
-        return Ok(_activityAnswerService.GetAllByActivityId(GetAuthenticatedUser(), activityId, paging.Top, paging.Skip));
+        return Ok(await _activityAnswerService.GetAllByActivityIdAsync(GetAuthenticatedUser(), activityId, paging.Top, paging.Skip));
     }
 
     [HttpPost]

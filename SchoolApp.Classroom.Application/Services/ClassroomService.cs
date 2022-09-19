@@ -79,6 +79,16 @@ public class ClassroomService : IClassroomService
         };
     }
 
+    public IList<Domain.Entities.Classrooms.Classroom> GetAllByOwnerId(int ownerId, int top, int skip)
+    {
+        return _classroomRepository.GetAllByOwnerId(ownerId, top, skip);
+    }
+
+    public IList<Domain.Entities.Classrooms.Classroom> GetAllByTeacherId(int teacherId, int top, int skip)
+    {
+        return _classroomRepository.GetAllByTeacherId(teacherId, top, skip);
+    }
+
     public Domain.Entities.Classrooms.Classroom GetOneById(int id)
     {
         return _classroomRepository.GetOneById(id);

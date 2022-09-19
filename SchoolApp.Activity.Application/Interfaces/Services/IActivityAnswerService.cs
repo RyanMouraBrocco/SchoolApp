@@ -7,6 +7,6 @@ namespace SchoolApp.Activity.Application.Interfaces.Services;
 public interface IActivityAnswerService
 {
     Task<ActivityAnswer> CreateAsync(AuthenticatedUserObject requesterUser, ActivityAnswer newActivityAnswer);
-    IList<ActivityAnswer> GetAllByActivityId(AuthenticatedUserObject requesterUser, string activityId, int top, int skip);
+    Task<IList<ActivityAnswer>> GetAllByActivityIdAsync(AuthenticatedUserObject requesterUser, string activityId, int top, int skip);
     Task<ActivityAnswer> CreateReviewAsync(AuthenticatedUserObject requesterUser, string itemId, ActivityAnswerVersion newReview);
 }

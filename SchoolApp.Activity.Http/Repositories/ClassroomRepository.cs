@@ -24,4 +24,20 @@ public class ClassroomRepository : IClassroomRepository
         string responseBody = await response.Content.ReadAsStringAsync();
         return JsonSerializer.Deserialize<ClassroomDto>(responseBody);
     }
+
+    public async Task<IList<ClassroomDto>> GetAllByTeacherIdAsync(int teacherId)
+    {
+        HttpResponseMessage response = await _httpClient.GetAsync($"{Settigns.Url}/Classrooms/GetAllByTeacherId/{teacherId}");
+        response.EnsureSuccessStatusCode();
+        string responseBody = await response.Content.ReadAsStringAsync();
+        return JsonSerializer.Deserialize<List<ClassroomDto>>(responseBody);
+    }
+
+    public async Task<IList<ClassroomDto>> GetAllByOwnerIdAsync(int ownerId)
+    {
+        HttpResponseMessage response = await _httpClient.GetAsync($"{Settigns.Url}/Classrooms/GetAllByOwerId/{ownerId}");
+        response.EnsureSuccessStatusCode();
+        string responseBody = await response.Content.ReadAsStringAsync();
+        return JsonSerializer.Deserialize<List<ClassroomDto>>(responseBody);
+    }
 }
