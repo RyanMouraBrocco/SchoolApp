@@ -9,23 +9,26 @@ namespace SchoolApp.Activity.Application.Services;
 public class ActivityService : IActivityService
 {
     private readonly IActivityRepository _activityRepository;
-
-    public ActivityService(IActivityRepository activityRepository)
+    private readonly IClassroomRepository _classroomRepository;
+    public ActivityService(IActivityRepository activityRepository, IClassroomRepository classroomRepository)
     {
         _activityRepository = activityRepository;
+        _classroomRepository = classroomRepository;
     }
 
     public async Task<Domain.Entities.Activities.Activity> CreateAsync(AuthenticatedUserObject requesterUser, Domain.Entities.Activities.Activity newActivity)
     {
         GenericValidation.CheckOnlyTeacherAndManagerUser(requesterUser.Type);
 
-        string classroomCheck = null; // to do: validate if classroom is valid
-
         if (string.IsNullOrEmpty(newActivity.Name?.Trim()))
             throw new FormatException("Name must not be null or empty");
 
         if (string.IsNullOrEmpty(newActivity.Description?.Trim()))
             throw new FormatException("Description must not be null or empty");
+
+        var classroomCheck = await _classroomRepository.GetOneByIdAsync(newActivity.ClassroomId);
+        if (classroomCheck == null || classroomCheck.TeacherId != requesterUser.UserId)
+            throw new UnauthorizedAccessException("Classroom not found");
 
         newActivity.AccountId = requesterUser.AccountId;
         newActivity.CreatorId = requesterUser.UserId;
@@ -34,7 +37,6 @@ public class ActivityService : IActivityService
         newActivity.UpdaterId = null;
 
         return await _activityRepository.InsertAsync(newActivity);
-
     }
 
     public async Task DeleteAsync(AuthenticatedUserObject requesterUser, string activityId)
@@ -76,8 +78,6 @@ public class ActivityService : IActivityService
     {
         GenericValidation.CheckOnlyTeacherAndManagerUser(requesterUser.Type);
 
-        string classroomCheck = null; // to do: validate if classroom is valid
-
         var activityCheck = _activityRepository.GetOneById(activityId);
         if (activityCheck == null || activityCheck.AccountId != requesterUser.AccountId)
             throw new UnauthorizedAccessException("Acitvity not found");
@@ -87,6 +87,10 @@ public class ActivityService : IActivityService
 
         if (string.IsNullOrEmpty(updatedAcitvity.Description?.Trim()))
             throw new FormatException("Description must not be null or empty");
+
+        var classroomCheck = await _classroomRepository.GetOneByIdAsync(updatedAcitvity.ClassroomId);
+        if (classroomCheck == null || classroomCheck.TeacherId != requesterUser.UserId)
+            throw new UnauthorizedAccessException("Classroom not found");
 
         updatedAcitvity.AccountId = activityCheck.AccountId;
         updatedAcitvity.CreatorId = activityCheck.CreatorId;
