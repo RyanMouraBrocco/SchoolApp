@@ -11,7 +11,6 @@ public class ActivityCreateModel
     public string Description { get; set; }
     [Required]
     public int ClassroomId { get; set; }
-    public DateTime? CloseDate { get; set; }
     [Required]
     public bool Closed { get; set; }
 }

@@ -31,6 +31,20 @@ public class AcitvitiesController : BaseController
         return Ok(await _activityService.CreateAsync(GetAuthenticatedUser(), payload.MapToActivity()));
     }
 
+    [HttpPost("{id}/Close")]
+    [Authorize()]
+    public async Task<IActionResult> CloseAsync(string id)
+    {
+        return Ok(await _activityService.CloseAsync(GetAuthenticatedUser(), id));
+    }
+
+    [HttpPost("{id}/Open")]
+    [Authorize()]
+    public async Task<IActionResult> OpenAsync(string id)
+    {
+        return Ok(await _activityService.OpenAsync(GetAuthenticatedUser(), id));
+    }
+
     [HttpPut("{id}")]
     [Authorize()]
     public async Task<IActionResult> PutAsync([FromBody] ActivityUpdateModel payload, [FromRoute] string id)

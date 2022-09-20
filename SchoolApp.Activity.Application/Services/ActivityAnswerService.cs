@@ -36,6 +36,9 @@ public class ActivityAnswerService : IActivityAnswerService
         if (activityCheck == null)
             throw new UnauthorizedAccessException("Acitivity not found");
 
+        if (activityCheck.Closed)
+            throw new UnauthorizedAccessException("Activity is closed");
+
         newActivityAnswer.AccountId = requesterUser.AccountId;
         newActivityAnswer.StudentId = requesterUser.UserId;
         newActivityAnswer.CreationDate = DateTime.Now;
@@ -60,6 +63,10 @@ public class ActivityAnswerService : IActivityAnswerService
 
         if (string.IsNullOrEmpty(newReview.Text?.Trim()))
             throw new FormatException("Text can't not be null or empty");
+
+        var activityCheck = await _activityService.GetOneByIdAsync(requesterUser, activityAnswerCheck.ActivityId);
+        if (activityCheck.Closed)
+            throw new UnauthorizedAccessException("Activity is closed");
 
         newReview.ActivityAnswerId = activityAnswerId;
         newReview.CreationDate = DateTime.Now;

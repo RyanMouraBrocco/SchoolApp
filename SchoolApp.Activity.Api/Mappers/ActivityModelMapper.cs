@@ -11,8 +11,7 @@ public static class ActivityModelMapper
             Name = model.Name,
             Description = model.Description,
             ClassroomId = model.ClassroomId,
-            Closed = model.Closed,
-            CloseDate = model.CloseDate
+            Closed = model.Closed
         };
     }
 
@@ -22,9 +21,7 @@ public static class ActivityModelMapper
         {
             Name = model.Name,
             Description = model.Description,
-            ClassroomId = model.ClassroomId,
-            Closed = model.Closed,
-            CloseDate = model.CloseDate
+            ClassroomId = model.ClassroomId
         };
     }
 }

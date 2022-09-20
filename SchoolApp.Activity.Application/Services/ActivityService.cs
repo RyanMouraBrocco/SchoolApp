@@ -34,6 +34,7 @@ public class ActivityService : IActivityService
         newActivity.AccountId = requesterUser.AccountId;
         newActivity.CreatorId = requesterUser.UserId;
         newActivity.CreationDate = DateTime.Now;
+        newActivity.CloseDate = newActivity.Closed ? DateTime.Now : null;
         newActivity.UpdateDate = null;
         newActivity.UpdaterId = null;
 
@@ -126,9 +127,45 @@ public class ActivityService : IActivityService
         updatedAcitvity.AccountId = activityCheck.AccountId;
         updatedAcitvity.CreatorId = activityCheck.CreatorId;
         updatedAcitvity.CreationDate = activityCheck.CreationDate;
+        updatedAcitvity.Closed = activityCheck.Closed;
+        updatedAcitvity.CloseDate = activityCheck.CloseDate;
         updatedAcitvity.UpdateDate = DateTime.Now;
         updatedAcitvity.UpdaterId = requesterUser.UserId;
 
         return await _activityRepository.UpdateAsync(updatedAcitvity);
+    }
+
+    public async Task<Domain.Entities.Activities.Activity> CloseAsync(AuthenticatedUserObject requesterUser, string activityId)
+    {
+        GenericValidation.CheckOnlyTeacherAndManagerUser(requesterUser.Type);
+
+        var activityCheck = await GetOneByIdAsync(requesterUser, activityId);
+        if (activityCheck == null)
+            throw new UnauthorizedAccessException("Activity not found");
+
+        if (activityCheck.Closed)
+            throw new UnauthorizedAccessException("This activity is already closed");
+
+        activityCheck.Closed = true;
+        activityCheck.CloseDate = DateTime.Now;
+
+        return await _activityRepository.UpdateAsync(activityCheck);
+    }
+
+    public async Task<Domain.Entities.Activities.Activity> OpenAsync(AuthenticatedUserObject requesterUser, string activityId)
+    {
+        GenericValidation.CheckOnlyTeacherAndManagerUser(requesterUser.Type);
+
+        var activityCheck = await GetOneByIdAsync(requesterUser, activityId);
+        if (activityCheck == null)
+            throw new UnauthorizedAccessException("Activity not found");
+
+        if (!activityCheck.Closed)
+            throw new UnauthorizedAccessException("This activity is already opened");
+
+        activityCheck.Closed = false;
+        activityCheck.CloseDate = null;
+
+        return await _activityRepository.UpdateAsync(activityCheck);
     }
 }
