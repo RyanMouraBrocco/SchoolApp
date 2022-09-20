@@ -7,4 +7,5 @@ public interface IActivityAnswerRepository : ICrudRepository<ActivityAnswer, str
 {
     Task SetLastReview(string id, ActivityAnswerVersion version);
     IList<ActivityAnswer> GetAllByActitvityId(string activityId, int top, int skip);
+    IList<ActivityAnswer> GetAllByActitvityIdAndStudentsIds(string activityId, IEnumerable<int> studentsIds);
 }

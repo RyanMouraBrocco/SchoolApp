@@ -19,6 +19,11 @@ public class ActivityAnswerRepository : BaseMainEntityRepository<ActivityAnswerD
         return _collection.Find(x => x.ActivityId == new MongoDB.Bson.ObjectId(activityId)).Skip(skip).Limit(top).ToList().Select(x => MapToDomain(x)).ToList();
     }
 
+    public IList<ActivityAnswer> GetAllByActitvityIdAndStudentsIds(string activityId, IEnumerable<int> studentsIds)
+    {
+        return _collection.Find(x => x.ActivityId == new MongoDB.Bson.ObjectId(activityId) && studentsIds.Contains(x.StudentId)).ToList().Select(x => MapToDomain(x)).ToList();
+    }
+
     public async Task SetLastReview(string id, ActivityAnswerVersion version)
     {
         var updateQuery = Builders<ActivityAnswerDto>.Update.Set(x => x.LastReview, ActivityAnswerVersionMapper.MapToDto(version));

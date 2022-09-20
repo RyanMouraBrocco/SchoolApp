@@ -12,14 +12,17 @@ public class ActivityAnswerService : IActivityAnswerService
     private readonly IActivityAnswerRepository _activityAnswerRepository;
     private readonly IActivityAnswerVersionRepository _activityAnswerVersionRepository;
     private readonly IActivityService _activityService;
+    private readonly IStudentRepository _studentRepository;
 
     public ActivityAnswerService(IActivityAnswerRepository activityAnswerRepository,
                                  IActivityAnswerVersionRepository activityAnswerVersionRepository,
-                                 IActivityService activityService)
+                                 IActivityService activityService,
+                                 IStudentRepository studentRepository)
     {
         _activityAnswerRepository = activityAnswerRepository;
         _activityAnswerVersionRepository = activityAnswerVersionRepository;
         _activityService = activityService;
+        _studentRepository = studentRepository;
     }
 
     public async Task<ActivityAnswer> CreateAsync(AuthenticatedUserObject requesterUser, ActivityAnswer newActivityAnswer)
@@ -77,8 +80,8 @@ public class ActivityAnswerService : IActivityAnswerService
             return _activityAnswerRepository.GetAllByActitvityId(activityId, top, skip);
         else if (requesterUser.Type == UserTypeEnum.Owner)
         {
-            // need to search all students of owner first
-            return new List<ActivityAnswer>();
+            var students = await _studentRepository.GetAllByOwnerIdAsync(requesterUser.UserId);
+            return _activityAnswerRepository.GetAllByActitvityIdAndStudentsIds(activityId, students.Select(x => x.Id));
         }
         else
             throw new NotImplementedException("User not valid");

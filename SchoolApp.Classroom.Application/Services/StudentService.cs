@@ -68,6 +68,11 @@ public class StudentService : IStudentService
         };
     }
 
+    public IList<Student> GetAllByOwnerId(int ownerId, int top, int skip)
+    {
+        return _studentRepository.GetAllByOwnerId(ownerId, top, skip);
+    }
+
     public async Task<Student> UpdateAsync(AuthenticatedUserObject requesterUser, int itemId, Student updatedStudent)
     {
         GenericValidation.CheckOnlyManagerUser(requesterUser.Type);
