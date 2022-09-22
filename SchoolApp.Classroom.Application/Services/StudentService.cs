@@ -68,6 +68,24 @@ public class StudentService : IStudentService
         };
     }
 
+    public Student GetOneById(AuthenticatedUserObject requesterUser, int id)
+    {
+        if (requesterUser.Type == UserTypeEnum.Manager)
+        {
+            var studentCheck = _studentRepository.GetOneById(id);
+            if (studentCheck == null || studentCheck.AccountId != requesterUser.AccountId)
+                return null;
+
+            return studentCheck;
+        }
+        else if (requesterUser.Type == UserTypeEnum.Teacher)
+            return _studentRepository.GetOneByIdAndTeacherId(id, requesterUser.UserId);
+        else if (requesterUser.Type == UserTypeEnum.Owner)
+            return _studentRepository.GetOneByIdAndOwnerId(id, requesterUser.UserId);
+        else
+            throw new NotImplementedException("Invalid user type");
+    }
+
     public IList<Student> GetAllByOwnerId(int ownerId, int top, int skip)
     {
         return _studentRepository.GetAllByOwnerId(ownerId, top, skip);

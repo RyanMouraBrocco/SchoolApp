@@ -7,5 +7,7 @@ public interface IStudentRepository : ICrudRepository<Student, int>
 {
     IList<Student> GetAll(int accountId, int top, int skip);
     IList<Student> GetAllByOwnerId(int ownerId, int top, int skip);
+    Student GetOneByIdAndOwnerId(int id, int ownerId);
     IList<Student> GetAllByTeacherId(int teacherId, int top, int skip);
+    Student GetOneByIdAndTeacherId(int id, int teacherId);
 }
