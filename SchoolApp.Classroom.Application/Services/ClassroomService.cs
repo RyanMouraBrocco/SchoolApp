@@ -94,6 +94,27 @@ public class ClassroomService : IClassroomService
         return _classroomRepository.GetOneById(id);
     }
 
+    public Domain.Entities.Classrooms.Classroom GetOneById(AuthenticatedUserObject requesterUser, int id)
+    {
+        var classroomCheck = _classroomRepository.GetOneById(id);
+        if (classroomCheck == null || classroomCheck.AccountId != requesterUser.AccountId)
+            return null;
+
+        if (requesterUser.Type == UserTypeEnum.Manager)
+            return classroomCheck;
+        else if (requesterUser.Type == UserTypeEnum.Owner)
+        {
+            if (_classroomStudentRepository.GetOneByClassroomIdAndOwnerId(classroomCheck.Id, requesterUser.UserId) != null)
+                return classroomCheck;
+            else
+                return null;
+        }
+        else if (requesterUser.Type == UserTypeEnum.Teacher)
+            return requesterUser.UserId == classroomCheck.TeacherId ? classroomCheck : null;
+        else
+            throw new NotImplementedException("User not valid");
+    }
+
     public async Task<Domain.Entities.Classrooms.Classroom> UpdateAsync(AuthenticatedUserObject requesterUser, int itemId, Domain.Entities.Classrooms.Classroom updatedClassroom)
     {
         GenericValidation.CheckOnlyManagerUser(requesterUser.Type);

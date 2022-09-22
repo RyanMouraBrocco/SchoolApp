@@ -11,7 +11,7 @@ namespace SchoolApp.Classroom.Application.Services;
 
 public abstract class GradeService<TEntity> : IGradeService<TEntity> where TEntity : Grade
 {
-    private readonly IGradeRepository<TEntity> _gradeRepository;
+    protected readonly IGradeRepository<TEntity> _gradeRepository;
     private readonly IStudentService _studentService;
 
     public GradeService(IGradeRepository<TEntity> gradeRepository, IStudentService studentService)
@@ -40,10 +40,6 @@ public abstract class GradeService<TEntity> : IGradeService<TEntity> where TEnti
     public virtual async Task<TEntity> UpdateAsync(AuthenticatedUserObject requesterUser, int gradeId, TEntity updatedGrade)
     {
         GenericValidation.CheckOnlyTeacherAndManagerUser(requesterUser.Type);
-
-        var gradeCheck = _gradeRepository.GetOneById(gradeId);
-        if (gradeCheck == null || gradeCheck.AccountId != requesterUser.AccountId)
-            throw new UnauthorizedAccessException("Grade not found");
 
         updatedGrade.Id = gradeId;
         updatedGrade.AccountId = gradeCheck.AccountId;

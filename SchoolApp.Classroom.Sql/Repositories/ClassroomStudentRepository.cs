@@ -20,4 +20,9 @@ public class ClassroomStudentRepository : BaseCrudRepository<ClassroomStudentDto
         _dbSet.RemoveRange(allStudents);
         await _context.SaveChangesAsync();
     }
+
+    public ClassroomStudent GetOneByClassroomIdAndOwnerId(int classroomId, int ownerId)
+    {
+        return _dbSet.AsNoTracking().Where(x => x.ClassroomId == classroomId && x.Student.Owners.Any(o => o.OwnerId == ownerId)).Select(x => MapToDomain(x)).FirstOrDefault();
+    }
 }
