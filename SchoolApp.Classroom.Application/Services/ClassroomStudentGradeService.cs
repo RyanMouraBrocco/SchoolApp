@@ -5,7 +5,7 @@ using SchoolApp.Shared.Authentication;
 
 namespace SchoolApp.Classroom.Application.Services;
 
-public class ClassroomStudentGradeService : GradeService<ClassroomStudentGrade>
+public class ClassroomStudentGradeService : GradeService<ClassroomStudentGrade>, IClassroomStudentGradeService
 {
     private readonly IClassroomService _classroomService;
     private readonly IClassroomStudentRepository _classroomStudentRepository;

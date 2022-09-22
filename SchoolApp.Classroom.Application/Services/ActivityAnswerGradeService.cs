@@ -5,18 +5,10 @@ using SchoolApp.Shared.Authentication;
 
 namespace SchoolApp.Classroom.Application.Services;
 
-public class ActivityAnswerGradeService : GradeService<ActivityAnswerGrade>
+public class ActivityAnswerGradeService : GradeService<ActivityAnswerGrade>, IActivityAnswerGradeService
 {
     public ActivityAnswerGradeService(IActivityAnswerGradeRepository activityAnswerGradeRepository, IStudentService studentService) : base(activityAnswerGradeRepository, studentService)
     {
 
     }
-
-    public override async Task<ActivityAnswerGrade> CreateAsync(AuthenticatedUserObject requesterUser, ActivityAnswerGrade newGrade)
-    {
-        // validate activity answer here
-
-        return await base.CreateAsync(requesterUser, newGrade);
-    }
-
 }

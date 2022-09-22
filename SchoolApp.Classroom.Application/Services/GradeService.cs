@@ -41,6 +41,10 @@ public abstract class GradeService<TEntity> : IGradeService<TEntity> where TEnti
     {
         GenericValidation.CheckOnlyTeacherAndManagerUser(requesterUser.Type);
 
+        var gradeCheck = _gradeRepository.GetOneById(gradeId);
+        if (gradeCheck == null || gradeCheck.AccountId != requesterUser.AccountId)
+            throw new UnauthorizedAccessException("Grade not found");
+
         updatedGrade.Id = gradeId;
         updatedGrade.AccountId = gradeCheck.AccountId;
         updatedGrade.CreatorId = gradeCheck.CreatorId;

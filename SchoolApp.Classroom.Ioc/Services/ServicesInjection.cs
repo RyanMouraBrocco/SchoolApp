@@ -11,5 +11,7 @@ public static class ServicesInjection
         service.AddScoped<IStudentService, StudentService>();
         service.AddScoped<IClassroomService, ClassroomService>();
         service.AddScoped<ISubjectService, SubjectService>();
+        service.AddScoped<IActivityAnswerGradeService, ActivityAnswerGradeService>();
+        service.AddScoped<IClassroomStudentGradeService, ClassroomStudentGradeService>();
     }
 }
