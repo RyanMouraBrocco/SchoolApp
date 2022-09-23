@@ -5,5 +5,5 @@ namespace SchoolApp.Classroom.Sql.Dtos.Grades;
 [Table("Activity_Answer_Grade")]
 public class ActivityAnswerGradeDto : GradeDto
 {
-    public int ActivityAnswerId { get; set; }
+    public string ActivityAnswerId { get; set; }
 }

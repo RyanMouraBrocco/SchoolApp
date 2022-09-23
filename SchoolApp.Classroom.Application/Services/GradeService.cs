@@ -28,6 +28,9 @@ public abstract class GradeService<TEntity> : IGradeService<TEntity> where TEnti
         if (studentCheck == null)
             throw new UnauthorizedAccessException("Student not found");
 
+        if (newGrade.Value < 0)
+            newGrade.Value = 0;
+
         newGrade.AccountId = requesterUser.AccountId;
         newGrade.CreatorId = requesterUser.UserId;
         newGrade.CreationDate = DateTime.Now;
@@ -44,6 +47,9 @@ public abstract class GradeService<TEntity> : IGradeService<TEntity> where TEnti
         var gradeCheck = _gradeRepository.GetOneById(gradeId);
         if (gradeCheck == null || gradeCheck.AccountId != requesterUser.AccountId)
             throw new UnauthorizedAccessException("Grade not found");
+
+        if (updatedGrade.Value < 0)
+            updatedGrade.Value = 0;
 
         updatedGrade.Id = gradeId;
         updatedGrade.AccountId = gradeCheck.AccountId;
