@@ -1,12 +1,7 @@
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
 using SchoolApp.Activity.Ioc.Repositories;
 using SchoolApp.Activity.Ioc.Services;
 using SchoolApp.Activity.Ioc.Settings;
+using SchoolApp.Shared.Utils.Authentication;
 using SchoolApp.Shared.Utils.HttpApi.Extensions;
 using SchoolApp.Shared.Utils.HttpApi.Middlewares;
 
@@ -22,21 +17,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddActivityRepositories();
 builder.Services.AddActivityServices();
 builder.Services.AddActivitySettings(builder.Configuration);
-
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["AuthenticationSettings:Issuer"],
-            ValidAudience = builder.Configuration["AuthenticationSettings:Issuer"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["AuthenticationSettings:Key"]))
-        };
-    });
+builder.Services.Configure<CustomAuthenticationSettings>(builder.Configuration.GetSection(nameof(CustomAuthenticationSettings)));
 
 
 var app = builder.Build();
@@ -50,10 +31,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-
+app.UseMiddleware<CustomAuthMiddleware>();
 app.UseMiddleware<ExceptionHandlerMiddleware>();
 
-app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

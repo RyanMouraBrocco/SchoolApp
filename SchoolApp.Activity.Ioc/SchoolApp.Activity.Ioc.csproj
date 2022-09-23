@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\SchoolApp.Activity.Application\SchoolApp.Activity.Application.csproj" />
+    <ProjectReference Include="..\SchoolApp.Activity.Http\SchoolApp.Activity.Http.csproj" />
+    <ProjectReference Include="..\SchoolApp.Shared.Utils.MongoDb\SchoolApp.Shared.Utils.MongoDb.csproj" />
+    <ProjectReference Include="..\SchoolApp.Activity.NoSql\SchoolApp.Activity.NoSql.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
+  </ItemGroup>
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+</Project>

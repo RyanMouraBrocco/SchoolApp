@@ -6,6 +6,7 @@ public class ActivityAnswer
 {
     public string Id { get; set; }
     public string ActivityId { get; set; }
+    public Activities.Activity Activity { get; set; }
     public int StudentId { get; set; }
     public int AccountId { get; set; }
     public DateTime CreationDate { get; set; }

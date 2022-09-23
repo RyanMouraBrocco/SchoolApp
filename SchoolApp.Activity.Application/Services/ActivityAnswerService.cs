@@ -12,16 +12,19 @@ public class ActivityAnswerService : IActivityAnswerService
     private readonly IActivityAnswerRepository _activityAnswerRepository;
     private readonly IActivityAnswerVersionRepository _activityAnswerVersionRepository;
     private readonly IActivityService _activityService;
+    private readonly IActivityRepository _activityRepository;
     private readonly IStudentRepository _studentRepository;
 
     public ActivityAnswerService(IActivityAnswerRepository activityAnswerRepository,
                                  IActivityAnswerVersionRepository activityAnswerVersionRepository,
                                  IActivityService activityService,
+                                 IActivityRepository activityRepository,
                                  IStudentRepository studentRepository)
     {
         _activityAnswerRepository = activityAnswerRepository;
         _activityAnswerVersionRepository = activityAnswerVersionRepository;
         _activityService = activityService;
+        _activityRepository = activityRepository;
         _studentRepository = studentRepository;
     }
 
@@ -92,5 +95,16 @@ public class ActivityAnswerService : IActivityAnswerService
         }
         else
             throw new NotImplementedException("User not valid");
+    }
+
+    public ActivityAnswer GetOneByIdIncludingActivity(string activityAnswerId)
+    {
+        var activityAnswer = _activityAnswerRepository.GetOneById(activityAnswerId);
+        if (activityAnswer != null)
+        {
+            activityAnswer.Activity = _activityRepository.GetOneById(activityAnswer.ActivityId);
+        }
+
+        return activityAnswer;
     }
 }
