@@ -4,6 +4,8 @@ using SchoolApp.Activity.Application.Interfaces.Services;
 
 namespace SchoolApp.Activity.ServiceApi.Controllers;
 
+[ApiController]
+[Route("api/[controller]")]
 public class ActivitiesAnswersController : Controller
 {
     private readonly IActivityAnswerService _activityAnswerService;

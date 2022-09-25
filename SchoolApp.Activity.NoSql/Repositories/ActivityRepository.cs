@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using SchoolApp.Activity.Application.Interfaces.Repositories;
 using SchoolApp.Activity.NoSql.Dtos.Activities;
@@ -9,7 +10,7 @@ namespace SchoolApp.Activity.NoSql.Repositories;
 
 public class ActivityRepository : BaseMainEntityRepository<ActivityDto, Application.Domain.Entities.Activities.Activity>, IActivityRepository
 {
-    public ActivityRepository(MongoDbSettings options) : base(options, ActivityMapper.MapToDomain, ActivityMapper.MapToDto)
+    public ActivityRepository(IOptions<MongoDbSettings> options) : base(options, ActivityMapper.MapToDomain, ActivityMapper.MapToDto)
     {
     }
 

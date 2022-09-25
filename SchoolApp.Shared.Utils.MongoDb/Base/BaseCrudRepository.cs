@@ -1,4 +1,5 @@
 using System.Security.Principal;
+using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using SchoolApp.Shared.Utils.Interfaces;
@@ -10,7 +11,7 @@ namespace SchoolApp.Shared.Utils.MongoDb.Base;
 
 public class BaseCrudRepository<TDto, TDomain> : BaseRepository<TDto, TDomain>, ICrudRepository<TDomain, string> where TDomain : class where TDto : class, IIdentityEntity
 {
-    public BaseCrudRepository(MongoDbSettings options, Func<TDto, TDomain> mapToDomain, Func<TDomain, TDto> mapToDto) : base(options, mapToDomain, mapToDto)
+    public BaseCrudRepository(IOptions<MongoDbSettings> options, Func<TDto, TDomain> mapToDomain, Func<TDomain, TDto> mapToDto) : base(options, mapToDomain, mapToDto)
     {
     }
 

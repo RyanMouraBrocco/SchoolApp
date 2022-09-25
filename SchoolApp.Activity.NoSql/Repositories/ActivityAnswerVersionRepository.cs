@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Options;
 using SchoolApp.Activity.Application.Domain.Entities.Answers;
 using SchoolApp.Activity.Application.Interfaces.Repositories;
 using SchoolApp.Activity.NoSql.Dtos.Answers;
@@ -9,7 +10,7 @@ namespace SchoolApp.Activity.NoSql.Repositories;
 
 public class ActivityAnswerVersionRepository : BaseCrudRepository<ActivityAnswerVersionDto, ActivityAnswerVersion>, IActivityAnswerVersionRepository
 {
-    public ActivityAnswerVersionRepository(MongoDbSettings options) : base(options, ActivityAnswerVersionMapper.MapToDomain, ActivityAnswerVersionMapper.MapToDto)
+    public ActivityAnswerVersionRepository(IOptions<MongoDbSettings> options) : base(options, ActivityAnswerVersionMapper.MapToDomain, ActivityAnswerVersionMapper.MapToDto)
     {
     }
 }

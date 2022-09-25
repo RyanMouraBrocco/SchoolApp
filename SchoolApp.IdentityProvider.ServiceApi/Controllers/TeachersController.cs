@@ -3,6 +3,8 @@ using SchoolApp.IdentityProvider.Application.Interfaces.Services;
 
 namespace SchoolApp.IdentityProvider.ServiceApi.Controllers;
 
+[Route("api/[controller]")]
+[ApiController]
 public class TeachersController : Controller
 {
     private readonly ITeacherService _teacherService;

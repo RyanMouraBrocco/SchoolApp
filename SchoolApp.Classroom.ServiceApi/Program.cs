@@ -2,6 +2,7 @@ using SchoolApp.Classroom.Ioc.Database;
 using SchoolApp.Classroom.Ioc.Repositories;
 using SchoolApp.Classroom.Ioc.Services;
 using SchoolApp.Classroom.Ioc.Settings;
+using SchoolApp.Shared.Utils.Authentication;
 using SchoolApp.Shared.Utils.HttpApi.Extensions;
 using SchoolApp.Shared.Utils.HttpApi.Middlewares;
 
@@ -18,6 +19,7 @@ builder.Services.AddClassroomDatabase();
 builder.Services.AddClassroomRepositories();
 builder.Services.AddClassroomServices();
 builder.Services.AddClassroomSettings(builder.Configuration);
+builder.Services.Configure<CustomAuthenticationSettings>(builder.Configuration.GetSection(nameof(CustomAuthenticationSettings)));
 
 
 var app = builder.Build();
@@ -31,8 +33,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseMiddleware<CustomAuthMiddleware>();
 app.UseMiddleware<ExceptionHandlerMiddleware>();
+app.UseMiddleware<CustomAuthMiddleware>();
 
 app.UseAuthorization();
 

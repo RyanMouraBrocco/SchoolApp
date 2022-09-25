@@ -4,6 +4,8 @@ using SchoolApp.Shared.Utils.HttpApi.Models;
 
 namespace SchoolApp.Classroom.ServiceApi.Controllers;
 
+[Route("api/[controller]")]
+[ApiController]
 public class ClassroomsController : Controller
 {
     private readonly IClassroomService _classroomService;

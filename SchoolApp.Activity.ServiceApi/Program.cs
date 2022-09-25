@@ -31,8 +31,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseMiddleware<CustomAuthMiddleware>();
 app.UseMiddleware<ExceptionHandlerMiddleware>();
+app.UseMiddleware<CustomAuthMiddleware>();
 
 app.UseAuthorization();
 

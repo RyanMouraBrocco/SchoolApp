@@ -16,6 +16,7 @@ public static class RepositoriesInjection
         service.AddScoped<IStudentRepository, StudentRepository>();
         service.AddScoped<ISubjectRepository, SubjectRepository>();
         service.AddHttpClient<ITeacherRepository, TeacherRepository>();
+        service.AddHttpClient<IActivityAnswerRepository, AcitivityAnswerRepository>();
         service.AddScoped<IActivityAnswerGradeRepository, ActivityAnswerGradeRepository>();
         service.AddScoped<IClassroomStudentGradeRepository, ClassroomStudentGradeRepository>();
     }

@@ -9,10 +9,10 @@ using SchoolApp.Shared.Utils.HttpApi.Models;
 
 namespace SchoolApp.Activity.Api.Controllers;
 
-public class AcitvitiesController : BaseController
+public class ActivitiesController : BaseController
 {
     private readonly IActivityService _activityService;
-    public AcitvitiesController(IActivityService activityService)
+    public ActivitiesController(IActivityService activityService)
     {
         _activityService = activityService;
     }

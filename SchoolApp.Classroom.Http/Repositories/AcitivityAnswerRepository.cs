@@ -1,11 +1,12 @@
 using System.Text.Json;
 using Microsoft.Extensions.Options;
 using SchoolApp.Classroom.Application.Domain.Dtos;
+using SchoolApp.Classroom.Application.Interfaces.Repositories;
 using SchoolApp.Classroom.Http.Settings;
 
 namespace SchoolApp.Classroom.Http.Repositories;
 
-public class AcitivityAnswerRepository
+public class AcitivityAnswerRepository : IActivityAnswerRepository
 {
     private ActivityServiceApiSettings Settigns { get; set; }
     private readonly HttpClient _httpClient;
