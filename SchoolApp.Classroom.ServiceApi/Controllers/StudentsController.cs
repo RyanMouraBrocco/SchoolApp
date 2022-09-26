@@ -16,7 +16,7 @@ public class StudentsController : Controller
     }
 
     [HttpGet("GetAllByOwnerId/{ownerId}")]
-    public IActionResult GetOneById(int ownerId, [FromQuery] PagingModel paging)
+    public IActionResult GetAllByOwnerId(int ownerId, [FromQuery] PagingModel paging)
     {
         return Ok(_studentService.GetAllByOwnerId(ownerId, paging.Top, paging.Skip));
     }
