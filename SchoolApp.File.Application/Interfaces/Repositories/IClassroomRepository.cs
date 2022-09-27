@@ -5,4 +5,5 @@ namespace SchoolApp.File.Application.Interfaces.Repositories;
 public interface IClassroomRepository
 {
     Task<ClassroomDto> GetOneByIdAsync(int id);
+    Task<IList<ClassroomDto>> GetAllByOwnerIdAsync(int ownerId);
 }
