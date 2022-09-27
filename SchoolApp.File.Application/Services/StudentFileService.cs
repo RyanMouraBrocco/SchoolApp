@@ -30,6 +30,13 @@ public class StudentFileService : FileService<StudentFile>
         Remove(GetFolderFullPath(file.StudentId), file);
     }
 
+    public async Task<IList<StudentFile>> GetAllByStudentIdAsync(AuthenticatedUserObject requesterUser, int studentId)
+    {
+        GenericValidation.CheckOnlyOwnerUser(requesterUser.Type);
+        await ValidadeStudent(requesterUser.UserId, studentId);
+        return GetAllInPath(GetFolderFullPath(studentId));
+    }
+
     private async Task ValidadeStudent(int ownerId, int studentId)
     {
         var allStudents = await _studentRepository.GetAllByOwnerIdAsync(ownerId);
