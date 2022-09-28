@@ -4,11 +4,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.9" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SchoolApp.Shared.Utils\SchoolApp.Shared.Utils.csproj" />
     <ProjectReference Include="..\SchoolApp.Shared.Utils.HttpApi\SchoolApp.Shared.Utils.HttpApi.csproj" />
     <ProjectReference Include="..\SchoolApp.File.Application\SchoolApp.File.Application.csproj" />
+    <ProjectReference Include="..\SchoolApp.File.Blob\SchoolApp.File.Blob.csproj" />
+    <ProjectReference Include="..\SchoolApp.File.Http\SchoolApp.File.Http.csproj" />
   </ItemGroup>
 </Project>
