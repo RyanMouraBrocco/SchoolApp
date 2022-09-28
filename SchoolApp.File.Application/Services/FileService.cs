@@ -12,7 +12,7 @@ public abstract class FileService<TFile> where TFile : Application.Domain.Entiti
         _fileRepository = fileRepository;
     }
 
-    public void Add(string folderPath, TFile file)
+    public async Task AddAsync(string folderPath, TFile file)
     {
         if (string.IsNullOrEmpty(file.Base64Value?.Trim()))
             throw new FormatException("Base64Value can't be null or empty");
@@ -22,18 +22,18 @@ public abstract class FileService<TFile> where TFile : Application.Domain.Entiti
 
         file.FileName = Guid.NewGuid().ToString("N");
 
-        _fileRepository.Add(folderPath, file.FileName, Base64ToStream(file.Base64Value));
+        await _fileRepository.AddAsync(folderPath, file.FileName, Base64ToStream(file.Base64Value));
     }
 
-    public void Remove(string folderPath, TFile file)
+    public async Task RemoveAsync(string folderPath, TFile file)
     {
         if (string.IsNullOrEmpty(file.FileName?.ToString()))
             throw new FormatException("FileName can't not be null or empty");
 
-        if (!_fileRepository.Exists(folderPath, file.FileName))
+        if (!await _fileRepository.ExistsAsync(folderPath, file.FileName))
             throw new UnauthorizedAccessException("File not found");
 
-        _fileRepository.Delete(folderPath, file.FileName);
+        await _fileRepository.DeleteAsync(folderPath, file.FileName);
     }
 
     public IList<TFile> GetAllInPath(string folderPath)

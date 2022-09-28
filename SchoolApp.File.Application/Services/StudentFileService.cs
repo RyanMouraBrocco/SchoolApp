@@ -20,14 +20,14 @@ public class StudentFileService : FileService<StudentFile>, IStudentFileService
     {
         GenericValidation.CheckOnlyOwnerUser(requesterUser.Type);
         await ValidadeStudent(requesterUser.UserId, file.StudentId);
-        Add(GetFolderFullPath(file.StudentId), file);
+        await AddAsync(GetFolderFullPath(file.StudentId), file);
     }
 
     public async Task RemoveAsync(AuthenticatedUserObject requesterUser, string folderPath, StudentFile file)
     {
         GenericValidation.CheckOnlyOwnerUser(requesterUser.Type);
         await ValidadeStudent(requesterUser.UserId, file.StudentId);
-        Remove(GetFolderFullPath(file.StudentId), file);
+        await RemoveAsync(GetFolderFullPath(file.StudentId), file);
     }
 
     public async Task<IList<StudentFile>> GetAllByStudentIdAsync(AuthenticatedUserObject requesterUser, int studentId)

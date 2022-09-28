@@ -39,7 +39,7 @@ public class ActivityFileService : FileService<ActivityFile>, IActivityFileServi
     public async Task AddAsync(AuthenticatedUserObject requesterUser, ActivityFile file)
     {
         await CheckActivity(requesterUser, file.ActivityId);
-        Add(GetFolderFullPath(file.ActivityId), file);
+        await AddAsync(GetFolderFullPath(file.ActivityId), file);
     }
 
     public async Task<IList<ActivityFile>> GetAllByActivityIdAsync(AuthenticatedUserObject requesterUser, string activityId)
@@ -50,7 +50,7 @@ public class ActivityFileService : FileService<ActivityFile>, IActivityFileServi
     public async Task RemoveAsync(AuthenticatedUserObject requesterUser, string folderPath, ActivityFile file)
     {
         await CheckActivity(requesterUser, file.ActivityId);
-        Remove(GetFolderFullPath(file.ActivityId), file);
+        await RemoveAsync(GetFolderFullPath(file.ActivityId), file);
     }
 
     private string GetFolderFullPath(string activityId)
