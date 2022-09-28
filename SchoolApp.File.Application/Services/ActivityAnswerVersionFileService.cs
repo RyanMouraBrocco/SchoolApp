@@ -1,12 +1,14 @@
+using SchoolApp.File.Application.Domain.Dtos;
 using SchoolApp.File.Application.Domain.Entities;
 using SchoolApp.File.Application.Interfaces.Repositories;
+using SchoolApp.File.Application.Interfaces.Services;
 using SchoolApp.Shared.Authentication;
 using SchoolApp.Shared.Utils.Enums;
 using SchoolApp.Shared.Utils.Validations;
 
 namespace SchoolApp.File.Application.Services;
 
-public class ActivityAnswerVersionFileService : FileService<ActivityAnswerVersionFile>
+public class ActivityAnswerVersionFileService : FileService<ActivityAnswerVersionFile>, IActivityAnswerVersionFileService
 {
     private readonly IActivityAnswerVersionRepository _activityAnswerVersionRepository;
     private readonly IActivityRepository _activityRepository;
@@ -40,7 +42,7 @@ public class ActivityAnswerVersionFileService : FileService<ActivityAnswerVersio
             throw new UnauthorizedAccessException("ActivityAnswerVersion not found");
     }
 
-    public async Task Add(AuthenticatedUserObject requesterUser, ActivityAnswerVersionFile file)
+    public async Task AddAsync(AuthenticatedUserObject requesterUser, ActivityAnswerVersionFile file)
     {
         await CheckActivityAnswerVersion(requesterUser, file.ActivityAnswerVersionId);
         Add(GetFolderFullPath(file.ActivityAnswerVersionId), file);

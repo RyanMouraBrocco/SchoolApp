@@ -1,28 +1,29 @@
 using SchoolApp.File.Application.Domain.Entities;
 using SchoolApp.File.Application.Interfaces.Repositories;
+using SchoolApp.File.Application.Interfaces.Services;
 using SchoolApp.Shared.Authentication;
 using SchoolApp.Shared.Utils.Enums;
 
 namespace SchoolApp.File.Application.Services;
 
-public class UserFileService : FileService<UserFile>
+public class UserFileService : FileService<UserFile>, IUserFileService
 {
     public UserFileService(IFileRepository<UserFile> fileRepository) : base(fileRepository)
     {
     }
 
-    public void Add(AuthenticatedUserObject requesterUser, UserFile file)
+    public Task AddAsync(AuthenticatedUserObject requesterUser, UserFile file)
     {
-        Add(GetFolderFullPath(requesterUser), file);
+        return Task.Run(() => { Add(GetFolderFullPath(requesterUser), file); });
     }
 
     public IList<UserFile> GetAllInPath(AuthenticatedUserObject requesterUser)
     {
         return GetAllInPath(GetFolderFullPath(requesterUser));
     }
-    public void Remove(AuthenticatedUserObject requesterUser, string folderPath, UserFile file)
+    public Task RemoveAsync(AuthenticatedUserObject requesterUser, string folderPath, UserFile file)
     {
-        Remove(GetFolderFullPath(requesterUser), file);
+        return Task.Run(() => { Remove(GetFolderFullPath(requesterUser), file); });
     }
 
     private string GetFolderFullPath(AuthenticatedUserObject requesterUser)

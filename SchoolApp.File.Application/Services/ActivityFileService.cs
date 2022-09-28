@@ -2,13 +2,14 @@ using System.Diagnostics.Contracts;
 using SchoolApp.File.Application.Domain.Dtos;
 using SchoolApp.File.Application.Domain.Entities;
 using SchoolApp.File.Application.Interfaces.Repositories;
+using SchoolApp.File.Application.Interfaces.Services;
 using SchoolApp.Shared.Authentication;
 using SchoolApp.Shared.Utils.Enums;
 using SchoolApp.Shared.Utils.Validations;
 
 namespace SchoolApp.File.Application.Services;
 
-public class ActivityFileService : FileService<ActivityFile>
+public class ActivityFileService : FileService<ActivityFile>, IActivityFileService
 {
     private readonly IActivityRepository _activityRepository;
     private readonly IClassroomRepository _classroomRepository;
@@ -35,7 +36,7 @@ public class ActivityFileService : FileService<ActivityFile>
             throw new UnauthorizedAccessException("Activity not found");
     }
 
-    public async Task Add(AuthenticatedUserObject requesterUser, ActivityFile file)
+    public async Task AddAsync(AuthenticatedUserObject requesterUser, ActivityFile file)
     {
         await CheckActivity(requesterUser, file.ActivityId);
         Add(GetFolderFullPath(file.ActivityId), file);

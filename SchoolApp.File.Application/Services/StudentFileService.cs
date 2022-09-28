@@ -7,7 +7,7 @@ using SchoolApp.Shared.Utils.Validations;
 
 namespace SchoolApp.File.Application.Services;
 
-public class StudentFileService : FileService<StudentFile>
+public class StudentFileService : FileService<StudentFile>, IStudentFileService
 {
     private readonly IStudentRepository _studentRepository;
 
