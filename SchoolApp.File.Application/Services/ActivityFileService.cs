@@ -47,7 +47,7 @@ public class ActivityFileService : FileService<ActivityFile>, IActivityFileServi
         await CheckActivity(requesterUser, activityId);
         return GetAllInPath(GetFolderFullPath(activityId));
     }
-    public async Task RemoveAsync(AuthenticatedUserObject requesterUser, string folderPath, ActivityFile file)
+    public async Task RemoveAsync(AuthenticatedUserObject requesterUser, ActivityFile file)
     {
         await CheckActivity(requesterUser, file.ActivityId);
         await RemoveAsync(GetFolderFullPath(file.ActivityId), file);

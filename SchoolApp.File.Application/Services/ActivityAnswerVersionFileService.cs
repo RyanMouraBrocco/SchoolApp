@@ -48,12 +48,12 @@ public class ActivityAnswerVersionFileService : FileService<ActivityAnswerVersio
         await AddAsync(GetFolderFullPath(file.ActivityAnswerVersionId), file);
     }
 
-    public async Task<IList<ActivityAnswerVersionFile>> GetAllByActivityIdAsync(AuthenticatedUserObject requesterUser, string activityAnswerVersionId)
+    public async Task<IList<ActivityAnswerVersionFile>> GetAllByActivityAnswerVersionIdAsync(AuthenticatedUserObject requesterUser, string activityAnswerVersionId)
     {
         await CheckActivityAnswerVersion(requesterUser, activityAnswerVersionId);
         return GetAllInPath(GetFolderFullPath(activityAnswerVersionId));
     }
-    public async Task RemoveAsync(AuthenticatedUserObject requesterUser, string folderPath, ActivityAnswerVersionFile file)
+    public async Task RemoveAsync(AuthenticatedUserObject requesterUser, ActivityAnswerVersionFile file)
     {
         await CheckActivityAnswerVersion(requesterUser, file.ActivityAnswerVersionId);
         await RemoveAsync(GetFolderFullPath(file.ActivityAnswerVersionId), file);

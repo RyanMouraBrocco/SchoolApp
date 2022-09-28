@@ -23,7 +23,7 @@ public class StudentFileService : FileService<StudentFile>, IStudentFileService
         await AddAsync(GetFolderFullPath(file.StudentId), file);
     }
 
-    public async Task RemoveAsync(AuthenticatedUserObject requesterUser, string folderPath, StudentFile file)
+    public async Task RemoveAsync(AuthenticatedUserObject requesterUser, StudentFile file)
     {
         GenericValidation.CheckOnlyOwnerUser(requesterUser.Type);
         await ValidadeStudent(requesterUser.UserId, file.StudentId);

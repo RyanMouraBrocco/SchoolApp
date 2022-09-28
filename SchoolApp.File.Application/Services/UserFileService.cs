@@ -17,11 +17,11 @@ public class UserFileService : FileService<UserFile>, IUserFileService
         await AddAsync(GetFolderFullPath(requesterUser), file);
     }
 
-    public IList<UserFile> GetAllInPath(AuthenticatedUserObject requesterUser)
+    public IList<UserFile> GetAll(AuthenticatedUserObject requesterUser)
     {
         return GetAllInPath(GetFolderFullPath(requesterUser));
     }
-    public async Task RemoveAsync(AuthenticatedUserObject requesterUser, string folderPath, UserFile file)
+    public async Task RemoveAsync(AuthenticatedUserObject requesterUser, UserFile file)
     {
         await RemoveAsync(GetFolderFullPath(requesterUser), file);
     }
