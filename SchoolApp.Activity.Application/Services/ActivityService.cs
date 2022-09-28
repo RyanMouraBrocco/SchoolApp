@@ -168,4 +168,9 @@ public class ActivityService : IActivityService
 
         return await _activityRepository.UpdateAsync(activityCheck);
     }
+
+    public Domain.Entities.Activities.Activity GetOneById(string id)
+    {
+        return _activityRepository.GetOneById(id);
+    }
 }

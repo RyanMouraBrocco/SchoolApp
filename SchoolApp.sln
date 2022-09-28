@@ -99,6 +99,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentatio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolApp.File.Application", "SchoolApp.File.Application\SchoolApp.File.Application.csproj", "{BD6BA962-3D94-499F-8478-3A2E7268CD94}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolApp.File.Http", "SchoolApp.File.Http\SchoolApp.File.Http.csproj", "{E858DF37-8FD1-47E1-BE1F-09201876F554}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -108,6 +110,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{E858DF37-8FD1-47E1-BE1F-09201876F554} = {8F6BE3AD-D151-4F71-91AF-D2DD393284BA}
 		{BD6BA962-3D94-499F-8478-3A2E7268CD94} = {C2E55A04-75DD-4FFF-8032-9BEB685E9D3D}
 		{172908DA-6175-44E3-A6C7-0634B1C3871B} = {7E8B80C2-8FDA-4EC4-98AF-B0569C7BB5F9}
 		{7E8B80C2-8FDA-4EC4-98AF-B0569C7BB5F9} = {0C905C3A-9A7D-408B-B781-C3B4C48F7D2E}
@@ -245,5 +248,9 @@ Global
 		{BD6BA962-3D94-499F-8478-3A2E7268CD94}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD6BA962-3D94-499F-8478-3A2E7268CD94}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD6BA962-3D94-499F-8478-3A2E7268CD94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E858DF37-8FD1-47E1-BE1F-09201876F554}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E858DF37-8FD1-47E1-BE1F-09201876F554}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E858DF37-8FD1-47E1-BE1F-09201876F554}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E858DF37-8FD1-47E1-BE1F-09201876F554}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

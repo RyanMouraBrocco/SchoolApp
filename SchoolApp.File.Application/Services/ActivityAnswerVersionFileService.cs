@@ -29,7 +29,7 @@ public class ActivityAnswerVersionFileService : FileService<ActivityAnswerVersio
     {
         GenericValidation.CheckOnlyOwnerUser(requesterUser.Type);
 
-        var activityAnswerVersionCheck = await _activityAnswerVersionRepository.GetOneByIdAnsync(activityAnswerVersionId);
+        var activityAnswerVersionCheck = await _activityAnswerVersionRepository.GetOneByIdAsync(activityAnswerVersionId);
         if (activityAnswerVersionCheck == null)
             throw new UnauthorizedAccessException("ActivityAnswerVersion not found");
 
