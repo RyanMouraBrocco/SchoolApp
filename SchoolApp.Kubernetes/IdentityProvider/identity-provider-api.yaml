@@ -2,8 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: identity-provider-api-deployment
-  labels:
-    app: identity-provider-api
 spec:
   replicas: 1
   selector:
@@ -20,21 +18,19 @@ spec:
           imagePullPolicy: Never
           ports:
             - containerPort: 80
-              protocol: TCP
           env:
-            - name: ASPNETCORE_URLS
-              value: http://+:80
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Development
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: identity-provider-api-service
-  labels:
-    app: identity-provider-api
 spec:
-  ports:
-    - port: 80
-      targetPort: 80
-      protocol: TCP
   selector:
     app: identity-provider-api
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
