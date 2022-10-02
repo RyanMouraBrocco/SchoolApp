@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   name: schoolapp-ingress
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
     - host: identity-provider.info
@@ -14,5 +14,65 @@ spec:
             backend:
               service:
                 name: identity-provider-api-service
+                port:
+                  number: 80
+    - host: identity-provider-service.info
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: identity-provider-service-api-service
+                port:
+                  number: 80
+    - host: classroom.info
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: classroom-api-service
+                port:
+                  number: 80
+    - host: classroom-service.info
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: classroom-service-api-service
+                port:
+                  number: 80
+    - host: activity.info
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: activity-api-service
+                port:
+                  number: 80
+    - host: activity-service.info
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: activity-service-api-service
+                port:
+                  number: 80
+    - host: file.info
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: file-api-service
                 port:
                   number: 80

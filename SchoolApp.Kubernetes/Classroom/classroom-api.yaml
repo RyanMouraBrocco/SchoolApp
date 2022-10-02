@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: identity-provider-api-deployment
+  name: classroom-api-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: identity-provider-api
+      app: classroom-api
   template:
     metadata:
       labels:
-        app: identity-provider-api
+        app: classroom-api
     spec:
       containers:
         - name: webapi
-          image: identity-provider-api-image
+          image: classroom-api-image
           imagePullPolicy: Never
           ports:
             - containerPort: 80
@@ -25,10 +25,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: identity-provider-api-service
+  name: classroom-api-service
 spec:
   selector:
-    app: identity-provider-api
+    app: classroom-api
   ports:
     - port: 80
       targetPort: 80

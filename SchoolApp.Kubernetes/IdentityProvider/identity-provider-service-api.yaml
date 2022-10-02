@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: identity-provider-service-api-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: identity-provider-service-api
+  template:
+    metadata:
+      labels:
+        app: identity-provider-service-api
+    spec:
+      containers:
+        - name: webapi
+          image: identity-provider-service-api-image
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 80
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Development
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: identity-provider-service-api-service
+spec:
+  selector:
+    app: identity-provider-service-api
+  ports:
+    - port: 80
+      targetPort: 80
+  type: LoadBalancer

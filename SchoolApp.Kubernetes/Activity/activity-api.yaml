@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: identity-provider-api-deployment
+  name: activity-api-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: identity-provider-api
+      app: activity-api
   template:
     metadata:
       labels:
-        app: identity-provider-api
+        app: activity-api
     spec:
       containers:
         - name: webapi
-          image: identity-provider-api-image
+          image: activity-api-image
           imagePullPolicy: Never
           ports:
             - containerPort: 80
@@ -25,10 +25,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: identity-provider-api-service
+  name: activity-api-service
 spec:
   selector:
-    app: identity-provider-api
+    app: activity-api
   ports:
     - port: 80
       targetPort: 80
