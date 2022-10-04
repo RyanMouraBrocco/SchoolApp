@@ -1,13 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.23.1" />
   </ItemGroup>
-
+  <ItemGroup>
+    <ProjectReference Include="..\SchoolApp.Shared.Utils\SchoolApp.Shared.Utils.csproj" />
+    <ProjectReference Include="..\SchoolApp.Shared.Utils.HttpApi\SchoolApp.Shared.Utils.HttpApi.csproj" />
+    <ProjectReference Include="..\SchoolApp.Feed.Application\SchoolApp.Feed.Application.csproj" />
+    <ProjectReference Include="..\SchoolApp.Feed.Ioc\SchoolApp.Feed.Ioc.csproj" />
+  </ItemGroup>
 </Project>

@@ -7,6 +7,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.8" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.23.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SchoolApp.IdentityProvider.Sql\SchoolApp.IdentityProvider.Sql.csproj" />
@@ -15,5 +16,6 @@
     <ProjectReference Include="..\SchoolApp.Shared.Utils.Sql\SchoolApp.Shared.Utils.Sql.csproj" />
     <ProjectReference Include="..\SchoolApp.Shared.Utils.HttpApi\SchoolApp.Shared.Utils.HttpApi.csproj" />
     <ProjectReference Include="..\SchoolApp.IdentityProvider.Ioc\SchoolApp.IdentityProvider.Ioc.csproj" />
+    <ProjectReference Include="..\SchoolApp.Feed.Ioc\SchoolApp.Feed.Ioc.csproj" />
   </ItemGroup>
 </Project>
