@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SchoolApp.Feed.Api.Mappers;
 using SchoolApp.Feed.Api.Models;
+using SchoolApp.Feed.Application.Domain.Dtos;
 using SchoolApp.Feed.Application.Interfaces.Services;
 using SchoolApp.Shared.Utils.HttpApi.Controllers;
 using SchoolApp.Shared.Utils.HttpApi.Models;
@@ -27,14 +28,21 @@ public class MessagesController : BaseController
     [Authorize()]
     public async Task<IActionResult> PostAsync([FromBody] MessageCreateModel payload)
     {
-        return Ok(await _messageService.CreateAsync(GetAuthenticatedUser(), payload.MapToMessage()));
+        return Ok(await _messageService.CreateAsync(GetAuthenticatedUser(),
+                                                    payload.MapToMessage(),
+                                                    payload.AllowedClassrooms.Select(x => new MessageAllowedClassroomDto() { ClassroomId = x.ClassroomId }).ToList(),
+                                                    payload.AllowedStudents.Select(x => new MessageAllowedStudentDto() { StudentId = x.StudentId }).ToList()));
     }
 
     [HttpPut("{id}")]
     [Authorize()]
     public async Task<IActionResult> PutAsync([FromBody] MessageUpdateModel payload, [FromRoute] string id)
     {
-        return Ok(await _messageService.UpdateAsync(GetAuthenticatedUser(), id, payload.MapToMessage()));
+        return Ok(await _messageService.UpdateAsync(GetAuthenticatedUser(),
+                                                    id,
+                                                    payload.MapToMessage(),
+                                                    payload.AllowedClassrooms.Select(x => new MessageAllowedClassroomDto() { ClassroomId = x.ClassroomId }).ToList(),
+                                                    payload.AllowedStudents.Select(x => new MessageAllowedStudentDto() { StudentId = x.StudentId }).ToList()));
     }
 
     [HttpDelete("{id}")]

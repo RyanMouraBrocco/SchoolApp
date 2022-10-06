@@ -14,5 +14,6 @@
     <ProjectReference Include="..\SchoolApp.Shared.Utils.MongoDb\SchoolApp.Shared.Utils.MongoDb.csproj" />
     <ProjectReference Include="..\SchoolApp.Feed.Application\SchoolApp.Feed.Application.csproj" />
     <ProjectReference Include="..\SchoolApp.Feed.NoSql\SchoolApp.Feed.NoSql.csproj" />
+    <ProjectReference Include="..\SchoolApp.Feed.Queue\SchoolApp.Feed.Queue.csproj" />
   </ItemGroup>
 </Project>

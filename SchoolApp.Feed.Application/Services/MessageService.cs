@@ -1,3 +1,4 @@
+using SchoolApp.Feed.Application.Domain.Dtos;
 using SchoolApp.Feed.Application.Domain.Entities;
 using SchoolApp.Feed.Application.Interfaces.Repositories;
 using SchoolApp.Feed.Application.Interfaces.Services;
@@ -9,13 +10,19 @@ namespace SchoolApp.Feed.Application.Services;
 public class MessageService : IMessageService
 {
     private readonly IMessageRepository _messageRepository;
+    private readonly IMessageAllowedClassroomRepository _messageAllowedClassroomRepository;
+    private readonly IMessageAllowedStudentRepository _messageAllowedStudentRepository;
 
-    public MessageService(IMessageRepository messageRepository)
+    public MessageService(IMessageRepository messageRepository,
+                          IMessageAllowedClassroomRepository messageAllowedClassroomRepository,
+                          IMessageAllowedStudentRepository messageAllowedStudentRepository)
     {
         _messageRepository = messageRepository;
+        _messageAllowedClassroomRepository = messageAllowedClassroomRepository;
+        _messageAllowedStudentRepository = messageAllowedStudentRepository;
     }
 
-    public async Task<Message> CreateAsync(AuthenticatedUserObject requesterUser, Message newMessage)
+    public async Task<Message> CreateAsync(AuthenticatedUserObject requesterUser, Message newMessage, IList<MessageAllowedClassroomDto> allowedClassrooms, IList<MessageAllowedStudentDto> allowedStudents)
     {
         if (string.IsNullOrEmpty(newMessage.MessageId))
             GenericValidation.CheckOnlyTeacherAndManagerUser(requesterUser.Type);
@@ -35,7 +42,11 @@ public class MessageService : IMessageService
         newMessage.UpdaterId = null;
         newMessage.UpdateDate = null;
 
-        return await _messageRepository.InsertAsync(newMessage);
+        var insertedMessage = await _messageRepository.InsertAsync(newMessage);
+
+        UpdateAllowedPermissions(insertedMessage, allowedClassrooms, allowedStudents);
+
+        return insertedMessage;
     }
 
     public async Task DeleteAsync(AuthenticatedUserObject requesterUser, string messageId)
@@ -59,7 +70,7 @@ public class MessageService : IMessageService
         return _messageRepository.GetAll(requesterUser.AccountId, top, skip);
     }
 
-    public async Task<Message> UpdateAsync(AuthenticatedUserObject requesterUser, string messageId, Message updatedMessage)
+    public async Task<Message> UpdateAsync(AuthenticatedUserObject requesterUser, string messageId, Message updatedMessage, IList<MessageAllowedClassroomDto> allowedClassrooms, IList<MessageAllowedStudentDto> allowedStudents)
     {
         var messageCheck = _messageRepository.GetOneById(messageId);
         if (messageCheck == null || messageCheck.AccountId != requesterUser.AccountId)
@@ -79,6 +90,27 @@ public class MessageService : IMessageService
         updatedMessage.UpdateDate = DateTime.Now;
         updatedMessage.UpdaterId = requesterUser.UserId;
 
-        return await _messageRepository.UpdateAsync(updatedMessage);
+        var resultMessage = await _messageRepository.UpdateAsync(updatedMessage);
+
+        UpdateAllowedPermissions(resultMessage, allowedClassrooms, allowedStudents);
+
+        return resultMessage;
+    }
+
+    private void UpdateAllowedPermissions(Message message, IList<MessageAllowedClassroomDto> allowedClassrooms, IList<MessageAllowedStudentDto> allowedStudents)
+    {
+        foreach (var allowedClassroom in allowedClassrooms)
+        {
+            allowedClassroom.MessageId = message.Id;
+            allowedClassroom.Message = message;
+            _messageAllowedClassroomRepository.Send(allowedClassroom);
+        }
+
+        foreach (var allowedStudent in allowedStudents)
+        {
+            allowedStudent.MessageId = message.Id;
+            allowedStudent.Message = message;
+            _messageAllowedStudentRepository.Send(allowedStudent);
+        }
     }
 }
