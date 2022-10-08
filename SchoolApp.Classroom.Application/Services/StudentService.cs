@@ -91,6 +91,11 @@ public class StudentService : IStudentService
         return _studentRepository.GetAllByOwnerId(ownerId, top, skip);
     }
 
+    public IList<Student> GetAllByTeacherId(int teacherId, int top, int skip)
+    {
+        return _studentRepository.GetAllByTeacherId(teacherId, top, skip);
+    }
+
     public async Task<Student> UpdateAsync(AuthenticatedUserObject requesterUser, int itemId, Student updatedStudent)
     {
         GenericValidation.CheckOnlyManagerUser(requesterUser.Type);
@@ -109,5 +114,10 @@ public class StudentService : IStudentService
         updatedStudent.UpdaterId = requesterUser.UserId;
 
         return await _studentRepository.UpdateAsync(updatedStudent);
+    }
+
+    public Student GetOneById(int id)
+    {
+        return _studentRepository.GetOneById(id);
     }
 }

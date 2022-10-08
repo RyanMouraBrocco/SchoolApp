@@ -14,4 +14,9 @@ public class MessageRepository : BaseMainEntityRepository<MessageDto, Message>, 
     public MessageRepository(IOptions<MongoDbSettings> options) : base(options, MessageMapper.MapToDomain, MessageMapper.MapToDto)
     {
     }
+
+    public IList<Message> GetAllMainMessages(int accountId, int top, int skip)
+    {
+        return _collection.Find(x => x.AccountId == accountId && !x.Deleted && x.MessageId == null).Skip(skip).Limit(top).ToList().Select(x => MapToDomain(x)).ToList();
+    }
 }

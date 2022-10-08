@@ -5,4 +5,5 @@ namespace SchoolApp.IdentityProvider.Application.Interfaces.Repositories;
 
 public interface IMessageAllowedClassroomRepository : ICrudRepository<MessageAllowedClassroomDto, int>
 {
+    void DeleteAllByMessageId(string messageId);
 }

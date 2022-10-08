@@ -19,9 +19,9 @@ public class MessagesController : BaseController
 
     [HttpGet]
     [Authorize()]
-    public IActionResult Get([FromQuery] PagingModel paging)
+    public async Task<IActionResult> GetAsync([FromQuery] PagingModel paging)
     {
-        return Ok(_messageService.GetAll(GetAuthenticatedUser(), paging.Top, paging.Skip));
+        return Ok(await _messageService.GetAllMainMessagesAsync(GetAuthenticatedUser(), paging.Top, paging.Skip));
     }
 
     [HttpPost]

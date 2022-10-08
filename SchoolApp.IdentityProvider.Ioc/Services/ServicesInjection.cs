@@ -13,5 +13,6 @@ public static class ServicesInjection
         service.AddScoped<ITeacherService, TeacherService>();
         service.AddScoped<IManagerService, ManagerService>();
         service.AddScoped<IFunctionService, FunctionService>();
+        service.AddScoped<IMessageAllowedPermissionService, MessageAllowedPermissionService>();
     }
 }

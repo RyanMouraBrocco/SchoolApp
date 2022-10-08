@@ -11,12 +11,24 @@ public class MessageService : IMessageService
 {
     private readonly IMessageRepository _messageRepository;
     private readonly IMessageAllowedPermissionRepository _messageAllowedPermissionRepository;
+    private readonly IMessageAllowedClassroomRepository _messageAllowedClassroomRepository;
+    private readonly IMessageAllowedStudentRepository _messageAllowedStudentRepository;
+    private readonly IClassroomRepository _classroomRepository;
+    private readonly IStudentRepository _studentRepository;
 
     public MessageService(IMessageRepository messageRepository,
-                          IMessageAllowedPermissionRepository messageAllowedPermissionRepository)
+                          IMessageAllowedPermissionRepository messageAllowedPermissionRepository,
+                          IMessageAllowedClassroomRepository messageAllowedClassroomRepository,
+                          IMessageAllowedStudentRepository messageAllowedStudentRepository,
+                          IClassroomRepository classroomRepository,
+                          IStudentRepository studentRepository)
     {
         _messageRepository = messageRepository;
         _messageAllowedPermissionRepository = messageAllowedPermissionRepository;
+        _messageAllowedClassroomRepository = messageAllowedClassroomRepository;
+        _messageAllowedStudentRepository = messageAllowedStudentRepository;
+        _classroomRepository = classroomRepository;
+        _studentRepository = studentRepository;
     }
 
     public async Task<Message> CreateAsync(AuthenticatedUserObject requesterUser, Message newMessage, IList<MessageAllowedClassroomDto> allowedClassrooms, IList<MessageAllowedStudentDto> allowedStudents)
@@ -41,7 +53,8 @@ public class MessageService : IMessageService
 
         var insertedMessage = await _messageRepository.InsertAsync(newMessage);
 
-        UpdateAllowedPermissions(insertedMessage, allowedClassrooms, allowedStudents);
+        if (insertedMessage.MessageId == null)
+            await UpdateAllowedPermissionsAsync(requesterUser, insertedMessage, allowedClassrooms, allowedStudents);
 
         return insertedMessage;
     }
@@ -62,9 +75,39 @@ public class MessageService : IMessageService
         await _messageRepository.DeleteAsync(messageId);
     }
 
-    public IList<Message> GetAll(AuthenticatedUserObject requesterUser, int top, int skip)
+    public async Task<IList<Message>> GetAllMainMessagesAsync(AuthenticatedUserObject requesterUser, int top, int skip)
     {
-        return _messageRepository.GetAll(requesterUser.AccountId, top, skip);
+        if (requesterUser.Type == Shared.Utils.Enums.UserTypeEnum.Owner)
+        {
+            var resultMessages = new List<Message>();
+            var internalMessages = (IList<Message>)new List<Message>();
+            int internalSkip = skip;
+            do
+            {
+                internalMessages = _messageRepository.GetAllMainMessages(requesterUser.AccountId, top, internalSkip);
+                var userClassrooms = await _classroomRepository.GetAllByOwnerIdAsync(requesterUser.UserId);
+                var userStudents = await _classroomRepository.GetAllByOwnerIdAsync(requesterUser.UserId);
+
+                foreach (var internalMessage in internalMessages)
+                {
+                    var allowedClassroomPermission = await _messageAllowedClassroomRepository.GetAllByMessageIdAsync(internalMessage.MessageId);
+                    var allowedStudentPermission = await _messageAllowedStudentRepository.GetAllByMessageIdAsync(internalMessage.MessageId);
+
+                    if (allowedClassroomPermission.Count == 0 && allowedStudentPermission.Count == 0)
+                        resultMessages.Add(internalMessage);
+                    else if (allowedStudentPermission.Any(x => userStudents.Select(x => x.Id).Contains(x.StudentId)))
+                        resultMessages.Add(internalMessage);
+                    else if (allowedClassroomPermission.Any(x => userClassrooms.Select(x => x.Id).Contains(x.ClassroomId)))
+                        resultMessages.Add(internalMessage);
+                }
+
+                internalSkip += top;
+            } while (internalMessages.Count == top && resultMessages.Count < top);
+
+            return resultMessages;
+        }
+        else
+            return _messageRepository.GetAllMainMessages(requesterUser.AccountId, top, skip);
     }
 
     public async Task<Message> UpdateAsync(AuthenticatedUserObject requesterUser, string messageId, Message updatedMessage, IList<MessageAllowedClassroomDto> allowedClassrooms, IList<MessageAllowedStudentDto> allowedStudents)
@@ -89,25 +132,59 @@ public class MessageService : IMessageService
 
         var resultMessage = await _messageRepository.UpdateAsync(updatedMessage);
 
-        UpdateAllowedPermissions(resultMessage, allowedClassrooms, allowedStudents);
+        if (updatedMessage.MessageId == null)
+            await UpdateAllowedPermissionsAsync(requesterUser, resultMessage, allowedClassrooms, allowedStudents);
 
         return resultMessage;
     }
 
-    private void UpdateAllowedPermissions(Message message, IList<MessageAllowedClassroomDto> allowedClassrooms, IList<MessageAllowedStudentDto> allowedStudents)
+    private async Task UpdateAllowedPermissionsAsync(AuthenticatedUserObject requesterUser, Message message, IList<MessageAllowedClassroomDto> allowedClassrooms, IList<MessageAllowedStudentDto> allowedStudents)
     {
-        foreach (var allowedClassroom in allowedClassrooms)
-        {
-            allowedClassroom.MessageId = message.Id;
-            allowedClassroom.Message = message;
-        }
+        var validAllowedClassrooms = new List<MessageAllowedClassroomDto>();
+        var validAllowedStudents = new List<MessageAllowedStudentDto>();
 
-        foreach (var allowedStudent in allowedStudents)
+        if (requesterUser.Type == Shared.Utils.Enums.UserTypeEnum.Owner)
         {
-            allowedStudent.MessageId = message.Id;
-            allowedStudent.Message = message;
-        }
+            foreach (var allowedClassroom in allowedClassrooms)
+            {
+                var classroomCheck = await _classroomRepository.GetOneByIdAsync(allowedClassroom.ClassroomId);
+                if (classroomCheck != null && classroomCheck.AccountId == requesterUser.AccountId)
+                {
+                    allowedClassroom.MessageId = message.Id;
+                    validAllowedClassrooms.Add(allowedClassroom);
+                }
+            }
 
-        _messageAllowedPermissionRepository.Send(allowedClassrooms, allowedStudents);
+            foreach (var allowedStudent in allowedStudents)
+            {
+                var studentCheck = await _studentRepository.GetOneByIdAsync(allowedStudent.StudentId);
+                if (studentCheck != null && studentCheck.AccountId == requesterUser.AccountId)
+                {
+                    allowedStudent.MessageId = message.Id;
+                    validAllowedStudents.Add(allowedStudent);
+                }
+            }
+        }
+        else if (requesterUser.Type == Shared.Utils.Enums.UserTypeEnum.Teacher)
+        {
+            var allStudents = await _studentRepository.GetAllByTeacherIdAsync(requesterUser.UserId);
+            var allClassrooms = await _classroomRepository.GetAllByTeacherIdAsync(requesterUser.UserId);
+
+            foreach (var allowedClassroom in allowedClassrooms.Join(allClassrooms, x => x.ClassroomId, y => y.Id, (x, y) => x))
+            {
+                allowedClassroom.MessageId = message.Id;
+                validAllowedClassrooms.Add(allowedClassroom);
+            }
+
+            foreach (var allowedStudent in allowedStudents.Join(allClassrooms, x => x.StudentId, y => y.Id, (x, y) => x))
+            {
+                allowedStudent.MessageId = message.Id;
+                validAllowedStudents.Add(allowedStudent);
+            }
+        }
+        else
+            throw new UnauthorizedAccessException("This user type can't set permission in message");
+
+        _messageAllowedPermissionRepository.Send(message.Id, validAllowedClassrooms, validAllowedStudents);
     }
 }

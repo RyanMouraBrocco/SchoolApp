@@ -13,10 +13,11 @@ public class MessageAllowedPermissionRepository : RabbitMQService<MessageAllowed
     {
     }
 
-    public void Send(IList<MessageAllowedClassroomDto> allowedClassrooms, IList<MessageAllowedStudentDto> allowedStudents)
+    public void Send(string messageId, IList<MessageAllowedClassroomDto> allowedClassrooms, IList<MessageAllowedStudentDto> allowedStudents)
     {
         var genericAllowedPermission = new MessageAllowedPermissionDto()
         {
+            MessageId = messageId,
             AllowedClassrooms = allowedClassrooms,
             AllowedStudents = allowedStudents
         };

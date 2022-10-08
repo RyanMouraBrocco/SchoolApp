@@ -4,5 +4,5 @@ namespace SchoolApp.Feed.Application.Interfaces.Repositories;
 
 public interface IMessageAllowedPermissionRepository
 {
-    void Send(IList<MessageAllowedClassroomDto> allowedClassrooms, IList<MessageAllowedStudentDto> allowedStudents);
+    void Send(string messageId, IList<MessageAllowedClassroomDto> allowedClassrooms, IList<MessageAllowedStudentDto> allowedStudents);
 }

@@ -5,5 +5,5 @@ namespace SchoolApp.Feed.Application.Interfaces.Repositories;
 
 public interface IMessageRepository : ICrudRepository<Message, string>
 {
-    IList<Message> GetAll(int accountId, int top, int skip);
+    IList<Message> GetAllMainMessages(int accountId, int top, int skip);
 }

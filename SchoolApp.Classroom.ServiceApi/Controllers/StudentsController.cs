@@ -15,10 +15,22 @@ public class StudentsController : Controller
         _studentService = studentService;
     }
 
+    [HttpGet("GetOneById/{id}")]
+    public IActionResult GetOneById(int id)
+    {
+        return Ok(_studentService.GetOneById(id));
+    }
+
     [HttpGet("GetAllByOwnerId/{ownerId}")]
     public IActionResult GetAllByOwnerId(int ownerId, [FromQuery] PagingModel paging)
     {
         return Ok(_studentService.GetAllByOwnerId(ownerId, paging.Top, paging.Skip));
+    }
+
+    [HttpGet("GetAllByTeacherId/{teacherId}")]
+    public IActionResult GetAllByTeacherId(int teacherId, [FromQuery] PagingModel paging)
+    {
+        return Ok(_studentService.GetAllByTeacherId(teacherId, paging.Top, paging.Skip));
     }
 
 }

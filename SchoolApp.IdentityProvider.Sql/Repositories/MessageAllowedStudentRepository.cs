@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using SchoolApp.IdentityProvider.Application.Interfaces.Repositories;
 using SchoolApp.IdentityProvider.Sql.Context;
 using SchoolApp.IdentityProvider.Sql.Mappers;
@@ -9,5 +10,10 @@ public class MessageAllowedStudentRepository : BaseCrudRepository<Dtos.MessageAl
 {
     public MessageAllowedStudentRepository(SchoolAppIdentityProviderContext context) : base(context, MessageAllowedPermissionMapper.MapToDomain, MessageAllowedPermissionMapper.MapToDto)
     {
+    }
+
+    public void DeleteAllByMessageId(string messageId)
+    {
+        _dbSet.RemoveRange(_dbSet.AsNoTracking().Where(x => x.MessageId == messageId));
     }
 }

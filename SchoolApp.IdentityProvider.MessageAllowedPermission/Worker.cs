@@ -2,6 +2,7 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using SchoolApp.IdentityProvider.Application.Interfaces.Services;
 using SchoolApp.IdentityProvider.MessageAllowedPermission.Dtos;
 using SchoolApp.IdentityProvider.MessageAllowedPermission.Settings;
 
@@ -11,10 +12,14 @@ public class Worker : BackgroundService
 {
     private readonly ILogger<Worker> _logger;
     private readonly IConnection _connection;
+    private readonly IMessageAllowedPermissionService _messageAllowedPermissionService;
 
-    public Worker(ILogger<Worker> logger, IOptions<MessageAllowedPermissionQueueSettings> options)
+    public Worker(ILogger<Worker> logger,
+                  IMessageAllowedPermissionService messageAllowedPermissionService,
+                  IOptions<MessageAllowedPermissionQueueSettings> options)
     {
         _logger = logger;
+        _messageAllowedPermissionService = messageAllowedPermissionService;
         var factory = new ConnectionFactory()
         {
             Uri = new Uri(options.Value.ConnectionString)
@@ -52,6 +57,7 @@ public class Worker : BackgroundService
     {
         var stringMessage = Encoding.UTF8.GetString(e.Body.ToArray());
         var message = System.Text.Json.JsonSerializer.Deserialize<MessageAllowedPermissionDto>(stringMessage);
+        _messageAllowedPermissionService.SyncPermissionAsync(message.MessageId, message.AllowedClassrooms, message.AllowedStudents).Wait();
     }
 
     public override void Dispose()

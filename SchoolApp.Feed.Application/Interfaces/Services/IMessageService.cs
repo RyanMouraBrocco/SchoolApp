@@ -9,6 +9,6 @@ public interface IMessageService
 {
     Task<Message> CreateAsync(AuthenticatedUserObject requesterUser, Message newEntity, IList<MessageAllowedClassroomDto> allowedClassrooms, IList<MessageAllowedStudentDto> allowedStudents);
     Task<Message> UpdateAsync(AuthenticatedUserObject requesterUser, string itemId, Message updatedEntity, IList<MessageAllowedClassroomDto> allowedClassrooms, IList<MessageAllowedStudentDto> allowedStudents);
-    IList<Message> GetAll(AuthenticatedUserObject requesterUser, int top, int skip);
+    Task<IList<Message>> GetAllMainMessagesAsync(AuthenticatedUserObject requesterUser, int top, int skip);
     Task DeleteAsync(AuthenticatedUserObject requesterUser, string itemId);
 }
