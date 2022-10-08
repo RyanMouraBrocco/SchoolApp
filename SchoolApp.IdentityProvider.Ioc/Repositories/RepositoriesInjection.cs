@@ -13,5 +13,7 @@ public static class RepositoriesInjection
         service.AddScoped<IOwnerRepository, OwnerRepository>();
         service.AddScoped<IFunctionRepository, FunctionRepository>();
         service.AddScoped<ITeacherFormationRepository, TeacherFormationRepository>();
+        service.AddScoped<IMessageAllowedClassroomRepository, MessageAllowedClassroomRepository>();
+        service.AddScoped<IMessageAllowedStudentRepository, MessageAllowedStudentRepository>();
     }
 }

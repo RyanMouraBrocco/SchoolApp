@@ -1,6 +1,8 @@
+using SchoolApp.Feed.Application.Domain.Dtos;
+
 namespace SchoolApp.Feed.Application.Interfaces.Repositories;
 
-public interface IMessageAllowedPermissionRepository<TDto>
+public interface IMessageAllowedPermissionRepository
 {
-    void Send(TDto message);
+    void Send(IList<MessageAllowedClassroomDto> allowedClassrooms, IList<MessageAllowedStudentDto> allowedStudents);
 }

@@ -10,7 +10,6 @@ public static class RepositoriesInjection
     public static void AddFeedRepositories(this IServiceCollection service)
     {
         service.AddScoped<IMessageRepository, MessageRepository>();
-        service.AddScoped<IMessageAllowedClassroomRepository, MessageAllowedClassroomRepository>();
-        service.AddScoped<IMessageAllowedStudentRepository, MessageAllowedStudentRepository>();
+        service.AddScoped<IMessageAllowedPermissionRepository, MessageAllowedPermissionRepository>();
     }
 }

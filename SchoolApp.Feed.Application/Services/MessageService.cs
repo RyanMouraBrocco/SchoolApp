@@ -10,16 +10,13 @@ namespace SchoolApp.Feed.Application.Services;
 public class MessageService : IMessageService
 {
     private readonly IMessageRepository _messageRepository;
-    private readonly IMessageAllowedClassroomRepository _messageAllowedClassroomRepository;
-    private readonly IMessageAllowedStudentRepository _messageAllowedStudentRepository;
+    private readonly IMessageAllowedPermissionRepository _messageAllowedPermissionRepository;
 
     public MessageService(IMessageRepository messageRepository,
-                          IMessageAllowedClassroomRepository messageAllowedClassroomRepository,
-                          IMessageAllowedStudentRepository messageAllowedStudentRepository)
+                          IMessageAllowedPermissionRepository messageAllowedPermissionRepository)
     {
         _messageRepository = messageRepository;
-        _messageAllowedClassroomRepository = messageAllowedClassroomRepository;
-        _messageAllowedStudentRepository = messageAllowedStudentRepository;
+        _messageAllowedPermissionRepository = messageAllowedPermissionRepository;
     }
 
     public async Task<Message> CreateAsync(AuthenticatedUserObject requesterUser, Message newMessage, IList<MessageAllowedClassroomDto> allowedClassrooms, IList<MessageAllowedStudentDto> allowedStudents)
@@ -103,14 +100,14 @@ public class MessageService : IMessageService
         {
             allowedClassroom.MessageId = message.Id;
             allowedClassroom.Message = message;
-            _messageAllowedClassroomRepository.Send(allowedClassroom);
         }
 
         foreach (var allowedStudent in allowedStudents)
         {
             allowedStudent.MessageId = message.Id;
             allowedStudent.Message = message;
-            _messageAllowedStudentRepository.Send(allowedStudent);
         }
+
+        _messageAllowedPermissionRepository.Send(allowedClassrooms, allowedStudents);
     }
 }
