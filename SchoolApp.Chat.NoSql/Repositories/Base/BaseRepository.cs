@@ -12,7 +12,7 @@ public class BaseRepository<TDto, TDomain>
     public Func<TDto, TDomain> MapToDomain { get; set; }
     public Func<TDomain, TDto> MapToDto { get; set; }
 
-    private readonly CollectionReference _collection;
+    protected readonly CollectionReference _collection;
 
     public BaseRepository(IOptions<FirebaseSettings> options, Func<TDto, TDomain> mapToDomain, Func<TDomain, TDto> mapToDto)
     {
