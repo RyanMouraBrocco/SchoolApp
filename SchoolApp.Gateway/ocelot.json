@@ -1,0 +1,107 @@
+{
+    "Routes": [
+        {
+            "DownstreamPathTemplate": "/{path}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "identity-provider-api-service",
+                    "Port": 80
+                }
+            ],
+            "UpstreamPathTemplate": "/identityprovider/{path}",
+            "UpstreamHttpMethod": [
+                "Get",
+                "Post",
+                "Patch",
+                "Delete"
+            ]
+        },
+        {
+            "DownstreamPathTemplate": "/{path}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "file-api-service",
+                    "Port": 80
+                }
+            ],
+            "UpstreamPathTemplate": "/file/{path}",
+            "UpstreamHttpMethod": [
+                "Get",
+                "Post",
+                "Patch",
+                "Delete"
+            ]
+        },
+        {
+            "DownstreamPathTemplate": "/{path}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "feed-api-service",
+                    "Port": 80
+                }
+            ],
+            "UpstreamPathTemplate": "/feed/{path}",
+            "UpstreamHttpMethod": [
+                "Get",
+                "Post",
+                "Patch",
+                "Delete"
+            ]
+        },
+        {
+            "DownstreamPathTemplate": "/{path}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "classroom-api-service",
+                    "Port": 80
+                }
+            ],
+            "UpstreamPathTemplate": "/classroom/{path}",
+            "UpstreamHttpMethod": [
+                "Get",
+                "Post",
+                "Patch",
+                "Delete"
+            ]
+        },
+        {
+            "DownstreamPathTemplate": "/{path}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "chat-api-service",
+                    "Port": 80
+                }
+            ],
+            "UpstreamPathTemplate": "/chat/{path}",
+            "UpstreamHttpMethod": [
+                "Get",
+                "Post",
+                "Patch",
+                "Delete"
+            ]
+        },
+        {
+            "DownstreamPathTemplate": "/{path}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "activity-api-service",
+                    "Port": 80
+                }
+            ],
+            "UpstreamPathTemplate": "/activity/{path}",
+            "UpstreamHttpMethod": [
+                "Get",
+                "Post",
+                "Patch",
+                "Delete"
+            ]
+        }
+    ],
+    "GlobalConfiguration": {}
+}
