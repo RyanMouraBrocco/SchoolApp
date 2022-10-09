@@ -6,4 +6,5 @@ namespace SchoolApp.IdentityProvider.Application.Interfaces.Services;
 
 public interface IUserService<TUser> : ICrudService<TUser, int> where TUser : User
 {
+    TUser GetOneById(int id);
 }

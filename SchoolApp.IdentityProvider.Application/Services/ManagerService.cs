@@ -98,4 +98,9 @@ public class ManagerService : IManagerService
         await _managerRepository.UpdateAsync(managerCheck);
         await _managerRepository.DeleteAsync(managerId);
     }
+
+    public Manager GetOneById(int id)
+    {
+        return _managerRepository.GetOneById(id);
+    }
 }

@@ -5,5 +5,4 @@ namespace SchoolApp.IdentityProvider.Application.Interfaces.Services;
 
 public interface IOwnerService : IUserService<Owner>
 {
-
 }

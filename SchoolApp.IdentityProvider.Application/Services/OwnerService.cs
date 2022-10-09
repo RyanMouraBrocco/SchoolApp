@@ -86,4 +86,9 @@ public class OwnerService : IOwnerService
         await _ownerRepository.UpdateAsync(ownerCheck);
         await _ownerRepository.DeleteAsync(ownerId);
     }
+
+    public Owner GetOneById(int id)
+    {
+        return _ownerRepository.GetOneById(id);
+    }
 }
