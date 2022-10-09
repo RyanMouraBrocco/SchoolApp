@@ -15,5 +15,6 @@
     <ProjectReference Include="..\SchoolApp.Feed.Application\SchoolApp.Feed.Application.csproj" />
     <ProjectReference Include="..\SchoolApp.Feed.NoSql\SchoolApp.Feed.NoSql.csproj" />
     <ProjectReference Include="..\SchoolApp.Feed.Queue\SchoolApp.Feed.Queue.csproj" />
+    <ProjectReference Include="..\SchoolApp.Feed.Http\SchoolApp.Feed.Http.csproj" />
   </ItemGroup>
 </Project>
