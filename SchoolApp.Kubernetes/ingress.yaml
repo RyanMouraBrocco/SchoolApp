@@ -76,3 +76,23 @@ spec:
                 name: file-api-service
                 port:
                   number: 80
+    - host: chat.info
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: chat-api-service
+                port:
+                  number: 80
+    - host: feed.info
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: feed-api-service
+                port:
+                  number: 80
