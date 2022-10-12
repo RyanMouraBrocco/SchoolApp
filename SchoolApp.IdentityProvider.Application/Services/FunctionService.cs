@@ -25,6 +25,9 @@ public class FunctionService : IFunctionService
     {
         GenericValidation.CheckOnlyManagerUser(requesterUser.Type);
 
+        if (string.IsNullOrEmpty(newFunction.Name?.Trim()))
+            throw new FormatException("Name can't be null or empty");
+
         newFunction.AccountId = requesterUser.AccountId;
         newFunction.CreationDate = DateTime.Now;
         newFunction.CreatorId = requesterUser.UserId;
@@ -44,10 +47,10 @@ public class FunctionService : IFunctionService
 
         updatedFunction.Id = functionId;
         updatedFunction.AccountId = requesterUser.AccountId;
-        updatedFunction.CreationDate = DateTime.Now;
-        updatedFunction.CreatorId = requesterUser.UserId;
-        updatedFunction.UpdaterId = null;
-        updatedFunction.UpdateDate = null;
+        updatedFunction.CreationDate = functionCheck.CreationDate;
+        updatedFunction.CreatorId = functionCheck.CreatorId;
+        updatedFunction.UpdaterId = requesterUser.UserId;
+        updatedFunction.UpdateDate = DateTime.Now;
 
         return await _functionRepository.UpdateAsync(updatedFunction);
     }
