@@ -21,11 +21,12 @@ public class FunctionServiceTest
         _mockFunctionRepository = new Mock<IFunctionRepository>();
         _mockFunctionRepository.Setup(x => x.InsertAsync(It.IsAny<Function>())).Returns((Function x) => { x.Id = 1; return Task.FromResult(x); });
         _mockFunctionRepository.Setup(x => x.UpdateAsync(It.IsAny<Function>())).Returns((Function x) => { return Task.FromResult(x); });
+        _mockFunctionRepository.Setup(x => x.DeleteAsync(It.IsAny<int>()));
     }
 
 
     [Fact]
-    public async Task CreateNewFunction_ManagerUserAsync()
+    public async Task CreateNewFunction_SuccessfullyUserAsync()
     {
         // Arrange
         var requesterUser = Helper.CreateRequesterUser1(UserTypeEnum.Manager);
@@ -51,7 +52,7 @@ public class FunctionServiceTest
     [Theory]
     [InlineData(UserTypeEnum.Owner)]
     [InlineData(UserTypeEnum.Teacher)]
-    public async Task CreateNewFunction_NoManagerUserAsync(UserTypeEnum userType)
+    public async Task CreateNewFunction_TryToAccessWithNoManagerUserAsync(UserTypeEnum userType)
     {
         // Arrange
         var requesterUser = Helper.CreateRequesterUser1(userType);
@@ -78,7 +79,7 @@ public class FunctionServiceTest
     }
 
     [Fact]
-    public async Task UpdateFunction_ManagerUserAsync()
+    public async Task UpdateFunction_SuccessfullyAsync()
     {
         var requesterUser = Helper.CreateRequesterUser1(UserTypeEnum.Manager);
         var fakeFuctionId = 1;
@@ -114,6 +115,159 @@ public class FunctionServiceTest
         Assert.Equal(functionSavedInDatabase.CreationDate, result.CreationDate);
         Assert.Equal(functionSavedInDatabase.CreatorId, result.CreatorId);
         Assert.Equal(DateTime.Now.ToString("MM/dd/yyyy HH:mm"), result.UpdateDate.Value.ToString("MM/dd/yyyy HH:mm"));
+    }
+
+    [Theory]
+    [InlineData(UserTypeEnum.Owner)]
+    [InlineData(UserTypeEnum.Teacher)]
+    public async Task UpdateFunction_TryToAccessWithNoManagerUserAsync(UserTypeEnum userType)
+    {
+        // Arrange
+        var requesterUser = Helper.CreateRequesterUser1(userType);
+        var newFunction = new Function() { Name = "Name test", Description = "Description test" };
+        var functionService = new FunctionService(_mockFunctionRepository.Object);
+
+        // Act & Assert
+        await Assert.ThrowsAsync<UnauthorizedAccessException>(() => functionService.UpdateAsync(requesterUser, 1, newFunction));
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData(" ")]
+    public async Task UpdateFunction_TryToCreateInvalidNameAsync(string name)
+    {
+        // Arrange
+        var requesterUser = Helper.CreateRequesterUser1(UserTypeEnum.Manager);
+        var newFunction = new Function() { Name = name, Description = "Description test" };
+        var functionService = new FunctionService(_mockFunctionRepository.Object);
+        var functionSavedInDatabase = new Function()
+        {
+            Id = 1,
+            Name = "Old name test",
+            AccountId = 1,
+            CreationDate = DateTime.Now.AddDays(-3),
+            CreatorId = 1,
+            Description = null
+        };
+        _mockFunctionRepository.Setup(x => x.GetOneById(It.IsAny<int>())).Returns(functionSavedInDatabase);
+
+
+        // Act & Assert
+        await Assert.ThrowsAsync<FormatException>(() => functionService.UpdateAsync(requesterUser, 1, newFunction));
+        _mockFunctionRepository.Verify(x => x.GetOneById(It.IsAny<int>()), Times.Once);
+    }
+
+    [Fact]
+    public async Task UpdateFunction_TryToUpdateNonexistentItemAsync()
+    {
+        //Arrange
+        var requesterUser = Helper.CreateRequesterUser1(UserTypeEnum.Manager);
+        var updatedFunction = new Function()
+        {
+            Name = "Name test",
+            Description = "Description test"
+        };
+        _mockFunctionRepository.Setup(x => x.GetOneById(It.IsAny<int>())).Returns<Function>(null);
+        var functionService = new FunctionService(_mockFunctionRepository.Object);
+
+        // Act & Assert
+        await Assert.ThrowsAsync<UnauthorizedAccessException>(() => functionService.UpdateAsync(requesterUser, 1, updatedFunction));
+        _mockFunctionRepository.Verify(x => x.GetOneById(It.IsAny<int>()), Times.Once);
+        _mockFunctionRepository.Verify(x => x.UpdateAsync(It.IsAny<Function>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task UpdateFunction_TryToUpdateAnotherAccountItemAsync()
+    {
+        //Arrange
+        var requesterUser = Helper.CreateRequesterUser1(UserTypeEnum.Manager);
+        var updatedFunction = new Function()
+        {
+            Name = "Name test",
+            Description = "Description test"
+        };
+        var functionSavedInDatabase = new Function()
+        {
+            Id = 1,
+            Name = "Old name test",
+            AccountId = 2,
+            CreationDate = DateTime.Now.AddDays(-3),
+            CreatorId = 2,
+            Description = null
+        };
+        _mockFunctionRepository.Setup(x => x.GetOneById(It.IsAny<int>())).Returns(functionSavedInDatabase);
+        var functionService = new FunctionService(_mockFunctionRepository.Object);
+
+        // Act & Assert
+        await Assert.ThrowsAsync<UnauthorizedAccessException>(() => functionService.UpdateAsync(requesterUser, 1, updatedFunction));
+        _mockFunctionRepository.Verify(x => x.GetOneById(It.IsAny<int>()), Times.Once);
+        _mockFunctionRepository.Verify(x => x.UpdateAsync(It.IsAny<Function>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task DeleteFunction_SuccessfullyAsync()
+    {
+        var requesterUser = Helper.CreateRequesterUser1(UserTypeEnum.Manager);
+        var fakeFuctionId = 1;
+        var functionService = new FunctionService(_mockFunctionRepository.Object);
+        var functionSavedInDatabase = new Function()
+        {
+            Id = fakeFuctionId,
+            Name = "Old name test",
+            AccountId = 1,
+            CreationDate = DateTime.Now.AddDays(-3),
+            CreatorId = 1,
+            Description = null
+        };
+        _mockFunctionRepository.Setup(x => x.GetOneById(fakeFuctionId)).Returns(functionSavedInDatabase);
+
+        // Act
+        await functionService.DeleteAsync(requesterUser, fakeFuctionId);
+
+        // Assert
+        _mockFunctionRepository.Verify(x => x.GetOneById(fakeFuctionId), Times.Once);
+        _mockFunctionRepository.Verify(x => x.UpdateAsync(It.IsAny<Function>()), Times.Once);
+        _mockFunctionRepository.Verify(x => x.DeleteAsync(fakeFuctionId), Times.Once);
+    }
+
+    [Fact]
+    public async Task DeleteFunction_TryToUpdateNonexistentItemAsync()
+    {
+        var requesterUser = Helper.CreateRequesterUser1(UserTypeEnum.Manager);
+        var fakeFuctionId = 1;
+        var functionService = new FunctionService(_mockFunctionRepository.Object);
+        _mockFunctionRepository.Setup(x => x.GetOneById(fakeFuctionId)).Returns<Function>(null);
+
+        // Act & Assert
+        await Assert.ThrowsAsync<UnauthorizedAccessException>(() => functionService.DeleteAsync(requesterUser, fakeFuctionId));
+        _mockFunctionRepository.Verify(x => x.GetOneById(fakeFuctionId), Times.Once);
+        _mockFunctionRepository.Verify(x => x.UpdateAsync(It.IsAny<Function>()), Times.Never);
+        _mockFunctionRepository.Verify(x => x.DeleteAsync(fakeFuctionId), Times.Never);
+    }
+
+    [Fact]
+    public async Task DeleteFunction_TryToUpdateAnotherAccountItemAsync()
+    {
+        var requesterUser = Helper.CreateRequesterUser1(UserTypeEnum.Manager);
+        var fakeFuctionId = 1;
+        var functionService = new FunctionService(_mockFunctionRepository.Object);
+        var functionSavedInDatabase = new Function()
+        {
+            Id = fakeFuctionId,
+            Name = "Old name test",
+            AccountId = 2,
+            CreationDate = DateTime.Now.AddDays(-3),
+            CreatorId = 2,
+            Description = null
+        };
+        _mockFunctionRepository.Setup(x => x.GetOneById(fakeFuctionId)).Returns(functionSavedInDatabase);
+
+        // Act & Assert
+        await Assert.ThrowsAsync<UnauthorizedAccessException>(() => functionService.DeleteAsync(requesterUser, fakeFuctionId));
+        _mockFunctionRepository.Verify(x => x.GetOneById(fakeFuctionId), Times.Once);
+        _mockFunctionRepository.Verify(x => x.UpdateAsync(It.IsAny<Function>()), Times.Never);
+        _mockFunctionRepository.Verify(x => x.DeleteAsync(fakeFuctionId), Times.Never);
     }
 
 }

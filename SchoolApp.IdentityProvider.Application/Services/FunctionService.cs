@@ -45,6 +45,9 @@ public class FunctionService : IFunctionService
         if (functionCheck == null || functionCheck.AccountId != requesterUser.AccountId)
             throw new UnauthorizedAccessException("Function not found");
 
+        if (string.IsNullOrEmpty(updatedFunction.Name?.Trim()))
+            throw new FormatException("Name can't be null or empty");
+
         updatedFunction.Id = functionId;
         updatedFunction.AccountId = requesterUser.AccountId;
         updatedFunction.CreationDate = functionCheck.CreationDate;
