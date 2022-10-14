@@ -26,7 +26,7 @@ public class FunctionServiceTest
 
 
     [Fact]
-    public async Task CreateNewFunction_SuccessfullyUserAsync()
+    public async Task CreateNewFunction_SuccessfullyAsync()
     {
         // Arrange
         var requesterUser = Helper.CreateRequesterUser1(UserTypeEnum.Manager);
