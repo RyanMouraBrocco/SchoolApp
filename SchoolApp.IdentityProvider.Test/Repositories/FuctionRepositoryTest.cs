@@ -104,4 +104,32 @@ public class FuctionRepositoryTest : BaseRepositoryTest<FunctionDto, Function, S
 
         InternalGetOneByIdTest_NotFound(functionRepository, 3);
     }
+
+    [Fact]
+    public void GetAllTest()
+    {
+        var data = new List<FunctionDto>()
+        {
+            new FunctionDto() { Id = 1, AccountId = 1, Name = "Func 1" },
+            new FunctionDto() { Id = 2, AccountId = 2, Name = "Func 2" },
+            new FunctionDto() { Id = 3, AccountId = 1, Name = "Func 3" },
+            new FunctionDto() { Id = 4, AccountId = 3, Name = "Func 4" },
+            new FunctionDto() { Id = 5, AccountId = 4, Name = "Func 5" },
+            new FunctionDto() { Id = 6, AccountId = 1, Name = "Func 6" },
+            new FunctionDto() { Id = 7, AccountId = 1, Name = "Func 7" },
+            new FunctionDto() { Id = 8, AccountId = 3, Name = "Func 8" }
+        }.AsQueryable();
+
+        _mockContext.Setup(x => x.GetQueryable(_mockSet.Object)).Returns(data);
+        var functionRepository = new FunctionRepository(_mockContext.Object);
+
+        // Act
+        var result = functionRepository.GetAll(1, 100, 0);
+
+        Assert.True(result.Count == 4);
+        Assert.Equal(1, result[0].Id);
+        Assert.Equal(3, result[1].Id);
+        Assert.Equal(6, result[2].Id);
+        Assert.Equal(7, result[3].Id);
+    }
 }

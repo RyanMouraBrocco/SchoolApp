@@ -16,6 +16,6 @@ public class FunctionRepository : BaseCrudRepository<FunctionDto, Function, Scho
 
     public IList<Function> GetAll(int accountId, int top, int skip)
     {
-        return _dbSet.AsNoTracking().Where(x => x.AccountId == accountId).Skip(skip).Take(top).Select(x => MapToDomain(x)).ToList();
+        return _context.GetQueryable(_dbSet).Where(x => x.AccountId == accountId).Skip(skip).Take(top).Select(x => MapToDomain(x)).ToList();
     }
 }

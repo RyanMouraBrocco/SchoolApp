@@ -54,7 +54,7 @@ public class BaseRepositoryTest<TDto, TDomain, TContext, TRepository> where TDto
         }
     }
 
-    public async Task InternalDeleteTestAsync(TRepository repository, IQueryable<TDto> data)
+    public virtual async Task InternalDeleteTestAsync(TRepository repository, IQueryable<TDto> data)
     {
         _mockContext.Setup(x => x.GetQueryable(_mockSet.Object)).Returns(data);
 
@@ -68,7 +68,7 @@ public class BaseRepositoryTest<TDto, TDomain, TContext, TRepository> where TDto
         _mockContext.Verify(x => x.GetQueryable(It.IsAny<DbSet<TDto>>()), Times.Once);
     }
 
-    public async Task InternalDeleteTest_TryToDeleteANonExistentItemAsync(TRepository repository)
+    public virtual async Task InternalDeleteTest_TryToDeleteANonExistentItemAsync(TRepository repository)
     {
         // Arrange
         var data = new List<TDto>().AsQueryable();

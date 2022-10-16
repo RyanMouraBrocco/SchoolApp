@@ -25,25 +25,25 @@ public class BaseMainEntityRepository<TDto, TDomain, TContext> : BaseCrudReposit
 
     public override async Task DeleteAsync(int id)
     {
-        var dto = _dbSet.AsNoTracking().FirstOrDefault(x => x.Id == id);
+        var dto = _context.GetQueryable(_dbSet).FirstOrDefault(x => x.Id == id);
         if (dto != null)
         {
             dto.Deleted = true;
             _dbSet.Attach(dto);
-            _context.Entry(dto).Property(x => x.Deleted).IsModified = true;
+            _context.SetModifiedProperty(dto, "Deleted");
             await _context.SaveChangesAsync();
-            _context.Entry(dto).State = EntityState.Detached;
+            _context.DetachedItem(dto);
         }
     }
 
     public override TDomain GetOneById(int id)
     {
-        return MapToDomain(_dbSet.AsNoTracking().FirstOrDefault(x => x.Id == id && !x.Deleted));
+        return MapToDomain(_context.GetQueryable(_dbSet).FirstOrDefault(x => x.Id == id && !x.Deleted));
     }
 
     public virtual IList<TDomain> GetAll(int accountId, int top, int skip)
     {
-        return _dbSet.AsNoTracking()
+        return _context.GetQueryable(_dbSet)
                      .Where(x => x.AccountId == accountId && !x.Deleted)
                      .Skip(skip)
                      .Take(top)
