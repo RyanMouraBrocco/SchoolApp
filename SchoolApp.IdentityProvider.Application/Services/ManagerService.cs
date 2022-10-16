@@ -33,10 +33,25 @@ public class ManagerService : IManagerService
         };
     }
 
+    private void CheckManagerFields(Manager manager)
+    {
+        if (manager.Salary < 0)
+        {
+            throw new FormatException("Salary must be not negative");
+        }
+
+        if (manager.HiringDate.ToBinary() == 0)
+        {
+            throw new FormatException("HiringDate must be a valid date");
+        }
+    }
+
     public async Task<Manager> CreateAsync(AuthenticatedUserObject requesterUser, Manager newManager)
     {
-        GenericValidation.CheckOnlyManagerUser(requesterUser.Type);
+        UserValidation.CheckUserFields(newManager);
+        CheckManagerFields(newManager);
         UserValidation.IsSecurityPassword(newManager.Password);
+        GenericValidation.CheckOnlyManagerUser(requesterUser.Type);
 
         var duplicatedEmail = _managerRepository.GetOneByEmail(newManager.Email);
         if (duplicatedEmail != null)
@@ -56,23 +71,25 @@ public class ManagerService : IManagerService
         return await _managerRepository.InsertAsync(newManager);
     }
 
-    public async Task<Manager> UpdateAsync(AuthenticatedUserObject requesterUser, int ownerId, Manager updatedManager)
+    public async Task<Manager> UpdateAsync(AuthenticatedUserObject requesterUser, int managerId, Manager updatedManager)
     {
+        UserValidation.CheckUserFields(updatedManager);
+        CheckManagerFields(updatedManager);
         GenericValidation.CheckOnlyManagerUser(requesterUser.Type);
 
-        var managerCheck = _managerRepository.GetOneById(ownerId);
+        var managerCheck = _managerRepository.GetOneById(managerId);
         if (managerCheck == null || managerCheck.AccountId != requesterUser.AccountId)
             throw new UnauthorizedAccessException("Owner not found");
 
         var duplicatedEmail = _managerRepository.GetOneByEmail((string)updatedManager.Email);
-        if (duplicatedEmail != null && duplicatedEmail.Id != ownerId)
+        if (duplicatedEmail != null && duplicatedEmail.Id != managerId)
             throw new UnauthorizedAccessException("This email has already used");
 
         var functionCheck = _functionRepository.GetOneById(updatedManager.FunctionId);
         if (functionCheck == null || functionCheck.AccountId != requesterUser.AccountId)
             throw new UnauthorizedAccessException("Function not found");
 
-        updatedManager.Id = ownerId;
+        updatedManager.Id = managerId;
         updatedManager.Password = managerCheck.Password;
         updatedManager.AccountId = requesterUser.AccountId;
         updatedManager.CreationDate = managerCheck.CreationDate;
