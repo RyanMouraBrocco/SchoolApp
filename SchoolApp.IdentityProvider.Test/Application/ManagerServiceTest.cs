@@ -100,6 +100,40 @@ public class ManagerServiceTest
     }
 
     [Theory]
+    [InlineData("1234")]
+    [InlineData("12345678")]
+    [InlineData("abcd")]
+    [InlineData("abcdefgh")]
+    [InlineData("ABCD")]
+    [InlineData("ABCDEFGH")]
+    [InlineData("aBcD")]
+    [InlineData("aBcDeFgH")]
+    [InlineData("4bCD")]
+    public async Task CreateNewManager_TryToCreateWithoutASecurityPasswordAsync(string password)
+    {
+        // Arrange
+        var requesterUser = Helper.CreateRequesterUser1(UserTypeEnum.Manager);
+        var newManager = new Manager()
+        {
+            Name = "Name test",
+            DocumentId = "My document",
+            Password = password,
+            Email = "e@e.com",
+            Salary = 200.00M,
+            HiringDate = DateTime.Now,
+            FunctionId = 1
+        };
+
+        var managerService = new ManagerService(_mockManagerRepository.Object, _mockFunctionRepository.Object);
+
+        // Act & Assert
+        await Assert.ThrowsAsync<FormatException>(() => managerService.CreateAsync(requesterUser, newManager));
+        _mockFunctionRepository.Verify(x => x.GetOneById(newManager.FunctionId), Times.Never);
+        _mockManagerRepository.Verify(x => x.GetOneByEmail(newManager.Email), Times.Never);
+        _mockManagerRepository.Verify(x => x.InsertAsync(newManager), Times.Never);
+    }
+
+    [Theory]
     [InlineData("Name", null)]
     [InlineData("Name", "")]
     [InlineData("Name", " ")]

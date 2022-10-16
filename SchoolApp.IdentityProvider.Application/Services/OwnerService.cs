@@ -31,8 +31,11 @@ public class OwnerService : IOwnerService
 
     public async Task<Owner> CreateAsync(AuthenticatedUserObject requesterUser, Owner newOwner)
     {
+        UserValidation.CheckUserFields(newOwner);
         GenericValidation.CheckOnlyManagerUser(requesterUser.Type);
-        UserValidation.IsSecurityPassword(newOwner.Password);
+
+        if (!UserValidation.IsSecurityPassword(newOwner.Password))
+            throw new FormatException("Password is not security");
 
         var duplicatedEmail = _ownerRepository.GetOneByEmail(newOwner.Email);
         if (duplicatedEmail != null)
@@ -50,6 +53,7 @@ public class OwnerService : IOwnerService
 
     public async Task<Owner> UpdateAsync(AuthenticatedUserObject requesterUser, int ownerId, Owner updatedOwner)
     {
+        UserValidation.CheckUserFields(updatedOwner);
         GenericValidation.CheckOnlyManagerUser(requesterUser.Type);
 
         var ownerCheck = _ownerRepository.GetOneById(ownerId);

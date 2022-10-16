@@ -50,8 +50,10 @@ public class ManagerService : IManagerService
     {
         UserValidation.CheckUserFields(newManager);
         CheckManagerFields(newManager);
-        UserValidation.IsSecurityPassword(newManager.Password);
         GenericValidation.CheckOnlyManagerUser(requesterUser.Type);
+
+        if (!UserValidation.IsSecurityPassword(newManager.Password))
+            throw new FormatException("Password is not security");
 
         var duplicatedEmail = _managerRepository.GetOneByEmail(newManager.Email);
         if (duplicatedEmail != null)
