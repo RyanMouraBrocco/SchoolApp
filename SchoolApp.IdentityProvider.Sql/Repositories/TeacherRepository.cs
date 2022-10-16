@@ -15,12 +15,12 @@ public class TeacherRepository : UserRepository<TeacherDto, Teacher>, ITeacherRe
 
     public override Teacher GetOneById(int id)
     {
-        return MapToDomain(_dbSet.AsNoTracking().Include(x => x.Formations).FirstOrDefault(x => x.Id == id && !x.Deleted));
+        return MapToDomain(_context.GetQueryable(_dbSet).Include(x => x.Formations).FirstOrDefault(x => x.Id == id && !x.Deleted));
     }
 
     public override IList<Teacher> GetAll(int accountId, int top, int skip)
     {
-        return _dbSet.AsNoTracking()
+        return _context.GetQueryable(_dbSet)
              .Include(x => x.Formations)
              .Where(x => x.AccountId == accountId && !x.Deleted)
              .Skip(skip)
