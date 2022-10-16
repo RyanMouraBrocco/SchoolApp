@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
+using SchoolApp.Shared.Utils.Sql.Contexts;
 using SchoolApp.Shared.Utils.Sql.Interfaces;
 
 namespace SchoolApp.Shared.Utils.Sql.Base;
 
 public class BaseMainEntityRepository<TDto, TDomain, TContext> : BaseCrudRepository<TDto, TDomain, TContext> where TDto : class, IIdentityEntity, IAccountEntity, ISoftDeleteEntity
                                                                                                              where TDomain : class
-                                                                                                             where TContext : DbContext
+                                                                                                             where TContext : SchoolAppContext
 {
     public BaseMainEntityRepository(TContext context,
                                     Func<TDto, TDomain> mapToDomain,

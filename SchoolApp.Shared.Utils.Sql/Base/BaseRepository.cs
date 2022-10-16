@@ -1,8 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using SchoolApp.Shared.Utils.Sql.Contexts;
 
 namespace SchoolApp.Shared.Utils.Sql.Base;
 
-public abstract class BaseRepository<TDto, TDomain, TContext> where TDto : class where TDomain : class where TContext : DbContext
+public abstract class BaseRepository<TDto, TDomain, TContext> where TDto : class where TDomain : class where TContext : SchoolAppContext
 {
     protected Func<TDto, TDomain> MapToDomain { get; set; }
     protected Func<TDomain, TDto> MapToDto { get; set; }
