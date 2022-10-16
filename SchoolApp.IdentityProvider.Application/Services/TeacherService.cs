@@ -37,9 +37,13 @@ public class TeacherService : ITeacherService
     public async Task<Teacher> CreateAsync(AuthenticatedUserObject requesterUser, Teacher newTeacher)
     {
         GenericValidation.CheckOnlyManagerUser(requesterUser.Type);
-        UserValidation.IsSecurityPassword(newTeacher.Password);
+        UserValidation.CheckUserFields(newTeacher);
         GenericValidation.IsNotNegativeValue(nameof(newTeacher.Salary), newTeacher.Salary);
         GenericValidation.ListHaveAtLeastOneItem(nameof(newTeacher.Formations), newTeacher.Formations);
+
+        if (!UserValidation.IsSecurityPassword(newTeacher.Password))
+            throw new FormatException("Password is not security");
+
 
         var duplicatedEmail = _teacherRepository.GetOneByEmail(newTeacher.Email);
         if (duplicatedEmail != null)
@@ -61,6 +65,7 @@ public class TeacherService : ITeacherService
     public async Task<Teacher> UpdateAsync(AuthenticatedUserObject requesterUser, int teacherId, Teacher updatedTeacher)
     {
         GenericValidation.CheckOnlyManagerUser(requesterUser.Type);
+        UserValidation.CheckUserFields(updatedTeacher);
         GenericValidation.IsNotNegativeValue(nameof(updatedTeacher.Salary), updatedTeacher.Salary);
         GenericValidation.ListHaveAtLeastOneItem(nameof(updatedTeacher.Formations), updatedTeacher.Formations);
 
