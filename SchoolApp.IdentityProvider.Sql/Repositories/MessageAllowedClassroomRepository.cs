@@ -15,6 +15,6 @@ public class MessageAllowedClassroomRepository : BaseCrudRepository<Dtos.Message
 
     public void DeleteAllByMessageId(string messageId)
     {
-        _dbSet.RemoveRange(_dbSet.AsNoTracking().Where(x => x.MessageId == messageId));
+        _dbSet.RemoveRange(_context.GetQueryable(_dbSet).Where(x => x.MessageId == messageId));
     }
 }
