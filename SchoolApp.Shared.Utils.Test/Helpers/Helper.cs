@@ -1,7 +1,7 @@
 using SchoolApp.Shared.Authentication;
 using SchoolApp.Shared.Utils.Enums;
 
-namespace SchoolApp.IdentityProvider.Test.Utils;
+namespace SchoolApp.Shared.Utils.Test.Helpers;
 
 public static class Helper
 {

@@ -8,7 +8,7 @@ using SchoolApp.IdentityProvider.Sql.Dtos.Functions;
 using SchoolApp.IdentityProvider.Sql.Repositories;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using SchoolApp.IdentityProvider.Test.Repositories.Base;
+using SchoolApp.Shared.Utils.Test.Repositories;
 
 namespace SchoolApp.IdentityProvider.Test.Repositories;
 

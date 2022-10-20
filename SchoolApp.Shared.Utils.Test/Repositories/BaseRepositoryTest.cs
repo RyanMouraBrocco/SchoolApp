@@ -1,11 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using SchoolApp.IdentityProvider.Sql.Mappers;
 using SchoolApp.Shared.Utils.Sql.Base;
 using SchoolApp.Shared.Utils.Sql.Contexts;
 using SchoolApp.Shared.Utils.Sql.Interfaces;
+using Xunit;
 
-namespace SchoolApp.IdentityProvider.Test.Repositories.Base;
+namespace SchoolApp.Shared.Utils.Test.Repositories;
 
 public class BaseRepositoryTest<TDto, TDomain, TContext, TRepository> where TDto : class, IIdentityEntity
                                                                       where TDomain : class

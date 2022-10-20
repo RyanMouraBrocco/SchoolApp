@@ -1,6 +1,6 @@
 using SchoolApp.IdentityProvider.Sql.Context;
 using SchoolApp.IdentityProvider.Sql.Repositories;
-using SchoolApp.IdentityProvider.Test.Repositories.Base;
+using SchoolApp.Shared.Utils.Test.Repositories;
 
 namespace SchoolApp.IdentityProvider.Test.Repositories;
 

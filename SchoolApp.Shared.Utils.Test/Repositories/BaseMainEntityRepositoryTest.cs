@@ -4,7 +4,7 @@ using SchoolApp.Shared.Utils.Sql.Base;
 using SchoolApp.Shared.Utils.Sql.Contexts;
 using SchoolApp.Shared.Utils.Sql.Interfaces;
 
-namespace SchoolApp.IdentityProvider.Test.Repositories.Base;
+namespace SchoolApp.Shared.Utils.Test.Repositories;
 
 public class BaseMainEntityRepositoryTest<TDto, TDomain, TContext, TRepository> : BaseRepositoryTest<TDto, TDomain, TContext, TRepository> where TDto : class, IIdentityEntity, IAccountEntity, ISoftDeleteEntity
                                                                                                                                            where TDomain : class

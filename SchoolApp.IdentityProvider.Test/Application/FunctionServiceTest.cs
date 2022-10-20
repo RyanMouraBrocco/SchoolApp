@@ -6,9 +6,9 @@ using SchoolApp.IdentityProvider.Application.Services;
 using SchoolApp.IdentityProvider.Sql.Context;
 using SchoolApp.IdentityProvider.Sql.Dtos.Functions;
 using SchoolApp.IdentityProvider.Sql.Repositories;
-using SchoolApp.IdentityProvider.Test.Utils;
 using SchoolApp.Shared.Authentication;
 using SchoolApp.Shared.Utils.Enums;
+using SchoolApp.Shared.Utils.Test.Helpers;
 
 namespace SchoolApp.IdentityProvider.Test.Application;
 

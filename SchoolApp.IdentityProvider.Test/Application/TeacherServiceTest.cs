@@ -3,8 +3,8 @@ using SchoolApp.IdentityProvider.Application.Domain.Entities.Formation;
 using SchoolApp.IdentityProvider.Application.Domain.Entities.Users;
 using SchoolApp.IdentityProvider.Application.Interfaces.Repositories;
 using SchoolApp.IdentityProvider.Application.Services;
-using SchoolApp.IdentityProvider.Test.Utils;
 using SchoolApp.Shared.Utils.Enums;
+using SchoolApp.Shared.Utils.Test.Helpers;
 
 namespace SchoolApp.IdentityProvider.Test.Application;
 
