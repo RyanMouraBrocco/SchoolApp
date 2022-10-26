@@ -37,7 +37,7 @@ public class SubjectService : ISubjectService
         GenericValidation.CheckOnlyManagerUser(requesterUser.Type);
 
         var subjectCheck = _subjectRepository.GetOneById(itemId);
-        if (subjectCheck != null || subjectCheck.AccountId != requesterUser.AccountId)
+        if (subjectCheck == null || subjectCheck.AccountId != requesterUser.AccountId)
             throw new UnauthorizedAccessException("Subject not found");
 
         subjectCheck.UpdateDate = DateTime.Now;
@@ -56,12 +56,12 @@ public class SubjectService : ISubjectService
     {
         GenericValidation.CheckOnlyManagerUser(requesterUser.Type);
 
-        var subjectCheck = _subjectRepository.GetOneById(updatedSubject.Id);
-        if (subjectCheck != null || subjectCheck.AccountId != requesterUser.AccountId)
-            throw new UnauthorizedAccessException("Subject not found");
-
         if (string.IsNullOrEmpty(updatedSubject.Name?.Trim()))
             throw new FormatException("Name can't not be null or empty");
+
+        var subjectCheck = _subjectRepository.GetOneById(updatedSubject.Id);
+        if (subjectCheck == null || subjectCheck.AccountId != requesterUser.AccountId)
+            throw new UnauthorizedAccessException("Subject not found");
 
         updatedSubject.Id = itemId;
         updatedSubject.AccountId = requesterUser.AccountId;
