@@ -22,7 +22,7 @@ public class StudentService : IStudentService
         if (!Enum.IsDefined(typeof(SexTypeEnum), student.Sex))
             throw new FormatException("This sex is not valid");
 
-        if (string.IsNullOrEmpty(student.Name))
+        if (string.IsNullOrEmpty(student.Name?.Trim()))
             throw new FormatException("Name can't be null or empty");
     }
 
@@ -99,12 +99,11 @@ public class StudentService : IStudentService
     public async Task<Student> UpdateAsync(AuthenticatedUserObject requesterUser, int itemId, Student updatedStudent)
     {
         GenericValidation.CheckOnlyManagerUser(requesterUser.Type);
+        CheckStudentFields(updatedStudent);
 
         var studentCheck = _studentRepository.GetOneById(itemId);
         if (studentCheck == null || studentCheck.AccountId != requesterUser.AccountId)
             throw new UnauthorizedAccessException("Student not found");
-
-        CheckStudentFields(updatedStudent);
 
         updatedStudent.Id = itemId;
         updatedStudent.AccountId = studentCheck.AccountId;
