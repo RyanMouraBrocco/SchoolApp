@@ -20,5 +20,6 @@
   <ItemGroup>
     <ProjectReference Include="..\SchoolApp.Classroom.Application\SchoolApp.Classroom.Application.csproj" />
     <ProjectReference Include="..\SchoolApp.Shared.Utils.Test\SchoolApp.Shared.Utils.Test.csproj" />
+    <ProjectReference Include="..\SchoolApp.Classroom.Sql\SchoolApp.Classroom.Sql.csproj" />
   </ItemGroup>
 </Project>
