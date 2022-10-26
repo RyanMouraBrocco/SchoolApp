@@ -23,6 +23,6 @@ public class ClassroomStudentRepository : BaseCrudRepository<ClassroomStudentDto
 
     public ClassroomStudent GetOneByClassroomIdAndOwnerId(int classroomId, int ownerId)
     {
-        return _dbSet.AsNoTracking().Where(x => x.ClassroomId == classroomId && x.Student.Owners.Any(o => o.OwnerId == ownerId)).Select(x => MapToDomain(x)).FirstOrDefault();
+        return _context.GetQueryable(_dbSet).Where(x => x.ClassroomId == classroomId && x.Student.Owners.Any(o => o.OwnerId == ownerId)).Select(x => MapToDomain(x)).FirstOrDefault();
     }
 }

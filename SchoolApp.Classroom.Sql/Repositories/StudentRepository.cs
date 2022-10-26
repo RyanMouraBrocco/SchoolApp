@@ -17,7 +17,7 @@ public class StudentRepository : BaseMainEntityRepository<StudentDto, Student, S
 
     public IList<Student> GetAllByOwnerId(int ownerId, int top, int skip)
     {
-        return _dbSet.AsNoTracking()
+        return _context.GetQueryable(_dbSet)
                      .Where(x => x.Owners.Any(x => x.OwnerId == ownerId) && !x.Deleted)
                      .Skip(skip)
                      .Take(top)
@@ -27,7 +27,7 @@ public class StudentRepository : BaseMainEntityRepository<StudentDto, Student, S
 
     public Student GetOneByIdAndOwnerId(int id, int ownerId)
     {
-        return _dbSet.AsNoTracking()
+        return _context.GetQueryable(_dbSet)
                      .Where(x => x.Id == id && x.Owners.Any(x => x.OwnerId == ownerId) && !x.Deleted)
                      .Select(x => MapToDomain(x))
                      .FirstOrDefault();
@@ -35,7 +35,7 @@ public class StudentRepository : BaseMainEntityRepository<StudentDto, Student, S
 
     public IList<Student> GetAllByTeacherId(int teacherId, int top, int skip)
     {
-        return _dbSet.AsNoTracking()
+        return _context.GetQueryable(_dbSet)
                      .Where(x => x.Classrooms.Any(x => x.Classroom.TeacherId == teacherId) && !x.Deleted)
                      .Skip(skip)
                      .Take(top)
@@ -45,7 +45,7 @@ public class StudentRepository : BaseMainEntityRepository<StudentDto, Student, S
 
     public Student GetOneByIdAndTeacherId(int id, int teacherId)
     {
-        return _dbSet.AsNoTracking()
+        return _context.GetQueryable(_dbSet)
                      .Where(x => x.Id == id && x.Classrooms.Any(x => x.Classroom.TeacherId == teacherId) && !x.Deleted)
                      .Select(x => MapToDomain(x))
                      .FirstOrDefault();
