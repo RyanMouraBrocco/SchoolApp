@@ -42,8 +42,12 @@ public class ActivityAnswerService : IActivityAnswerService
         if (activityCheck.Closed)
             throw new UnauthorizedAccessException("Activity is closed");
 
+        var allStudents = await _studentRepository.GetAllByOwnerIdAsync(requesterUser.UserId);
+        var studentCheck = allStudents.FirstOrDefault(x => x.Id == newActivityAnswer.StudentId);
+        if (studentCheck == null)
+            throw new UnauthorizedAccessException("Student not found");
+
         newActivityAnswer.AccountId = requesterUser.AccountId;
-        newActivityAnswer.StudentId = requesterUser.UserId;
         newActivityAnswer.CreationDate = DateTime.Now;
 
         var lastReview = newActivityAnswer.LastReview;
