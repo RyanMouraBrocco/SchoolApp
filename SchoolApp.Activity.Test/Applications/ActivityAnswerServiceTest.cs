@@ -297,4 +297,246 @@ public class ActivityAnswerServiceTest
         _mockActivityAnswerRepository.Verify(x => x.SetLastReview(It.IsAny<string>(), It.IsAny<ActivityAnswerVersion>()), Times.Once);
         _mockActivityAnswerRepository.Verify(x => x.GetOneById(It.IsAny<string>()), Times.Exactly(2));
     }
+
+    [Theory]
+    [InlineData(UserTypeEnum.Manager)]
+    [InlineData(UserTypeEnum.Teacher)]
+    public async Task ReviewActivityAnswer_TryToReviewWithNonOwnerUserAsync(UserTypeEnum userType)
+    {
+        // Arrange
+        var requesterUser = Helper.CreateRequesterUser1(userType);
+
+        var newActivityAnswer = new ActivityAnswerVersion()
+        {
+            Text = "text"
+        };
+
+        var activityAnswerInDatabase = new ActivityAnswer()
+        {
+            AccountId = 1,
+            ActivityId = "1234",
+            CreationDate = DateTime.Now.AddDays(-3),
+            StudentId = 1,
+            LastReview = new ActivityAnswerVersion()
+            {
+                Text = "old text"
+            },
+            Id = "12345"
+        };
+
+        var finalResult = new ActivityAnswer()
+        {
+            AccountId = 1,
+            ActivityId = "1234",
+            CreationDate = DateTime.Now.AddDays(-3),
+            StudentId = 1,
+            LastReview = newActivityAnswer,
+            Id = "12345"
+        };
+
+        _mockActivityAnswerRepository.SetupSequence(x => x.GetOneById(It.IsAny<string>())).Returns(activityAnswerInDatabase).Returns(finalResult);
+        _mockActivityService.Setup(x => x.GetOneByIdAsync(requesterUser, It.IsAny<string>())).Returns(Task.FromResult(new Application.Domain.Entities.Activities.Activity() { Id = "1", AccountId = 1, Closed = false }));
+        _mockStudentRepository.Setup(x => x.GetAllByOwnerIdAsync(requesterUser.UserId)).Returns(Task.FromResult<IList<StudentDto>>(new List<StudentDto>() { new() { Id = 1 } }));
+
+        var activityAnswerService = new ActivityAnswerService(_mockActivityAnswerRepository.Object, _mockActivityAnswerVersionRepository.Object, _mockActivityService.Object, _mockActivityRepository.Object, _mockStudentRepository.Object);
+
+        // Act & Assert
+        await Assert.ThrowsAsync<UnauthorizedAccessException>(() => activityAnswerService.CreateReviewAsync(requesterUser, "1234", newActivityAnswer));
+        _mockActivityService.Verify(x => x.GetOneByIdAsync(requesterUser, It.IsAny<string>()), Times.Never);
+        _mockActivityAnswerVersionRepository.Verify(x => x.InsertAsync(It.IsAny<ActivityAnswerVersion>()), Times.Never);
+        _mockActivityAnswerRepository.Verify(x => x.SetLastReview(It.IsAny<string>(), It.IsAny<ActivityAnswerVersion>()), Times.Never);
+        _mockActivityAnswerRepository.Verify(x => x.GetOneById(It.IsAny<string>()), Times.Never);
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData(" ")]
+    [InlineData(null)]
+    public async Task ReviewActivityAnswer_TryToReviewWithInvalidTextAsync(string text)
+    {
+        // Arrange
+        var requesterUser = Helper.CreateRequesterUser1(UserTypeEnum.Owner);
+
+        var newActivityAnswer = new ActivityAnswerVersion()
+        {
+            Text = text
+        };
+
+        var activityAnswerInDatabase = new ActivityAnswer()
+        {
+            AccountId = 1,
+            ActivityId = "1234",
+            CreationDate = DateTime.Now.AddDays(-3),
+            StudentId = 1,
+            LastReview = new ActivityAnswerVersion()
+            {
+                Text = "old text"
+            },
+            Id = "12345"
+        };
+
+        var finalResult = new ActivityAnswer()
+        {
+            AccountId = 1,
+            ActivityId = "1234",
+            CreationDate = DateTime.Now.AddDays(-3),
+            StudentId = 1,
+            LastReview = newActivityAnswer,
+            Id = "12345"
+        };
+
+        _mockActivityAnswerRepository.SetupSequence(x => x.GetOneById(It.IsAny<string>())).Returns(activityAnswerInDatabase).Returns(finalResult);
+        _mockActivityService.Setup(x => x.GetOneByIdAsync(requesterUser, It.IsAny<string>())).Returns(Task.FromResult(new Application.Domain.Entities.Activities.Activity() { Id = "1", AccountId = 1, Closed = false }));
+        _mockStudentRepository.Setup(x => x.GetAllByOwnerIdAsync(requesterUser.UserId)).Returns(Task.FromResult<IList<StudentDto>>(new List<StudentDto>() { new() { Id = 1 } }));
+
+        var activityAnswerService = new ActivityAnswerService(_mockActivityAnswerRepository.Object, _mockActivityAnswerVersionRepository.Object, _mockActivityService.Object, _mockActivityRepository.Object, _mockStudentRepository.Object);
+
+        // Act & Assert
+        await Assert.ThrowsAsync<FormatException>(() => activityAnswerService.CreateReviewAsync(requesterUser, "1234", newActivityAnswer));
+        _mockActivityService.Verify(x => x.GetOneByIdAsync(requesterUser, It.IsAny<string>()), Times.Never);
+        _mockActivityAnswerVersionRepository.Verify(x => x.InsertAsync(It.IsAny<ActivityAnswerVersion>()), Times.Never);
+        _mockActivityAnswerRepository.Verify(x => x.SetLastReview(It.IsAny<string>(), It.IsAny<ActivityAnswerVersion>()), Times.Never);
+        _mockActivityAnswerRepository.Verify(x => x.GetOneById(It.IsAny<string>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task ReviewActivityAnswer_TryToReviewWithNonExistentActivityAnswerAsync()
+    {
+        // Arrange
+        var requesterUser = Helper.CreateRequesterUser1(UserTypeEnum.Owner);
+
+        var newActivityAnswer = new ActivityAnswerVersion()
+        {
+            Text = "text"
+        };
+
+        _mockActivityAnswerRepository.Setup(x => x.GetOneById(It.IsAny<string>())).Returns<ActivityAnswer>(null);
+        _mockActivityService.Setup(x => x.GetOneByIdAsync(requesterUser, It.IsAny<string>())).Returns(Task.FromResult(new Application.Domain.Entities.Activities.Activity() { Id = "1", AccountId = 1, Closed = false }));
+        _mockStudentRepository.Setup(x => x.GetAllByOwnerIdAsync(requesterUser.UserId)).Returns(Task.FromResult<IList<StudentDto>>(new List<StudentDto>() { new() { Id = 1 } }));
+
+        var activityAnswerService = new ActivityAnswerService(_mockActivityAnswerRepository.Object, _mockActivityAnswerVersionRepository.Object, _mockActivityService.Object, _mockActivityRepository.Object, _mockStudentRepository.Object);
+
+        // Act & Assert
+        await Assert.ThrowsAsync<UnauthorizedAccessException>(() => activityAnswerService.CreateReviewAsync(requesterUser, "1234", newActivityAnswer));
+        _mockActivityService.Verify(x => x.GetOneByIdAsync(requesterUser, It.IsAny<string>()), Times.Never);
+        _mockActivityAnswerVersionRepository.Verify(x => x.InsertAsync(It.IsAny<ActivityAnswerVersion>()), Times.Never);
+        _mockActivityAnswerRepository.Verify(x => x.SetLastReview(It.IsAny<string>(), It.IsAny<ActivityAnswerVersion>()), Times.Never);
+        _mockActivityAnswerRepository.Verify(x => x.GetOneById(It.IsAny<string>()), Times.Once);
+    }
+
+    [Fact]
+    public async Task ReviewActivityAnswer_TryToReviewWithActivityAnswerOfAnotherAccountAsync()
+    {
+        // Arrange
+        var requesterUser = Helper.CreateRequesterUser1(UserTypeEnum.Owner);
+
+        var newActivityAnswer = new ActivityAnswerVersion()
+        {
+            Text = "text"
+        };
+
+        var activityAnswerInDatabase = new ActivityAnswer()
+        {
+            AccountId = 2,
+            ActivityId = "1234",
+            CreationDate = DateTime.Now.AddDays(-3),
+            StudentId = 1,
+            LastReview = new ActivityAnswerVersion()
+            {
+                Text = "old text"
+            },
+            Id = "12345"
+        };
+
+        _mockActivityAnswerRepository.Setup(x => x.GetOneById(It.IsAny<string>())).Returns(activityAnswerInDatabase);
+        _mockActivityService.Setup(x => x.GetOneByIdAsync(requesterUser, It.IsAny<string>())).Returns(Task.FromResult(new Application.Domain.Entities.Activities.Activity() { Id = "1", AccountId = 1, Closed = false }));
+        _mockStudentRepository.Setup(x => x.GetAllByOwnerIdAsync(requesterUser.UserId)).Returns(Task.FromResult<IList<StudentDto>>(new List<StudentDto>() { new() { Id = 1 } }));
+
+        var activityAnswerService = new ActivityAnswerService(_mockActivityAnswerRepository.Object, _mockActivityAnswerVersionRepository.Object, _mockActivityService.Object, _mockActivityRepository.Object, _mockStudentRepository.Object);
+
+        // Act & Assert
+        await Assert.ThrowsAsync<UnauthorizedAccessException>(() => activityAnswerService.CreateReviewAsync(requesterUser, "1234", newActivityAnswer));
+        _mockActivityService.Verify(x => x.GetOneByIdAsync(requesterUser, It.IsAny<string>()), Times.Never);
+        _mockActivityAnswerVersionRepository.Verify(x => x.InsertAsync(It.IsAny<ActivityAnswerVersion>()), Times.Never);
+        _mockActivityAnswerRepository.Verify(x => x.SetLastReview(It.IsAny<string>(), It.IsAny<ActivityAnswerVersion>()), Times.Never);
+        _mockActivityAnswerRepository.Verify(x => x.GetOneById(It.IsAny<string>()), Times.Once);
+    }
+
+    [Fact]
+    public async Task ReviewActivityAnswer_TryToReviewWithInvalidStudentAsync()
+    {
+        // Arrange
+        var requesterUser = Helper.CreateRequesterUser1(UserTypeEnum.Owner);
+
+        var newActivityAnswer = new ActivityAnswerVersion()
+        {
+            Text = "text"
+        };
+
+        var activityAnswerInDatabase = new ActivityAnswer()
+        {
+            AccountId = 1,
+            ActivityId = "1234",
+            CreationDate = DateTime.Now.AddDays(-3),
+            StudentId = 1,
+            LastReview = new ActivityAnswerVersion()
+            {
+                Text = "old text"
+            },
+            Id = "12345"
+        };
+
+        _mockActivityAnswerRepository.Setup(x => x.GetOneById(It.IsAny<string>())).Returns(activityAnswerInDatabase);
+        _mockActivityService.Setup(x => x.GetOneByIdAsync(requesterUser, It.IsAny<string>())).Returns(Task.FromResult(new Application.Domain.Entities.Activities.Activity() { Id = "1", AccountId = 1, Closed = false }));
+        _mockStudentRepository.Setup(x => x.GetAllByOwnerIdAsync(requesterUser.UserId)).Returns(Task.FromResult<IList<StudentDto>>(new List<StudentDto>()));
+
+        var activityAnswerService = new ActivityAnswerService(_mockActivityAnswerRepository.Object, _mockActivityAnswerVersionRepository.Object, _mockActivityService.Object, _mockActivityRepository.Object, _mockStudentRepository.Object);
+
+        // Act & Assert
+        await Assert.ThrowsAsync<UnauthorizedAccessException>(() => activityAnswerService.CreateReviewAsync(requesterUser, "1234", newActivityAnswer));
+        _mockStudentRepository.Verify(x => x.GetAllByOwnerIdAsync(requesterUser.UserId), Times.Once);
+        _mockActivityService.Verify(x => x.GetOneByIdAsync(requesterUser, It.IsAny<string>()), Times.Never);
+        _mockActivityAnswerVersionRepository.Verify(x => x.InsertAsync(It.IsAny<ActivityAnswerVersion>()), Times.Never);
+        _mockActivityAnswerRepository.Verify(x => x.SetLastReview(It.IsAny<string>(), It.IsAny<ActivityAnswerVersion>()), Times.Never);
+        _mockActivityAnswerRepository.Verify(x => x.GetOneById(It.IsAny<string>()), Times.Once);
+    }
+
+    [Fact]
+    public async Task ReviewActivityAnswer_TryToReviewInClosedActivityAsync()
+    {
+        // Arrange
+        var requesterUser = Helper.CreateRequesterUser1(UserTypeEnum.Owner);
+
+        var newActivityAnswer = new ActivityAnswerVersion()
+        {
+            Text = "text"
+        };
+
+        var activityAnswerInDatabase = new ActivityAnswer()
+        {
+            AccountId = 1,
+            ActivityId = "1234",
+            CreationDate = DateTime.Now.AddDays(-3),
+            StudentId = 1,
+            LastReview = new ActivityAnswerVersion()
+            {
+                Text = "old text"
+            },
+            Id = "12345"
+        };
+
+        _mockActivityAnswerRepository.Setup(x => x.GetOneById(It.IsAny<string>())).Returns(activityAnswerInDatabase);
+        _mockActivityService.Setup(x => x.GetOneByIdAsync(requesterUser, It.IsAny<string>())).Returns(Task.FromResult(new Application.Domain.Entities.Activities.Activity() { Id = "1", AccountId = 1, Closed = true }));
+        _mockStudentRepository.Setup(x => x.GetAllByOwnerIdAsync(requesterUser.UserId)).Returns(Task.FromResult<IList<StudentDto>>(new List<StudentDto>() { new() { Id = 1 } }));
+
+        var activityAnswerService = new ActivityAnswerService(_mockActivityAnswerRepository.Object, _mockActivityAnswerVersionRepository.Object, _mockActivityService.Object, _mockActivityRepository.Object, _mockStudentRepository.Object);
+
+        // Act & Assert
+        await Assert.ThrowsAsync<UnauthorizedAccessException>(() => activityAnswerService.CreateReviewAsync(requesterUser, "1234", newActivityAnswer));
+        _mockStudentRepository.Verify(x => x.GetAllByOwnerIdAsync(requesterUser.UserId), Times.Once);
+        _mockActivityService.Verify(x => x.GetOneByIdAsync(requesterUser, It.IsAny<string>()), Times.Once);
+        _mockActivityAnswerVersionRepository.Verify(x => x.InsertAsync(It.IsAny<ActivityAnswerVersion>()), Times.Never);
+        _mockActivityAnswerRepository.Verify(x => x.SetLastReview(It.IsAny<string>(), It.IsAny<ActivityAnswerVersion>()), Times.Never);
+        _mockActivityAnswerRepository.Verify(x => x.GetOneById(It.IsAny<string>()), Times.Once);
+    }
 }
