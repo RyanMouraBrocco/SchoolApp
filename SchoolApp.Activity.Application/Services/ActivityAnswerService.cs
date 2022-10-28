@@ -64,12 +64,16 @@ public class ActivityAnswerService : IActivityAnswerService
     {
         GenericValidation.CheckOnlyOwnerUser(requesterUser.Type);
 
-        var activityAnswerCheck = _activityAnswerRepository.GetOneById(activityAnswerId);
-        if (activityAnswerCheck == null || activityAnswerCheck.AccountId != requesterUser.AccountId || activityAnswerCheck.StudentId != requesterUser.UserId)
-            throw new UnauthorizedAccessException("ActivityAnswer not found");
-
         if (string.IsNullOrEmpty(newReview.Text?.Trim()))
             throw new FormatException("Text can't not be null or empty");
+
+        var activityAnswerCheck = _activityAnswerRepository.GetOneById(activityAnswerId);
+        if (activityAnswerCheck == null || activityAnswerCheck.AccountId != requesterUser.AccountId)
+            throw new UnauthorizedAccessException("ActivityAnswer not found");
+
+        var allStudents = await _studentRepository.GetAllByOwnerIdAsync(requesterUser.UserId);
+        if (!allStudents.Any(x => x.Id == activityAnswerCheck.StudentId))
+            throw new UnauthorizedAccessException("ActivityAnswer not found");
 
         var activityCheck = await _activityService.GetOneByIdAsync(requesterUser, activityAnswerCheck.ActivityId);
         if (activityCheck.Closed)
