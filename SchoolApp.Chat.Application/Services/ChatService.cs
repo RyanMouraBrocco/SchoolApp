@@ -32,6 +32,7 @@ public class ChatService : IChatService
             return chatCheck;
 
         newChat.User1Id = requesterUser.UserId;
+        newChat.User1Type = requesterUser.Type;
         newChat.User2Type = requesterUser.Type;
         newChat.AccountId = requesterUser.AccountId;
         newChat.CreationDate = DateTime.Now;
