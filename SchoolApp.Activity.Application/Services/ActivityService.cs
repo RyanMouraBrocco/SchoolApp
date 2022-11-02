@@ -28,7 +28,10 @@ public class ActivityService : IActivityService
             throw new FormatException("Description must not be null or empty");
 
         var classroomCheck = await _classroomRepository.GetOneByIdAsync(newActivity.ClassroomId);
-        if (classroomCheck == null || classroomCheck.TeacherId != requesterUser.UserId)
+        if (classroomCheck == null || classroomCheck.AccountId != requesterUser.AccountId)
+            throw new UnauthorizedAccessException("Classroom not found");
+
+        if (requesterUser.Type == UserTypeEnum.Teacher && classroomCheck.TeacherId != requesterUser.UserId)
             throw new UnauthorizedAccessException("Classroom not found");
 
         newActivity.AccountId = requesterUser.AccountId;
@@ -120,10 +123,8 @@ public class ActivityService : IActivityService
         if (string.IsNullOrEmpty(updatedAcitvity.Description?.Trim()))
             throw new FormatException("Description must not be null or empty");
 
-        var classroomCheck = await _classroomRepository.GetOneByIdAsync(updatedAcitvity.ClassroomId);
-        if (classroomCheck == null || classroomCheck.TeacherId != requesterUser.UserId)
-            throw new UnauthorizedAccessException("Classroom not found");
-
+        updatedAcitvity.Id = activityId;
+        updatedAcitvity.ClassroomId = activityCheck.ClassroomId;
         updatedAcitvity.AccountId = activityCheck.AccountId;
         updatedAcitvity.CreatorId = activityCheck.CreatorId;
         updatedAcitvity.CreationDate = activityCheck.CreationDate;
