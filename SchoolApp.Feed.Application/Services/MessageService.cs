@@ -113,7 +113,7 @@ public class MessageService : IMessageService
     public async Task<Message> UpdateAsync(AuthenticatedUserObject requesterUser, string messageId, Message updatedMessage, IList<MessageAllowedClassroomDto> allowedClassrooms, IList<MessageAllowedStudentDto> allowedStudents)
     {
         var messageCheck = _messageRepository.GetOneById(messageId);
-        if (messageCheck == null || messageCheck.AccountId != requesterUser.AccountId)
+        if (messageCheck == null || messageCheck.AccountId != requesterUser.AccountId || messageCheck.CreatorId != requesterUser.UserId)
             throw new UnauthorizedAccessException("Message not found");
 
         if (string.IsNullOrEmpty(messageCheck.MessageId))
@@ -143,7 +143,7 @@ public class MessageService : IMessageService
         var validAllowedClassrooms = new List<MessageAllowedClassroomDto>();
         var validAllowedStudents = new List<MessageAllowedStudentDto>();
 
-        if (requesterUser.Type == Shared.Utils.Enums.UserTypeEnum.Owner)
+        if (requesterUser.Type == Shared.Utils.Enums.UserTypeEnum.Manager)
         {
             foreach (var allowedClassroom in allowedClassrooms)
             {
