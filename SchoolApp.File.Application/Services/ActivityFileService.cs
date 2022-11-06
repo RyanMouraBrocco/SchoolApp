@@ -55,6 +55,6 @@ public class ActivityFileService : FileService<ActivityFile>, IActivityFileServi
 
     private string GetFolderFullPath(string activityId)
     {
-        return $"Activity/{activityId}/";
+        return $"activities/{activityId}/";
     }
 }

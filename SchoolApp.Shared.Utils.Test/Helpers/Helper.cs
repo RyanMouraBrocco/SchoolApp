@@ -16,4 +16,9 @@ public static class Helper
             UserName = "John"
         };
     }
+
+    public static object CreateRequesterUser1(object owner)
+    {
+        throw new NotImplementedException();
+    }
 }

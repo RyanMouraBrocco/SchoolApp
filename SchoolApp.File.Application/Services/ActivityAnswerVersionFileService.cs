@@ -61,6 +61,6 @@ public class ActivityAnswerVersionFileService : FileService<ActivityAnswerVersio
 
     private string GetFolderFullPath(string activityAnswerVersionId)
     {
-        return $"ActivityAnswerVersion/{activityAnswerVersionId}/";
+        return $"activityanswerversions/{activityAnswerVersionId}/";
     }
 }

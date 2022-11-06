@@ -27,7 +27,7 @@ public abstract class FileService<TFile> where TFile : Application.Domain.Entiti
 
     public async Task RemoveAsync(string folderPath, TFile file)
     {
-        if (string.IsNullOrEmpty(file.FileName?.ToString()))
+        if (string.IsNullOrEmpty(file.FileName?.ToString().Trim()))
             throw new FormatException("FileName can't not be null or empty");
 
         if (!await _fileRepository.ExistsAsync(folderPath, file.FileName))
