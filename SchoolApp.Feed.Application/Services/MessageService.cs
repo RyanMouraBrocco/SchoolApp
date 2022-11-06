@@ -37,8 +37,8 @@ public class MessageService : IMessageService
             GenericValidation.CheckOnlyTeacherAndManagerUser(requesterUser.Type);
         else
         {
-            var originMessageCheck = _messageRepository.GetOneById(newMessage.Id);
-            if (originMessageCheck == null || originMessageCheck.AccountId != requesterUser.AccountId)
+            var originMessageCheck = await GetOneByIdAsync(requesterUser, newMessage.Id);
+            if (originMessageCheck == null)
                 throw new UnauthorizedAccessException("Message not found");
         }
 
@@ -62,10 +62,10 @@ public class MessageService : IMessageService
     public async Task DeleteAsync(AuthenticatedUserObject requesterUser, string messageId)
     {
         var messageCheck = _messageRepository.GetOneById(messageId);
-        if (messageCheck == null || messageCheck.AccountId != requesterUser.AccountId)
+        if (messageCheck == null || messageCheck.AccountId != requesterUser.AccountId || messageCheck.CreatorId != requesterUser.UserId)
             throw new UnauthorizedAccessException("Message not found");
 
-        if (messageCheck.MessageId != null)
+        if (messageCheck.MessageId == null)
             GenericValidation.CheckOnlyTeacherAndManagerUser(requesterUser.Type);
 
         messageCheck.UpdaterId = requesterUser.UserId;
@@ -108,6 +108,29 @@ public class MessageService : IMessageService
         }
         else
             return _messageRepository.GetAllMainMessages(requesterUser.AccountId, top, skip);
+    }
+
+    public async Task<Message> GetOneByIdAsync(AuthenticatedUserObject requesterUser, string messageId)
+    {
+        var messageCheck = _messageRepository.GetOneById(messageId);
+        if (messageCheck == null || messageCheck.AccountId != requesterUser.AccountId)
+            return null;
+
+        if (requesterUser.Type == Shared.Utils.Enums.UserTypeEnum.Owner)
+        {
+            var userClassrooms = await _classroomRepository.GetAllByOwnerIdAsync(requesterUser.UserId);
+            var userStudents = await _classroomRepository.GetAllByOwnerIdAsync(requesterUser.UserId);
+            var allowedClassroomPermission = await _messageAllowedClassroomRepository.GetAllByMessageIdAsync(messageId);
+            var allowedStudentPermission = await _messageAllowedStudentRepository.GetAllByMessageIdAsync(messageId);
+            if ((allowedClassroomPermission.Count == 0 && allowedStudentPermission.Count == 0) ||
+                allowedStudentPermission.Any(x => userStudents.Select(x => x.Id).Contains(x.StudentId)) ||
+                allowedClassroomPermission.Any(x => userClassrooms.Select(x => x.Id).Contains(x.ClassroomId)))
+                return messageCheck;
+            else
+                return null;
+        }
+        else
+            return messageCheck;
     }
 
     public async Task<Message> UpdateAsync(AuthenticatedUserObject requesterUser, string messageId, Message updatedMessage, IList<MessageAllowedClassroomDto> allowedClassrooms, IList<MessageAllowedStudentDto> allowedStudents)
