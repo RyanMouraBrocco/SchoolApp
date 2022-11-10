@@ -3,7 +3,8 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 ENV ASPNETCORE_URLS=http://*:80
-
+RUN dotnet dev-certs https --clean
+RUN dotnet dev-certs https -t
 
 COPY SchoolApp.Classroom.Api SchoolApp.Classroom.Api/
 COPY SchoolApp.Classroom.Application SchoolApp.Classroom.Application/
@@ -18,10 +19,11 @@ COPY SchoolApp.Shared.Utils.HttpApi SchoolApp.Shared.Utils.HttpApi/
 RUN dotnet restore SchoolApp.Classroom.Api/SchoolApp.Classroom.Api.csproj
 RUN dotnet build SchoolApp.Classroom.Api/SchoolApp.Classroom.Api.csproj
 RUN dotnet publish SchoolApp.Classroom.Api/SchoolApp.Classroom.Api.csproj -c Release -o /app/published-app
-RUN dotnet dev-certs https
 
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine as runtime
 WORKDIR /app
+RUN apk add --no-cache icu-libs
+ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 COPY --from=build /app/published-app /app
 ENTRYPOINT [ "dotnet", "/app/SchoolApp.Classroom.Api.dll" ]

@@ -3,14 +3,14 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 ENV ASPNETCORE_URLS=http://*:80
-
+RUN dotnet dev-certs https --clean
+RUN dotnet dev-certs https -t
 
 COPY SchoolApp.Gateway SchoolApp.Gateway/
 
 RUN dotnet restore SchoolApp.Gateway/SchoolApp.Gateway.csproj
 RUN dotnet build SchoolApp.Gateway/SchoolApp.Gateway.csproj
 RUN dotnet publish SchoolApp.Gateway/SchoolApp.Gateway.csproj -c Release -o /app/published-app
-RUN dotnet dev-certs https
 
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine as runtime
