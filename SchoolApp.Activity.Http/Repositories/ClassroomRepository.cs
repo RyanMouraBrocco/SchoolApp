@@ -19,7 +19,7 @@ public class ClassroomRepository : IClassroomRepository
 
     public async Task<ClassroomDto> GetOneByIdAsync(int id)
     {
-        HttpResponseMessage response = await _httpClient.GetAsync($"{Settigns.Url}/Classrooms/GetOneById/{id}");
+        HttpResponseMessage response = await _httpClient.GetAsync($"{Settigns.Url}Classrooms/GetOneById/{id}");
         response.EnsureSuccessStatusCode();
         string responseBody = await response.Content.ReadAsStringAsync();
         return JsonSerializer.Deserialize<ClassroomDto>(responseBody);
@@ -27,7 +27,7 @@ public class ClassroomRepository : IClassroomRepository
 
     public async Task<IList<ClassroomDto>> GetAllByTeacherIdAsync(int teacherId)
     {
-        HttpResponseMessage response = await _httpClient.GetAsync($"{Settigns.Url}/Classrooms/GetAllByTeacherId/{teacherId}");
+        HttpResponseMessage response = await _httpClient.GetAsync($"{Settigns.Url}Classrooms/GetAllByTeacherId/{teacherId}");
         response.EnsureSuccessStatusCode();
         string responseBody = await response.Content.ReadAsStringAsync();
         return JsonSerializer.Deserialize<List<ClassroomDto>>(responseBody);
@@ -35,7 +35,7 @@ public class ClassroomRepository : IClassroomRepository
 
     public async Task<IList<ClassroomDto>> GetAllByOwnerIdAsync(int ownerId)
     {
-        HttpResponseMessage response = await _httpClient.GetAsync($"{Settigns.Url}/Classrooms/GetAllByOwerId/{ownerId}");
+        HttpResponseMessage response = await _httpClient.GetAsync($"{Settigns.Url}Classrooms/GetAllByOwerId/{ownerId}");
         response.EnsureSuccessStatusCode();
         string responseBody = await response.Content.ReadAsStringAsync();
         return JsonSerializer.Deserialize<List<ClassroomDto>>(responseBody);

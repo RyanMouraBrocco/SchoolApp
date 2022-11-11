@@ -19,7 +19,7 @@ public class AcitivityAnswerRepository : IActivityAnswerRepository
 
     public async Task<ActivityAnswerDto> GetOneByIdIncludingActivityAsync(string activityAnswerId)
     {
-        HttpResponseMessage response = await _httpClient.GetAsync($"{Settigns.Url}/ActivitiesAnswers/GetOneByIdIncludingActivity/{activityAnswerId}");
+        HttpResponseMessage response = await _httpClient.GetAsync($"{Settigns.Url}ActivitiesAnswers/GetOneByIdIncludingActivity/{activityAnswerId}");
         response.EnsureSuccessStatusCode();
         string responseBody = await response.Content.ReadAsStringAsync();
         return JsonSerializer.Deserialize<ActivityAnswerDto>(responseBody);

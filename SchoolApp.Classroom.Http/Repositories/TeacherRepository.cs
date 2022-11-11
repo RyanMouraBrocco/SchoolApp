@@ -19,7 +19,7 @@ public class TeacherRepository : ITeacherRepository
 
     public async Task<TeacherDto> GetOneByIdAsync(int id)
     {
-        HttpResponseMessage response = await _httpClient.GetAsync($"{Settigns.Url}/Teachers/GetOneById/{id}");
+        HttpResponseMessage response = await _httpClient.GetAsync($"{Settigns.Url}Teachers/GetOneById/{id}");
         response.EnsureSuccessStatusCode();
         string responseBody = await response.Content.ReadAsStringAsync();
         return JsonSerializer.Deserialize<TeacherDto>(responseBody);

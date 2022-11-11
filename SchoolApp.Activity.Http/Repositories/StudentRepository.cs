@@ -19,7 +19,7 @@ public class StudentRepository : IStudentRepository
 
     public async Task<IList<StudentDto>> GetAllByOwnerIdAsync(int ownerId)
     {
-        HttpResponseMessage response = await _httpClient.GetAsync($"{Settigns.Url}/Students/GetAllByOwnerId/{ownerId}");
+        HttpResponseMessage response = await _httpClient.GetAsync($"{Settigns.Url}Students/GetAllByOwnerId/{ownerId}");
         response.EnsureSuccessStatusCode();
         string responseBody = await response.Content.ReadAsStringAsync();
         return JsonSerializer.Deserialize<List<StudentDto>>(responseBody);
